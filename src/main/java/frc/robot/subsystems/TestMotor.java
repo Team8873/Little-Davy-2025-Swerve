@@ -11,11 +11,6 @@ public class TestMotor extends SubsystemBase{
     private double speed = 0;
     final double speedMult = .2;
     private final SparkMax motor = new SparkMax(15, MotorType.kBrushless);
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
 //   public Command runForward() {
 //     // Subsystem::RunOnce implicitly requires `this` subsystem.
 //     return this.runOnce(
@@ -30,6 +25,10 @@ public class TestMotor extends SubsystemBase{
 //             motor.set(-.5);
 //         });
 //   }
+/**
+ * @param drive the joystick port
+ * @return the action to run 
+ */
   public Command driveMotor(CommandXboxController drive){
            return this.run(
             () -> {
@@ -39,15 +38,20 @@ public class TestMotor extends SubsystemBase{
       public void setSpeed(){
                  motor.set(speed);
              }
+/**
+ * Controls the acceleration of Neo by adding and subtracting the trigger axis
+ * @param drive controller port
+ */
   public void readFromController(CommandXboxController drive){
         speed -= (drive.getLeftTriggerAxis()/100);
         speed += (drive.getRightTriggerAxis()/100);
         setSpeed();
     }
 
-    
+/**
+ * @return Runs speed = 0 once
+ */
   public Command stopMotor() {
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
     return this.runOnce(
         () -> {
             speed = 0;

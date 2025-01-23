@@ -46,8 +46,8 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-
-        test.setDefaultCommand(test.driveMotor(joystick));
+        
+        test.setDefaultCommand(test.driveMotor(joystick));  //setDefaultCommand tells what command to alway be running until interupted
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
@@ -74,6 +74,8 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        //Self-explanatory
         joystick.rightBumper().onTrue(test.stopMotor());
         
         
