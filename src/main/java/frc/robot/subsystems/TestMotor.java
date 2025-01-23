@@ -60,23 +60,3 @@ public class TestMotor extends SubsystemBase{
  
 
 }
-//     private SparkMax motor;
-
-//     //creates motor
-//     public TestMotor(){
-//         motor = new SparkMax(14, MotorType.kBrushless);
-        
-//     }
-    
-
-//     
-//     public Command readFromController(CommandXboxController drive){
-        
-//         setSpeed(drive.getRightTriggerAxis());
-       
-       
-       
-//    }
-
-    
-// }
