@@ -57,6 +57,4 @@ public class TestMotor extends SubsystemBase{
             speed = 0;
         });
   }
- 
-
 }
