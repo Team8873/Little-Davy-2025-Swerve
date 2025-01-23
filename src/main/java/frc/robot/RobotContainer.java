@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.TestMotor;
 import frc.robot.subsystems.testMotorCommandInput;
 
 public class RobotContainer {
@@ -36,7 +37,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public final testMotorCommandInput test = new testMotorCommandInput();
+    public final TestMotor test = new TestMotor();
     
     public RobotContainer() {
         configureBindings();
@@ -45,6 +46,8 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+        
+        test.setDefaultCommand(test.driveMotor(joystick));
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
@@ -71,7 +74,9 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
-        test.readFromController(joystick);
+        
+        
+        
 
         
     }
