@@ -48,13 +48,13 @@ public class TestMotor extends SubsystemBase{
     }
 
     
-//   public Command stopMotor() {
-//     // Subsystem::RunOnce implicitly requires `this` subsystem.
-//     return this.run(
-//         () -> {
-//             speed = 0;
-//         });
-//   }
+  public Command stopMotor() {
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return this.runOnce(
+        () -> {
+            speed = 0;
+        });
+  }
  
 
 }
