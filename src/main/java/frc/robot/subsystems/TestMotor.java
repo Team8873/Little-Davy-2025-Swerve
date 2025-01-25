@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class TestMotor extends SubsystemBase{
     private double speed = 0;
     final double speedMult = .2;
-    private final SparkMax motor = new SparkMax(15, MotorType.kBrushless);
+    private final SparkMax motor = new SparkMax(15, MotorType.kBrushless); //create the motor object
 //   public Command runForward() {
 //     // Subsystem::RunOnce implicitly requires `this` subsystem.
 //     return this.runOnce(
