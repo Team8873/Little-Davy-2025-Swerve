@@ -6,10 +6,13 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.playingwithfusion.TimeOfFlight;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,6 +24,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.TestMotor;
+import frc.robot.subsystems.TimeOfFlightSensor;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Intake;
+
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -38,9 +45,13 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final TestMotor test = new TestMotor();
+    public final Arm arm = new Arm();
+    public final Intake intake = new Intake();
+    public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -55,6 +66,13 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+        tOFSensor.setDefaultCommand(tOFSensor.getDistance());
+
+        //idk
+        //test.runForward().onlyWhile(tOFSensor.getDistance());
+
+        arm.setDefaultCommand(arm.moveArm(operator));
+        intake.setDefaultCommand(intake.moveIntake(operator));
         test.setDefaultCommand(test.driveMotor(joystick));
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
@@ -90,6 +108,7 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
         joystick.rightBumper().onTrue(test.stopMotor());
+        
     }
 
     public Command getAutonomousCommand() {
