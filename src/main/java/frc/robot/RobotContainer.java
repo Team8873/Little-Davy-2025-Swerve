@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.TestMotor;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Intake;
+
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -42,6 +45,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final TestMotor test = new TestMotor();
+    public final Arm arm = new Arm();
+    public final Intake intake = new Intake();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -56,6 +61,8 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+        arm.setDefaultCommand(arm.moveArm(operator));
+        intake.setDefaultCommand(intake.moveIntake(operator));
         test.setDefaultCommand(test.driveMotor(joystick));
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
@@ -91,6 +98,7 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
         joystick.rightBumper().onTrue(test.stopMotor());
+        
     }
 
     public Command getAutonomousCommand() {
