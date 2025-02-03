@@ -66,14 +66,20 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+
+        //get distance
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
 
-        //idk
-        //test.runForward().onlyWhile(tOFSensor.getDistance());
+        //runs intake forever while robot is on
+        intake.setDefaultCommand(intake.runIntake());
+
+        //If sensor detects something close it stops the intake
+        tOFSensor.coralInRange.whileTrue(intake.stopIntake());
 
         arm.setDefaultCommand(arm.moveArm(operator));
-        intake.setDefaultCommand(intake.moveIntake(operator));
-        test.setDefaultCommand(test.driveMotor(joystick));
+
+        operator.b().onTrue(arm.stopArm());
+        
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             
@@ -107,7 +113,6 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.rightBumper().onTrue(test.stopMotor());
         
     }
 

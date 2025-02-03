@@ -5,13 +5,12 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.TestMotorConstants;
 
 
 public class TestMotor extends SubsystemBase{
     private double speed = 0;
     final double speedMult = .2;
-    private final SparkMax motor = new SparkMax(TestMotorConstants.TestMotorId, MotorType.kBrushless); //create the motor object
+    private final SparkMax motor = new SparkMax(100, MotorType.kBrushless); //create the motor object
   public Command runForward() {
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return this.run(
