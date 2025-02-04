@@ -13,13 +13,13 @@ public class Intake extends SubsystemBase{
 /**
  * @return the action to run 
  */
-    public Command runIntake(){
-           return this.run(
-            () -> {
-                speed = 1;
-                setSpeed();
-            });
-      }
+  public Command runIntake(){
+      return this.run(
+          () -> {
+            speed = 1;
+            setSpeed();
+          });
+  }
 
 /**
  * @return Runs speed = 0 once
