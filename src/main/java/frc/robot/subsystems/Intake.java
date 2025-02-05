@@ -41,5 +41,7 @@ public class Intake extends SubsystemBase{
   private void setSpeed(){
     motor.set(speed);
   }
+  
+ 
 }
 
