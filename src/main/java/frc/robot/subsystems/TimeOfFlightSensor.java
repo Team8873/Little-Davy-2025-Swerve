@@ -8,6 +8,7 @@ import com.playingwithfusion.TimeOfFlight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 
 public class TimeOfFlightSensor extends SubsystemBase {
 
@@ -55,6 +56,7 @@ public class TimeOfFlightSensor extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     getDistance();
+    Shuffleboard.getTab("Sensors").add("Tofsensor",sensor);
   }
 
 }
