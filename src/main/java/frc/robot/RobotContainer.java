@@ -29,6 +29,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
 
+
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -66,14 +67,19 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        tOFSensor.setDefaultCommand(tOFSensor.getDistance());
 
-        //idk
-        //test.runForward().onlyWhile(tOFSensor.getDistance());
+        //runs intake forever while robot is on
+        intake.setDefaultCommand(intake.runIntake());
+
+        //If sensor detects something close it stops the intake
+        tOFSensor.coralInRange.whileTrue(intake.stopIntake());
+
+        operator.y().onTrue(intake.stopIntake().andThen(intake.intakeEject()));
 
         arm.setDefaultCommand(arm.moveArm(operator));
-        intake.setDefaultCommand(intake.moveIntake(operator));
-        test.setDefaultCommand(test.driveMotor(joystick));
+
+        operator.b().onTrue(arm.stopArm());
+        
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             
@@ -107,7 +113,6 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.rightBumper().onTrue(test.stopMotor());
         
     }
 
