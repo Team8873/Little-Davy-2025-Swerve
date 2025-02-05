@@ -42,6 +42,10 @@ public class Intake extends SubsystemBase{
     motor.set(speed);
   }
   
+  @Override
+  public void periodic(){
+
+  } 
  
 }
 
