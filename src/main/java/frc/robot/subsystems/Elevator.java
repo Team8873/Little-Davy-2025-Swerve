@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -82,8 +83,8 @@ public class Elevator extends SubsystemBase{
             });
     }
     public void createTab(){
-        Shuffleboard.getTab("Subsystems").add("ElevatorRight", leadMotorRight);
-        Shuffleboard.getTab("Subsystems").add("ElevatorLeft", motorLeft);
+        Shuffleboard.getTab("Subsystems").add("ElevatorRight", leadMotorRight).withWidget(BuiltInWidgets.kDial);
+        Shuffleboard.getTab("Subsystems").add("ElevatorLeft", motorLeft).withWidget(BuiltInWidgets.kDial);
     }
     
 
