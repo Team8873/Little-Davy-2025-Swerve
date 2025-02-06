@@ -48,7 +48,7 @@ public class Arm extends SubsystemBase{
         });
   }
   public void createWidget(){
-    Shuffleboard.getTab("Subsystems").add("Arm",motor).withWidget(BuiltInWidgets.kDial);
+    Shuffleboard.getTab("Subsystems").add("Arm",motor).withWidget(BuiltInWidgets.kNumberBar);
   }
 }
 
