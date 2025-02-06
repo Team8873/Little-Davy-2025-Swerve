@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -79,6 +80,10 @@ public class Elevator extends SubsystemBase{
             ()-> {
                 speed = 0;
             });
+    }
+    public void createTab(){
+        Shuffleboard.getTab("Subsystems").add("ElevatorRight", leadMotorRight);
+        Shuffleboard.getTab("Subsystems").add("ElevatorLeft", motorLeft);
     }
     
 

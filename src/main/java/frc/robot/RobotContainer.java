@@ -6,7 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.function.BooleanSupplier;
+
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -62,6 +62,9 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
+        intake.createWidget();
+        elevator.createTab();
+        tOFSensor.createUISensorTab();
 
         configureBindings();
     }

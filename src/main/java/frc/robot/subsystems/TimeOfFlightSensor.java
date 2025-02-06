@@ -19,8 +19,8 @@ public class TimeOfFlightSensor extends SubsystemBase {
     private double distanceInmm = 0;
     private double distanceInInches = 0;
     private final double mmToInches = 25.4;
-    private boolean createdWidget = false;
-    private boolean inRange = false;
+    
+
     /**
      * runs command
      * @return Gets distance from tofsensor and converts it to inches
@@ -48,7 +48,6 @@ public class TimeOfFlightSensor extends SubsystemBase {
         if(distanceInInches < 5){
             inDistance = () -> true;
         }else{inDistance = () -> false;}
-        inRange = inDistance.getAsBoolean();
         return inDistance;    
     }
 
@@ -56,21 +55,15 @@ public class TimeOfFlightSensor extends SubsystemBase {
     public final Trigger coralInRange = new Trigger(checkInRange());    //requires booleansupplier?
 
 
-    private void createUISensorTab(){
+    public void createUISensorTab(){
         Shuffleboard.getTab("Sensors").add("distance", distanceInInches).withWidget(BuiltInWidgets.kDial);
-        Shuffleboard.getTab("Sensors").add("coralInRange",inRange).withWidget(BuiltInWidgets.kBooleanBox);
-        createdWidget = true;
+        Shuffleboard.getTab("Sensors").add("coralInRange",inDistance.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox);
     }
-    private void updateUISensorStates(){
-        if(!createdWidget){createUISensorTab();}
-        
-    }
-
+ 
     @Override
   public void periodic() {
     // This method will be called once per scheduler run
     getDistance();
-    updateUISensorStates();
     checkInRange();
   }
 
