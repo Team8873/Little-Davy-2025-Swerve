@@ -2,9 +2,13 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ArmConstants;
+
 import static frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase{
@@ -42,6 +46,9 @@ public class Arm extends SubsystemBase{
         () -> {
             speed = 0;
         });
+  }
+  public void createWidget(){
+    Shuffleboard.getTab("Subsystems").add("Arm",motor).withWidget(BuiltInWidgets.kDial);
   }
 }
 

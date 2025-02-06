@@ -82,7 +82,7 @@ public class Elevator extends SubsystemBase{
                 speed = 0;
             });
     }
-    public void createTab(){
+    public void createUISubsystemsTab(){
         Shuffleboard.getTab("Subsystems").add("ElevatorRight", leadMotorRight).withWidget(BuiltInWidgets.kDial);
         Shuffleboard.getTab("Subsystems").add("ElevatorLeft", motorLeft).withWidget(BuiltInWidgets.kDial);
     }
