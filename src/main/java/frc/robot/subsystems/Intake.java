@@ -44,7 +44,7 @@ public class Intake extends SubsystemBase{
     motor.set(speed);
   }
   public void createWidget(){
-    Shuffleboard.getTab("Subsystems").add("Intake Motor", motor).withWidget(BuiltInWidgets.kNumberBar);
+    Shuffleboard.getTab("Subsystems").add("Intake Motor", speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 2);
   }
 
   @Override

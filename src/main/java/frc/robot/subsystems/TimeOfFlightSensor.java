@@ -56,8 +56,8 @@ public class TimeOfFlightSensor extends SubsystemBase {
 
 
     public void createUISensorTab(){
-        Shuffleboard.getTab("Sensors").add("distance", distanceInInches).withWidget(BuiltInWidgets.kDial);
-        Shuffleboard.getTab("Sensors").add("coralInRange",inDistance.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox);
+        Shuffleboard.getTab("Sensors").add("distance", distanceInInches).withWidget(BuiltInWidgets.kDial).withPosition(1, 1);
+        Shuffleboard.getTab("Sensors").add("coralInRange",inDistance.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 1);
     }
  
     @Override
