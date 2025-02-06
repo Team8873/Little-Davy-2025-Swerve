@@ -38,7 +38,7 @@ public class Elevator extends SubsystemBase{
         FollowerConfig
             .apply(globalConfig)
             .inverted(true)
-            .follow(motorLeft);
+            ;
 
              /*
      * Apply the configuration to the SPARKs.
@@ -66,12 +66,13 @@ public class Elevator extends SubsystemBase{
             });
     }
     private void readFromController(CommandXboxController op){
-        speed = op.getLeftY();
+        speed += op.getLeftY()/100;
         setSpeed();
 
     }
     private void setSpeed(){
         leadMotorRight.set(speed);
+        motorLeft.set(speed);
     }
     public Command stopElevator(){
         return this.runOnce(
