@@ -19,6 +19,7 @@ public class Elevator extends SubsystemBase{
     private final SparkMax motorLeft = new SparkMax(ElevatorConstants.elevatorLCanId, MotorType.kBrushless);
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
     private boolean configured = false;
+    private double speed = 0; 
     public Elevator(){
     }
     public void setFollower(){
@@ -34,11 +35,11 @@ public class Elevator extends SubsystemBase{
             .idleMode(IdleMode.kBrake);
     
         // Apply the global config and invert since it is on the opposite side
-    
-        // Apply the global config and set the leader SPARK for follower mode
         FollowerConfig
             .apply(globalConfig)
+            .inverted(true)
             .follow(motorLeft);
+
              /*
      * Apply the configuration to the SPARKs.
      *
@@ -58,6 +59,27 @@ public class Elevator extends SubsystemBase{
             setFollower();
         }
     }
+    public Command moveElevator(CommandXboxController operator){
+        return this.run(
+            () -> {
+            readFromController(operator);
+            });
+    }
+    private void readFromController(CommandXboxController op){
+        speed = op.getLeftY();
+        setSpeed();
+
+    }
+    private void setSpeed(){
+        leadMotorRight.set(speed);
+    }
+    public Command stopElevator(){
+        return this.runOnce(
+            ()-> {
+                speed = 0;
+            });
+    }
+    
 
     @Override
   public void periodic(){

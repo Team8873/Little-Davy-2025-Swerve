@@ -26,7 +26,7 @@ public class Arm extends SubsystemBase{
  * @param drive controller port
  */
     private void readFromController(CommandXboxController drive){
-        speed = drive.getLeftX();
+        speed = drive.getRightY();
         setSpeed();
     }
 

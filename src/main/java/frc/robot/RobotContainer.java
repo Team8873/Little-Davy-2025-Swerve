@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.TestMotor;
 import frc.robot.subsystems.TimeOfFlightSensor;
 import frc.robot.subsystems.Arm;
@@ -53,6 +54,7 @@ public class RobotContainer {
     public final Arm arm = new Arm();
     public final Intake intake = new Intake();
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
+    public final Elevator elevator = new Elevator();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -78,7 +80,12 @@ public class RobotContainer {
 
         arm.setDefaultCommand(arm.moveArm(operator));
 
+        elevator.setDefaultCommand(elevator.moveElevator(operator));
+
         operator.b().onTrue(arm.stopArm());
+
+        operator.x().onTrue(elevator.stopElevator());
+        
         
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
