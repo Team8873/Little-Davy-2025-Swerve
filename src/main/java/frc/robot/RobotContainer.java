@@ -62,11 +62,7 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
-        intake.createWidget();
-        elevator.createUISubsystemsTab();
-        tOFSensor.createUISensorTab();
-        arm.createWidget();
-
+        createShuffleboard();
         configureBindings();
     }
 
@@ -130,5 +126,12 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
+    }
+    public void createShuffleboard(){
+        intake.createWidget();
+        elevator.createUISubsystemsTab();
+        tOFSensor.createUISensorTab();
+        arm.createWidget();
+
     }
 }
