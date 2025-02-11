@@ -13,7 +13,9 @@ import static frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase{
     private double speed = 0;
-    private final SparkMax motor = new SparkMax(ArmConstants.armCanId, MotorType.kBrushless); //create the motor object
+    private final SparkMax armMotor = new SparkMax(ArmConstants.armCanId, MotorType.kBrushless); //create the motor object
+    private final SparkMax wristMotor = new SparkMax(ArmConstants.wristCanId, MotorType.kBrushless);
+    
 
 /**
  * @param drive the joystick port
@@ -35,7 +37,7 @@ public class Arm extends SubsystemBase{
     }
 
     private void setSpeed(){
-                 motor.set(speed);
+                 armMotor.set(speed);
     }
 
 /**
@@ -46,6 +48,9 @@ public class Arm extends SubsystemBase{
         () -> {
             speed = 0;
         });
+  }
+  private void getEncoderData(){
+    
   }
   public void createWidget(){
     Shuffleboard.getTab("Subsystems").add("Arm",speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 3);

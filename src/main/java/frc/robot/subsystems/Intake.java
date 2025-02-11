@@ -33,13 +33,15 @@ public class Intake extends SubsystemBase{
             setSpeed();
         });
   }
+  
   public Command intakeEject(){
     return this.runOnce(
         () -> { 
-            speed = -1;
+            speed = -.7;
             setSpeed();
         });
   }
+
   private void setSpeed(){
     motor.set(speed);
   }

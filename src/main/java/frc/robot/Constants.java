@@ -5,8 +5,8 @@ public class Constants {
         public static final int SensorId = 16;
     }
     public static class ElevatorConstants{
-        public static final int elevatorLCanId = 15;
-        public static final int elevatorRCanId = 20;
+        public static final int elevatorLCanId = 150;
+        public static final int elevatorRCanId = 200;
 
     }
     public static class IntakeConstants{
@@ -14,7 +14,8 @@ public class Constants {
 
     }
     public static class ArmConstants {
-        public static final int armCanId = 17;
+        public static final int armCanId = 170;
+        public static final int wristCanId = 180;
         
     }
         
