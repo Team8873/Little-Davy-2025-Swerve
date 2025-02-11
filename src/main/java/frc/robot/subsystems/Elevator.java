@@ -4,8 +4,10 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,6 +24,10 @@ public class Elevator extends SubsystemBase{
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
     private boolean configured = false;
     private double speed = 0; 
+    private ShuffleboardTab tab = Shuffleboard.getTab("Vision");
+    private GenericEntry speedEntry =
+      tab.add("Elevator Speed", 0).withPosition(1,1)
+         .getEntry();
     public Elevator(){
     }
     public void setFollower(){
@@ -83,14 +89,11 @@ public class Elevator extends SubsystemBase{
         motorLeft.set(speed);
     }
     
-    public void createUISubsystemsTab(){
-        Shuffleboard.getTab("Subsystems").add("ElevatorSpeed", speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 1).getEntry();
-    }
     
 
     @Override
   public void periodic(){
-    
+    speedEntry.setDouble(speed);
   } 
        
 }
