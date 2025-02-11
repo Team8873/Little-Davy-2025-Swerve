@@ -24,7 +24,7 @@ public class Elevator extends SubsystemBase{
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
     private boolean configured = false;
     private double speed = 0; 
-    private ShuffleboardTab tab = Shuffleboard.getTab("Vision");
+    private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private GenericEntry speedEntry =
       tab.add("Elevator Speed", 0).withPosition(1,1)
          .getEntry();

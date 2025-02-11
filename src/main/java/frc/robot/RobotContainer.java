@@ -52,8 +52,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final TestMotor test = new TestMotor();
-    public final Arm arm = new Arm();
-    public final Intake intake = new Intake();
+    //public final Arm arm = new Arm();
+    //public final Intake intake = new Intake();
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
 
@@ -64,7 +64,6 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
-        createShuffleboard();
         configureBindings();
         elevator.checkIfSetFollow();
     }
@@ -74,18 +73,18 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
 
         //runs intake forever while robot is on
-        intake.setDefaultCommand(intake.runIntake());
+        //intake.setDefaultCommand(intake.runIntake());
 
         //If sensor detects something close it stops the intake
-        tOFSensor.coralInRange.whileTrue(intake.stopIntake());
+        //tOFSensor.coralInRange.whileTrue(intake.stopIntake());
 
-        operator.y().and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake));
+        //operator.y().and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake));
 
-        arm.setDefaultCommand(arm.moveArm(operator));
+        //arm.setDefaultCommand(arm.moveArm(operator));
 
         elevator.setDefaultCommand(elevator.moveElevator(operator));
 
-        operator.b().onTrue(arm.stopArm());
+        //operator.b().onTrue(arm.stopArm());
 
         operator.x().onTrue(elevator.stopElevator());
         
@@ -130,11 +129,5 @@ public class RobotContainer {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
     }
-    public void createShuffleboard(){
-        intake.createWidget();
-        elevator.createUISubsystemsTab();
-        tOFSensor.createUISensorTab();
-        arm.createWidget();
-
-    }
+    
 }

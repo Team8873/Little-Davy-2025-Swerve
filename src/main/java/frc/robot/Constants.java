@@ -10,12 +10,12 @@ public class Constants {
 
     }
     public static class IntakeConstants{
-        public static final int intakeCanId = 190;
+        public static final int intakeCanId = 19;
 
     }
     public static class ArmConstants {
-        public static final int armCanId = 170;
-        public static final int wristCanId = 180;
+        public static final int armCanId = 17;
+        public static final int wristCanId = 18;
         
     }
         
