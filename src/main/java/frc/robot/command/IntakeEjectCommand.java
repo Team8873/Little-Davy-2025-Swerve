@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 /** An  command that uses an  subsystem. */
 public class IntakeEjectCommand extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Intake m_subsystem;
 
   /**
