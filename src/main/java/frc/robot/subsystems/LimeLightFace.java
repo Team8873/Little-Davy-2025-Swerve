@@ -1,5 +1,5 @@
-package frc.robot.subsystems.Limelight;
+package frc.robot.subsystems;
 
-public class Face {
+public class LimeLightFace {
 
 }

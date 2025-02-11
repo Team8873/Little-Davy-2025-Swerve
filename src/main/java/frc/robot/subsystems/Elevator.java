@@ -68,7 +68,7 @@ public class Elevator extends SubsystemBase{
             });
     }
     private void readFromController(CommandXboxController op){
-        speed += op.getLeftY()/100;
+        speed = op.getLeftY()/5;
         setSpeed();
 
     }
