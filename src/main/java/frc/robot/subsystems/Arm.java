@@ -65,8 +65,8 @@ public class Arm extends SubsystemBase{
 
   }
   public void createWidget(){
-    Shuffleboard.getTab("Subsystems").add("Arm",armSpeed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 3);
-    Shuffleboard.getTab("Subsystems").add("Wrist",wristSpeed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 4);
+    Shuffleboard.getTab("Subsystems").add("Arm",armSpeed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 3).getEntry();
+    Shuffleboard.getTab("Subsystems").add("Wrist",wristSpeed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 4).getEntry();
   }
   @Override
   public void periodic (){

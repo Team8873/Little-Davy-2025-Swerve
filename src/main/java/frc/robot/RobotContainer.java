@@ -66,6 +66,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
         createShuffleboard();
         configureBindings();
+        elevator.checkIfSetFollow();
     }
 
     private void configureBindings() {

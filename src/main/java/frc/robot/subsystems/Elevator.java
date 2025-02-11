@@ -52,8 +52,8 @@ public class Elevator extends SubsystemBase{
      * the SPARK MAX loses power. This is useful for power cycles that may occur
      * mid-operation.
      */
-        leadMotorRight.configure(globalConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        motorLeft.configure(FollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        leadMotorRight.configure(globalConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        motorLeft.configure(FollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         configured = true;
     }
     public void checkIfSetFollow(){
@@ -72,24 +72,25 @@ public class Elevator extends SubsystemBase{
         setSpeed();
 
     }
-    private void setSpeed(){
-        leadMotorRight.set(speed);
-        motorLeft.set(speed);
-    }
     public Command stopElevator(){
         return this.runOnce(
             ()-> {
                 speed = 0;
             });
     }
+    private void setSpeed(){
+        leadMotorRight.set(speed);
+        motorLeft.set(speed);
+    }
+    
     public void createUISubsystemsTab(){
-        Shuffleboard.getTab("Subsystems").add("ElevatorSpeed", speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 1);
+        Shuffleboard.getTab("Subsystems").add("ElevatorSpeed", speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 1).getEntry();
     }
     
 
     @Override
   public void periodic(){
-    checkIfSetFollow();
+    
   } 
        
 }
