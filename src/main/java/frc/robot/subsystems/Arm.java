@@ -3,26 +3,45 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
+import frc.robot.Constants.ArmConstants;
 
 import static frc.robot.Constants.ArmConstants;
 
 
 public class Arm extends SubsystemBase{
+
     private double armSpeed = 0;
     private double wristSpeed = 0;
+
     private final SparkMax armMotor = new SparkMax(ArmConstants.armCanId, MotorType.kBrushless); //create the motor object
     private final SparkMax wristMotor = new SparkMax(ArmConstants.wristCanId, MotorType.kBrushless);
+
     private final RelativeEncoder armEncoder = armMotor.getEncoder();
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
+
     private double armPosition;
     private double wristPosition; 
-    
+
+    private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
+
+    private GenericEntry armPosWidget =
+      tab.add("arm position", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,3)
+         .getEntry();
+         
+    private GenericEntry wristPosWidget =
+      tab.add("wrist position", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,4)
+         .getEntry();
 
 /**
  * @param drive the joystick port
@@ -64,13 +83,13 @@ public class Arm extends SubsystemBase{
     wristPosition = wristEncoder.getPosition();
 
   }
-  public void createWidget(){
-    Shuffleboard.getTab("Subsystems").add("Arm",armSpeed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 3).getEntry();
-    Shuffleboard.getTab("Subsystems").add("Wrist",wristSpeed).withWidget(BuiltInWidgets.kNumberBar).withPosition(1, 4).getEntry();
-  }
+
   @Override
   public void periodic (){
     getEncoderData();
+    armPosWidget.setDouble(armPosition);
+    wristPosWidget.setDouble(wristPosition);
   } 
+
 }
 

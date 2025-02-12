@@ -26,10 +26,11 @@ public class Elevator extends SubsystemBase{
     private double speed = 0; 
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private GenericEntry speedEntry =
-      tab.add("Elevator Speed", 0).withPosition(1,1)
+      tab.add("Elevator Speed", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,1)
          .getEntry();
-    public Elevator(){
-    }
+
     public void setFollower(){
         SparkMaxConfig globalConfig = new SparkMaxConfig();
         SparkMaxConfig FollowerConfig = new SparkMaxConfig();
@@ -88,8 +89,6 @@ public class Elevator extends SubsystemBase{
         leadMotorRight.set(speed);
         motorLeft.set(speed);
     }
-    
-    
 
     @Override
   public void periodic(){
