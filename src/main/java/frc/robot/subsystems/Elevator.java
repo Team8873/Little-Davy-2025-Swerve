@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -20,16 +21,26 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 
 public class Elevator extends SubsystemBase{
+
     private final SparkMax motorLeft = new SparkMax(ElevatorConstants.elevatorLCanId, MotorType.kBrushless);
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
+
     private boolean configured = false;
     private double speed = 0; 
+
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
+
     private GenericEntry speedEntry =
       tab.add("Elevator Speed", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(0,1)
          .getEntry();
+    
+    private SparkAbsoluteEncoder elevatorEncoder = leadMotorRight.getAbsoluteEncoder();
+    
+
+    private double elevatorPosition;
+    
 
     public void setFollower(){
         SparkMaxConfig globalConfig = new SparkMaxConfig();
@@ -89,10 +100,14 @@ public class Elevator extends SubsystemBase{
         leadMotorRight.set(speed);
         motorLeft.set(speed);
     }
+    private void getEncoderData(){
+        elevatorPosition = elevatorEncoder.getPosition();
+    }
 
     @Override
   public void periodic(){
     speedEntry.setDouble(speed);
+    getEncoderData();
   } 
        
 }
