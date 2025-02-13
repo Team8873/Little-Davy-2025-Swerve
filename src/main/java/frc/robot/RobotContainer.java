@@ -81,7 +81,7 @@ public class RobotContainer {
         //operator.y().and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake));
 
         //arm.setDefaultCommand(arm.moveArm(operator));
-
+        tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
 
         //operator.b().onTrue(arm.stopArm());

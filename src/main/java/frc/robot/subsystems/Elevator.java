@@ -49,7 +49,7 @@ public class Elevator extends SubsystemBase{
          .withPosition(2,1)
          .getEntry();
 
-    private AbsoluteEncoder elevatorEncoder = leadMotorRight.getAbsoluteEncoder();
+    private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
     
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
 
@@ -126,8 +126,9 @@ public class Elevator extends SubsystemBase{
     }
 
     private void getEncoderData(){
-        elevatorPosition = elevatorEncoder.getPosition();
         targetPosition = elevatorPid.getSetpoint();
+        elevatorPosition = elevatorEncoder.getPosition();
+        
     }
     public void targetPosition(double target){
         elevatorPid.setSetpoint(target);
