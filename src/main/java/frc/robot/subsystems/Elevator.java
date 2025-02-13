@@ -1,9 +1,12 @@
 package frc.robot.subsystems;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkRelativeEncoder;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -33,22 +36,29 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(0,1)
          .getEntry();
+
     private GenericEntry positionEntry =
       tab.add("Elevator position", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(2,0)
          .getEntry();
 
-    private SparkAbsoluteEncoder elevatorEncoder = leadMotorRight.getAbsoluteEncoder();
+    private GenericEntry targetEntry =
+      tab.add("Elevator target", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(2,1)
+         .getEntry();
+
+    private AbsoluteEncoder elevatorEncoder = leadMotorRight.getAbsoluteEncoder();
     
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-    private double elevatorPosition;
+
+    private double elevatorPosition = 0;
+    private double targetPosition = 0;
 
     public Elevator(){
 
     }
-    
-
     public void setFollower(){
         SparkMaxConfig globalConfig = new SparkMaxConfig();
         SparkMaxConfig FollowerConfig = new SparkMaxConfig();
@@ -80,6 +90,7 @@ public class Elevator extends SubsystemBase{
         leadMotorRight.configure(globalConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         motorLeft.configure(FollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         configured = true;
+        
     }
 
     public void checkIfSetFollow(){
@@ -116,6 +127,7 @@ public class Elevator extends SubsystemBase{
 
     private void getEncoderData(){
         elevatorPosition = elevatorEncoder.getPosition();
+        targetPosition = elevatorPid.getSetpoint();
     }
     public void targetPosition(double target){
         elevatorPid.setSetpoint(target);
@@ -125,6 +137,7 @@ public class Elevator extends SubsystemBase{
   public void periodic(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
+    targetEntry.setDouble(targetPosition);
     getEncoderData();
   } 
        

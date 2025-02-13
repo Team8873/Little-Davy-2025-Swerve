@@ -7,7 +7,7 @@ public class Constants {
     public static class ElevatorConstants{
         public static final int elevatorLCanId = 15;
         public static final int elevatorRCanId = 20;
-        public static final double kP = 0.0;
+        public static final double kP = 10.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
 
