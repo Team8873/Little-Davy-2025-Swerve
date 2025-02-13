@@ -15,9 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ElevatorConstants;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-
-
+import edu.wpi.first.math.controller.PIDController;
 
 
 public class Elevator extends SubsystemBase{
@@ -35,11 +33,20 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(0,1)
          .getEntry();
-    
+    private GenericEntry positionEntry =
+      tab.add("Elevator position", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(2,0)
+         .getEntry();
+
     private SparkAbsoluteEncoder elevatorEncoder = leadMotorRight.getAbsoluteEncoder();
     
-
+    private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
     private double elevatorPosition;
+
+    public Elevator(){
+
+    }
     
 
     public void setFollower(){
@@ -74,38 +81,49 @@ public class Elevator extends SubsystemBase{
         motorLeft.configure(FollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         configured = true;
     }
+
     public void checkIfSetFollow(){
         if(!configured){
             setFollower();
         }
     }
+
     public Command moveElevator(CommandXboxController operator){
         return this.run(
             () -> {
             readFromController(operator);
             });
     }
+
     private void readFromController(CommandXboxController op){
-        speed = op.getLeftY()/5;
+        targetPosition(op.getLeftY()/5);
+        speed = elevatorPid.calculate(elevatorPosition);
         setSpeed();
 
     }
+
     public Command stopElevator(){
         return this.runOnce(
             ()-> {
                 speed = 0;
             });
     }
+
     private void setSpeed(){
         leadMotorRight.set(speed);
         motorLeft.set(speed);
     }
+
     private void getEncoderData(){
         elevatorPosition = elevatorEncoder.getPosition();
+    }
+    public void targetPosition(double target){
+        elevatorPid.setSetpoint(target);
     }
 
     @Override
   public void periodic(){
+    positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
     getEncoderData();
   } 
