@@ -136,18 +136,17 @@ public class Elevator extends SubsystemBase{
     }
 
     private void getEncoderData(){
-        targetPosition = elevatorPid.getSetpoint();
         elevatorPosition = elevatorEncoder.getPosition();
-        
     }
     public void targetPosition(double target){
         elevatorPid.setSetpoint(target);
     }
     public BooleanSupplier getElevatorSetpointStatus(){
+        targetPosition = elevatorPid.getSetpoint();
        return elevatorAtSetpoimt = ()-> elevatorPid.atSetpoint();
     }
     public final Trigger elevatorAtTarget = new Trigger(getElevatorSetpointStatus());
-    
+
     @Override
   public void periodic(){
     positionEntry.setDouble(elevatorPosition);
