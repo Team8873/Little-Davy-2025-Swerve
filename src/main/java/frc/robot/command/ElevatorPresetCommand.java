@@ -41,7 +41,6 @@ public class ElevatorPresetCommand extends Command {
     m_arm.armPreset();
     m_elevator.elevatorPreset();
     m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armAtTarget));
-    
   }
 
   // Called once the command ends or is interrupted.
