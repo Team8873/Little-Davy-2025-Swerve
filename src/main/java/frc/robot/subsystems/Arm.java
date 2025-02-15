@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.ElevatorConstants;
 
 import static frc.robot.Constants.ArmConstants;
 
@@ -68,13 +66,13 @@ public class Arm extends SubsystemBase{
  * @param drive controller port
  */
     private void readFromController(CommandXboxController operator){
-        setArmTarget(operator.getRightX(),operator.getRightY());
+        setArmTarget(operator.getRightX(),operator.getRightY()); 
         setSpeed();
     }
     public Command armPreset (){
       return this.run(
           () -> {
-              while(!armPid.atSetpoint()&!wristPid.atSetpoint()){setSpeed();}
+              while(!armPid.atSetpoint()&&!wristPid.atSetpoint()){setSpeed();}
           }
       );
   }
@@ -93,8 +91,11 @@ public class Arm extends SubsystemBase{
     return this.runOnce(
         () -> {
             armSpeed = 0;
+            wristSpeed = 0;
         });
   }
+  
+  
   public void setArmTarget(double wristTarget, double armTarget){
     armPid.setSetpoint(armTarget);
     wristPid.setSetpoint(wristTarget);
@@ -105,7 +106,7 @@ public class Arm extends SubsystemBase{
     wristPosition = wristEncoder.getPosition();
   }
   public BooleanSupplier getArmMechSetpointStatus(){
-        return armMechAtSetpoint = ()-> armPid.atSetpoint() & wristPid.atSetpoint();
+        return armMechAtSetpoint = ()-> armPid.atSetpoint() && wristPid.atSetpoint();
     }
   public final Trigger armAtTarget = new Trigger(getArmMechSetpointStatus());
 

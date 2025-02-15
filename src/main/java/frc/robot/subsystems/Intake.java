@@ -23,9 +23,9 @@ public class Intake extends SubsystemBase{
  * @return the action to run 
  */
   public Command runIntake(){
+    speed = 1;
       return this.run(
           () -> {
-            speed = 1;
             setSpeed();
           });
   }
@@ -34,17 +34,19 @@ public class Intake extends SubsystemBase{
  * @return Runs speed = 0 once
  */
   public Command stopIntake() {
+    speed = 0;
     return this.runOnce(
         () -> {
-            speed = 0;
+            
             setSpeed();
         });
   }
   
   public Command intakeEject(){
+    speed = -1;
     return this.runOnce(
         () -> { 
-            speed = -.7;
+            
             setSpeed();
         });
   }
