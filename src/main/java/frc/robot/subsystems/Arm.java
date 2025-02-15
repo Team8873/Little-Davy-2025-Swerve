@@ -72,7 +72,7 @@ public class Arm extends SubsystemBase{
         
         setSpeed();
     }
-    public Command elevatorPreset (){
+    public Command armPreset (){
       return this.run(
           () -> {
               while(!armPid.atSetpoint()&!wristPid.atSetpoint()){setSpeed();}

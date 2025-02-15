@@ -38,7 +38,7 @@ public class ElevatorPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    m_arm.armPreset();
     m_elevator.elevatorPreset();
     m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armAtTarget));
   }
@@ -46,7 +46,7 @@ public class ElevatorPresetCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    m_intake.intakeEject();
   }
 
   // Returns true when the command should end.
