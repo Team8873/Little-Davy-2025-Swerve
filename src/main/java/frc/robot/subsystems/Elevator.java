@@ -1,4 +1,6 @@
 package frc.robot.subsystems;
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ElevatorConstants;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -25,7 +28,7 @@ public class Elevator extends SubsystemBase{
 
     private final SparkMax motorLeft = new SparkMax(ElevatorConstants.elevatorLCanId, MotorType.kBrushless);
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
-
+    private BooleanSupplier elevatorAtSetpoimt = ()-> false;
     private boolean configured = false;
     private double speed = 0; 
 
@@ -108,7 +111,6 @@ public class Elevator extends SubsystemBase{
 
     private void readFromController(CommandXboxController op){
         targetPosition(op.getLeftY()*10);
-        speed = elevatorPid.calculate(elevatorPosition);
         setSpeed();
 
     }
@@ -119,8 +121,16 @@ public class Elevator extends SubsystemBase{
                 speed = 0;
             });
     }
+    public Command elevatorPreset (){
+        return this.run(
+            () -> {
+                while(!elevatorPid.atSetpoint()){setSpeed();}
+            }
+        );
+    }
 
     private void setSpeed(){
+        speed = elevatorPid.calculate(elevatorPosition);
         leadMotorRight.set(speed);
         motorLeft.set(speed);
     }
@@ -133,13 +143,18 @@ public class Elevator extends SubsystemBase{
     public void targetPosition(double target){
         elevatorPid.setSetpoint(target);
     }
-
+    public BooleanSupplier getElevatorSetpointStatus(){
+       return elevatorAtSetpoimt = ()-> elevatorPid.atSetpoint();
+    }
+    public final Trigger elevatorAtTarget = new Trigger(getElevatorSetpointStatus());
+    
     @Override
   public void periodic(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
     targetEntry.setDouble(targetPosition);
     getEncoderData();
+    getElevatorSetpointStatus();
   } 
        
 }

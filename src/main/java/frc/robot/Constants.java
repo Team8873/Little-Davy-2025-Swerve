@@ -19,6 +19,12 @@ public class Constants {
     public static class ArmConstants {
         public static final int armCanId = 17;
         public static final int wristCanId = 18;
+        public static final double armkP = 0.1;
+        public static final double armkI = 0.0;
+        public static final double armkD = 0.0;
+        public static final double wristkP = 0.1;
+        public static final double wristkI = 0.0;
+        public static final double wristkD = 0.0;
         
     }
         

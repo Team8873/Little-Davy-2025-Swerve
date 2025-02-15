@@ -4,34 +4,43 @@
 
 package frc.robot.command;
 
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An  command that uses an  subsystem. */
 public class ElevatorPresetCommand extends Command {
-  private final Elevator m_subsystem;
+  private final Elevator m_elevator;
+  private final Intake m_intake;
+  private final Arm m_arm;
 
   /**
    * Creates a new Command.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ElevatorPresetCommand(Elevator subsystem) {
-    m_subsystem = subsystem;
+  public ElevatorPresetCommand(Elevator elevator, Intake intake, Arm arm) {
+    m_elevator = elevator;
+    m_intake = intake;
+    m_arm= arm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(elevator,intake,arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    m_arm.setArmTarget(0 ,0);
+    m_elevator.targetPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     
+    m_elevator.elevatorPreset();
+    m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armAtTarget));
   }
 
   // Called once the command ends or is interrupted.
