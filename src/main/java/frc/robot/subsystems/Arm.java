@@ -57,10 +57,10 @@ public class Arm extends SubsystemBase{
  * @param drive the joystick port
  * @return the action to run 
  */
-    public Command moveArm(CommandXboxController drive){
+    public Command moveArm(CommandXboxController operator){
            return this.run(
             () -> {
-                readFromController(drive); 
+                readFromController(operator); 
             });
     }
 /**
@@ -69,7 +69,6 @@ public class Arm extends SubsystemBase{
  */
     private void readFromController(CommandXboxController operator){
         setArmTarget(operator.getRightX(),operator.getRightY());
-        
         setSpeed();
     }
     public Command armPreset (){
