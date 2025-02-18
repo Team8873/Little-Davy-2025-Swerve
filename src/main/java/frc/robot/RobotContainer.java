@@ -91,17 +91,16 @@ public class RobotContainer {
         //operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false));
         //operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false));
         //operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false));
-        
-<<<<<<< Updated upstream
+
         //operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
         //operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
         //operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
-=======
+
         //climber stuff:
         joystick.x().onTrue(climber.moveToClimbed());
         joystick.povUp().onTrue(climber.moveToEngaged());
         joystick.povDown().whileTrue(climber.moveClimberDown());
->>>>>>> Stashed changes
+
         
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
