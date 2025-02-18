@@ -28,14 +28,14 @@ public class humanIntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setArmTarget(0 ,0);
+    m_arm.setArmMechTarget(0 ,0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_arm.armPreset();
-    m_intake.runIntake().onlyIf(m_arm.armAtTarget);
+    m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 
   // Called once the command ends or is interrupted.

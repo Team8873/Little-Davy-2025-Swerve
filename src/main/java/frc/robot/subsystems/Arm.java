@@ -34,7 +34,8 @@ public class Arm extends SubsystemBase{
 
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
-
+    private BooleanSupplier armAtSetpoint = ()-> false; 
+    private BooleanSupplier wristAtSetpoint = ()-> false; 
 
     private GenericEntry armPosWidget =
       tab.add("arm position", 0)
@@ -115,8 +116,16 @@ public class Arm extends SubsystemBase{
     wristPosition = wristEncoder.getPosition();
   }
   public BooleanSupplier getArmMechSetpointStatus(){
-        return armMechAtSetpoint = ()-> armPid.atSetpoint() && wristPid.atSetpoint();
+    getArmSetpointStatus();
+    getWristSetpointStatus();
+        return armMechAtSetpoint = ()-> armAtSetpoint.getAsBoolean() && wristAtSetpoint.getAsBoolean();
     }
+  public void getArmSetpointStatus(){
+    armAtSetpoint = ()-> armPid.atSetpoint();
+  }
+  public void getWristSetpointStatus(){
+    wristAtSetpoint = ()-> wristPid.atSetpoint();
+  }
   public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
 
   @Override
