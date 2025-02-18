@@ -85,9 +85,14 @@ public class RobotContainer {
         //arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
-        //operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm));
-
+        //operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false));
+        //operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false));
+        //operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false));
+        //operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false));
         
+        //operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true));
+        //operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true));
+        //operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true));
         
         
         drivetrain.setDefaultCommand(
