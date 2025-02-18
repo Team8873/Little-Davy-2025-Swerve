@@ -81,7 +81,7 @@ public Command moveHumanMotor(){
   @Override
   public void periodic(){
     speedEntry.setDouble(speed);
-    humanEntry.setBoolean(false);
+    humanEntry.setBoolean(humanPid.atSetpoint());
     getHumanPosition();
   } 
  
