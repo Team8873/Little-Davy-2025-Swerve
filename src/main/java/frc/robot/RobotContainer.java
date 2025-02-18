@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.TestMotor;
 import frc.robot.subsystems.TimeOfFlightSensor;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.command.IntakeEjectCommand;
@@ -58,7 +60,7 @@ public class RobotContainer {
     //public final Intake intake = new Intake();
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
-
+    public final Climber climber = new Climber();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -90,9 +92,16 @@ public class RobotContainer {
         //operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false));
         //operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false));
         
+<<<<<<< Updated upstream
         //operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
         //operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
         //operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+=======
+        //climber stuff:
+        joystick.x().onTrue(climber.moveToClimbed());
+        joystick.povUp().onTrue(climber.moveToEngaged());
+        joystick.povDown().whileTrue(climber.moveClimberDown());
+>>>>>>> Stashed changes
         
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
@@ -136,3 +145,4 @@ public class RobotContainer {
     }
     
 }
+
