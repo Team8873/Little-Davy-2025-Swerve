@@ -23,7 +23,7 @@ public class ElevatorPresetCommand extends Command {
   public ElevatorPresetCommand(Elevator elevator, Intake intake, Arm arm) {
     m_elevator = elevator;
     m_intake = intake;
-    m_arm= arm;
+    m_arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator,intake,arm);
   }
