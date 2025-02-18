@@ -37,14 +37,23 @@ import java.util.function.BooleanSupplier;
 //pid stuff
 import edu.wpi.first.math.controller.PIDController;
 
+
 public class Climber extends SubsystemBase{ // puts climber as a subsystem; inside is code for the climber
   //introduce stuff
     private final SparkMax motorForClimber = new SparkMax (ClimberConstants.motorForClimberId, MotorType.kBrushless);//a motor motorForClimber
     private RelativeEncoder encoderForClimber = motorForClimber.getEncoder(); //a relative encoder called "encoder for climber"
-   //defined positions
-    private final double restingPosition = 0; 
-    private final double engagedPosition = 90;
-    private final double climbedPositon = 45;
+
+   //every deg is about 42/360 which is 0.1167
+   //Ticks per deg converts from deg to ticks
+    private final double ticksPerDegClimber = 42/360;
+    //a 100:1 motor
+    private final double motorRatioClimberMultiplier = 100;
+
+   //defined positions; now everythings in ticks
+    private final double restingPosition = 0*ticksPerDegClimber*motorRatioClimberMultiplier; 
+    private final double engagedPosition = 90*ticksPerDegClimber*motorRatioClimberMultiplier;
+    private final double climbedPositon = 45*ticksPerDegClimber*motorRatioClimberMultiplier;
+
     //its not at the setpoint when we turn it on
     private BooleanSupplier climberAtSetpoint = ()-> false;
 
@@ -66,7 +75,8 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     motorForClimber.set(speed);
     }
  // if its at the setpoint tell it to stop
-private Command climberPreset(){
+    public Command climberPreset(){
+    targetPosition(restingPosition);
     return this.run(
         () -> {
             while(!climberPid.atSetpoint()){setSpeed();}
@@ -74,13 +84,13 @@ private Command climberPreset(){
     );
 }
 //get the set point and put it as the target. Return if its at the setpoint or not.
-public BooleanSupplier getElevatorSetpointStatus(){
+    public BooleanSupplier getElevatorSetpointStatus(){
     target = climberPid.getSetpoint();
    return climberAtSetpoint = ()-> climberPid.atSetpoint();
 }
 
     //up d-pad will shoot to 90 deg
-    private Command moveClimberToEngaged(){
+    public Command moveToEngaged(){
     targetPosition(engagedPosition);
     return this.runOnce(
         ()-> {
@@ -89,8 +99,8 @@ public BooleanSupplier getElevatorSetpointStatus(){
     );
 
     }
-    //B button will shoot down to climbed
-    private Command moveToClimbed(){
+    //Xbutton will shoot down to climbed
+    public Command moveToClimbed(){
         targetPosition(climbedPositon);
         return this.runOnce(
             ()-> {
