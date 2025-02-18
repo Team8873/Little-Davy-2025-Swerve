@@ -29,6 +29,8 @@ import frc.robot.subsystems.TimeOfFlightSensor;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.command.IntakeEjectCommand;
+import frc.robot.command.ElevatorPresetCommand;
+import frc.robot.command.humanIntakeCommand;
 
 
 
@@ -78,15 +80,14 @@ public class RobotContainer {
         //If sensor detects something close it stops the intake
         //tOFSensor.coralInRange.whileTrue(intake.stopIntake());
 
-        //operator.y().and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake));
+        //operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake));
 
         //arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
+        //operator.a().onTrue(new ElevatorPresetCommand(elevator, Intake, Arm));
 
-        //operator.b().onTrue(arm.stopArm());
-
-        operator.x().onTrue(elevator.stopElevator());
+        
         
         
         drivetrain.setDefaultCommand(
