@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase{
     private GenericEntry humanEntry =
       tab.add("Human Intake Up", 0)
          .withWidget(BuiltInWidgets.kBooleanBox)
-         .withPosition(0,2)
+         .withPosition(0,3)
          .getEntry();
 /**
  * @return the action to run 
