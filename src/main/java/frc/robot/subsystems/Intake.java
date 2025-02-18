@@ -19,6 +19,7 @@ public class Intake extends SubsystemBase{
     private final PIDController humanPid = new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
     private final RelativeEncoder humanEncoder = humanMotor.getEncoder();
     private double humanEncoderPosition = 0;
+    private boolean humanAtSetpoint = false;
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private GenericEntry speedEntry =
       tab.add("Intake Motor", 0)
@@ -28,7 +29,7 @@ public class Intake extends SubsystemBase{
     private GenericEntry humanEntry =
       tab.add("Human Intake Up", 0)
          .withWidget(BuiltInWidgets.kBooleanBox)
-         .withPosition(0,2)
+         .withPosition(0,3)
          .getEntry();
 /**
  * @return the action to run 
@@ -76,13 +77,16 @@ public Command moveHumanMotor(){
     () -> { 
         humanMotor.set(humanPid.calculate(humanEncoderPosition));
     });
-     
+}
+private void humanAtSetpointStatus(){
+  humanAtSetpoint = humanPid.atSetpoint();
 }
   @Override
   public void periodic(){
     speedEntry.setDouble(speed);
-    humanEntry.setBoolean(false);
+    humanEntry.setBoolean(humanAtSetpoint);
     getHumanPosition();
+    humanAtSetpointStatus();
   } 
  
 }

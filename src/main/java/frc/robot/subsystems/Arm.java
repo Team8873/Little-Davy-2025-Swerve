@@ -34,7 +34,8 @@ public class Arm extends SubsystemBase{
 
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
-
+    private BooleanSupplier armAtSetpoint = ()-> false; 
+    private BooleanSupplier wristAtSetpoint = ()-> false; 
 
     private GenericEntry armPosWidget =
       tab.add("arm position", 0)
@@ -46,6 +47,17 @@ public class Arm extends SubsystemBase{
       tab.add("wrist position", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(0,4)
+         .getEntry();
+    private GenericEntry armSetpointWidget =
+      tab.add("arm atSetpoint", false)
+         .withWidget(BuiltInWidgets.kBooleanBox)
+         .withPosition(3,3)
+         .getEntry();
+         
+    private GenericEntry wristSetpointWidget =
+      tab.add("wrist atSetpoint", false)
+         .withWidget(BuiltInWidgets.kBooleanBox)
+         .withPosition(3,4)
          .getEntry();
 
     private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
@@ -66,24 +78,33 @@ public class Arm extends SubsystemBase{
  * @param drive controller port
  */
     private void readFromController(CommandXboxController operator){
-        setArmTarget(operator.getRightX(),operator.getRightY()); 
-        setSpeed();
+        setArmMechTarget(operator.getRightX(),operator.getRightY()); 
+        setArmSpeed();
+        setWristSpeed();
     }
     public Command armPreset (){
       return this.run(
           () -> {
-              while(!armPid.atSetpoint()&&!wristPid.atSetpoint()){setSpeed();}
+              while(!armPid.atSetpoint()){setArmSpeed();}
           }
       );
   }
+  public Command wristPreset (){
+    return this.run(
+        () -> {
+            while(!wristPid.atSetpoint()){setWristSpeed();}
+        }
+    );
+}
+  private void setArmSpeed(){
+      armSpeed = armPid.calculate(armPosition);
+      armMotor.set(armSpeed);
+  }
 
-    private void setSpeed(){
-        armSpeed = armPid.calculate(armPosition);
-        wristSpeed = wristPid.calculate(wristPosition);
-        armMotor.set(armSpeed);
-        wristMotor.set(wristSpeed);
-    }
-
+  private void setWristSpeed(){
+    wristSpeed = wristPid.calculate(wristPosition);
+    wristMotor.set(wristSpeed);
+}
 /**
  * @return Runs speed = 0 once
  */
@@ -96,7 +117,7 @@ public class Arm extends SubsystemBase{
   }
   
   
-  public void setArmTarget(double wristTarget, double armTarget){
+  public void setArmMechTarget(double wristTarget, double armTarget){
     armPid.setSetpoint(armTarget);
     wristPid.setSetpoint(wristTarget);
   }
@@ -105,19 +126,38 @@ public class Arm extends SubsystemBase{
     armPosition = armEncoder.getPosition();
     wristPosition = wristEncoder.getPosition();
   }
+
   public BooleanSupplier getArmMechSetpointStatus(){
-        return armMechAtSetpoint = ()-> armPid.atSetpoint() && wristPid.atSetpoint();
+    getArmSetpointStatus();
+    getWristSetpointStatus();
+        return armMechAtSetpoint = ()-> armAtSetpoint.getAsBoolean() && wristAtSetpoint.getAsBoolean();
     }
-  public final Trigger armAtTarget = new Trigger(getArmMechSetpointStatus());
+
+  public BooleanSupplier getArmSetpointStatus(){
+    armAtSetpoint = ()-> armPid.atSetpoint();
+    return armAtSetpoint;
+  }
+
+  public BooleanSupplier getWristSetpointStatus(){
+    wristAtSetpoint = ()-> wristPid.atSetpoint();
+    return wristAtSetpoint;
+  }
+
+  public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
 
   @Override
   public void periodic (){
     getEncoderData();
-    armPosWidget.setDouble(armPosition);
-    wristPosWidget.setDouble(wristPosition);
+    updateShuffleboardWidgets();
     getArmMechSetpointStatus();
 
   } 
+  private void updateShuffleboardWidgets(){
+    armPosWidget.setDouble(armPosition);
+    wristPosWidget.setDouble(wristPosition);
+    armSetpointWidget.setBoolean(armAtSetpoint.getAsBoolean());
+    wristSetpointWidget.setBoolean(wristAtSetpoint.getAsBoolean());
+  }
 
 }
 
