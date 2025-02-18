@@ -59,7 +59,7 @@ public class TimeOfFlightSensor extends SubsystemBase {
      * checks if object is close to sensor
      * @return booleansupplier
      */
-    private BooleanSupplier checkInRange(){
+    public BooleanSupplier checkInRange(){
         if(distanceInInches < 5){
             inDistance = () -> true;
         }else{inDistance = () -> false;}

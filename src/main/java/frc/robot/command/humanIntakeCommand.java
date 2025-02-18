@@ -6,21 +6,26 @@ package frc.robot.command;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+
+import frc.robot.subsystems.TimeOfFlightSensor;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An  command that uses an  subsystem. */
 public class humanIntakeCommand extends Command {
   private final Intake m_intake;
   private final Arm m_arm;
+  private final TimeOfFlightSensor m_tOF;
 
   /**
    * Creates a new Command.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public humanIntakeCommand( Intake intake, Arm arm) {
+  public humanIntakeCommand(Intake intake, Arm arm, TimeOfFlightSensor tOFsensor) {
     m_intake = intake;
-    m_arm= arm;
+    m_arm = arm;
+    m_tOF = tOFsensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake,arm);
   }
@@ -47,6 +52,6 @@ public class humanIntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_tOF.checkInRange().getAsBoolean();
   }
 }
