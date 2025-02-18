@@ -128,6 +128,8 @@ public class Arm extends SubsystemBase{
   }
 
   public BooleanSupplier getArmMechSetpointStatus(){
+    getArmSetpointStatus();
+    getWristSetpointStatus();
         return armMechAtSetpoint = ()-> armAtSetpoint.getAsBoolean() && wristAtSetpoint.getAsBoolean();
     }
 
@@ -147,8 +149,6 @@ public class Arm extends SubsystemBase{
   public void periodic (){
     getEncoderData();
     updateShuffleboardWidgets();
-    getArmSetpointStatus();
-    getWristSetpointStatus();
     getArmMechSetpointStatus();
 
   } 
