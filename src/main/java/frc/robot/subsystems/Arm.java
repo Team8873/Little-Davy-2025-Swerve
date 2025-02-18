@@ -115,17 +115,21 @@ public class Arm extends SubsystemBase{
     armPosition = armEncoder.getPosition();
     wristPosition = wristEncoder.getPosition();
   }
+
   public BooleanSupplier getArmMechSetpointStatus(){
-    getArmSetpointStatus();
-    getWristSetpointStatus();
         return armMechAtSetpoint = ()-> armAtSetpoint.getAsBoolean() && wristAtSetpoint.getAsBoolean();
     }
-  public void getArmSetpointStatus(){
+
+  public BooleanSupplier getArmSetpointStatus(){
     armAtSetpoint = ()-> armPid.atSetpoint();
+    return armAtSetpoint;
   }
-  public void getWristSetpointStatus(){
+
+  public BooleanSupplier getWristSetpointStatus(){
     wristAtSetpoint = ()-> wristPid.atSetpoint();
+    return wristAtSetpoint;
   }
+
   public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
 
   @Override
@@ -133,6 +137,8 @@ public class Arm extends SubsystemBase{
     getEncoderData();
     armPosWidget.setDouble(armPosition);
     wristPosWidget.setDouble(wristPosition);
+    getArmSetpointStatus();
+    getWristSetpointStatus();
     getArmMechSetpointStatus();
 
   } 

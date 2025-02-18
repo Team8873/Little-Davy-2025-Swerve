@@ -39,6 +39,7 @@ public class ElevatorPresetCommand extends Command {
   @Override
   public void execute() {
     m_arm.armPreset();
+    m_arm.wristPreset().onlyIf(m_arm.getArmSetpointStatus());
     m_elevator.elevatorPreset();
     m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget));
   }
