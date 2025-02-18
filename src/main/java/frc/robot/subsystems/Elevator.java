@@ -52,7 +52,7 @@ public class Elevator extends SubsystemBase{
          .withPosition(2,1)
          .getEntry();
     private GenericEntry elevatorSetpointWidget =
-      tab.add("arm atSetpoint", false)
+      tab.add("Elevator atSetpoint", false)
          .withWidget(BuiltInWidgets.kBooleanBox)
          .withPosition(3,5)
          .getEntry();
