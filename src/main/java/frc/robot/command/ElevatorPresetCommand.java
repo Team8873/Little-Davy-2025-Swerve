@@ -31,7 +31,7 @@ public class ElevatorPresetCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setArmTarget(0 ,0);
+    m_arm.setArmMechTarget(0 ,0);
     m_elevator.targetPosition(0);
   }
 
@@ -40,7 +40,7 @@ public class ElevatorPresetCommand extends Command {
   public void execute() {
     m_arm.armPreset();
     m_elevator.elevatorPreset();
-    m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armAtTarget));
+    m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget));
   }
 
   // Called once the command ends or is interrupted.

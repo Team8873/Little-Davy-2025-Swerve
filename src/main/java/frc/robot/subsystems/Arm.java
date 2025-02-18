@@ -66,7 +66,7 @@ public class Arm extends SubsystemBase{
  * @param drive controller port
  */
     private void readFromController(CommandXboxController operator){
-        setArmTarget(operator.getRightX(),operator.getRightY()); 
+        setArmMechTarget(operator.getRightX(),operator.getRightY()); 
         setArmSpeed();
         setWristSpeed();
     }
@@ -105,7 +105,7 @@ public class Arm extends SubsystemBase{
   }
   
   
-  public void setArmTarget(double wristTarget, double armTarget){
+  public void setArmMechTarget(double wristTarget, double armTarget){
     armPid.setSetpoint(armTarget);
     wristPid.setSetpoint(wristTarget);
   }
@@ -117,7 +117,7 @@ public class Arm extends SubsystemBase{
   public BooleanSupplier getArmMechSetpointStatus(){
         return armMechAtSetpoint = ()-> armPid.atSetpoint() && wristPid.atSetpoint();
     }
-  public final Trigger armAtTarget = new Trigger(getArmMechSetpointStatus());
+  public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
 
   @Override
   public void periodic (){
