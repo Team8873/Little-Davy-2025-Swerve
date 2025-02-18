@@ -34,7 +34,8 @@ public class humanIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.armPreset();
+    m_arm.wristPreset();
+    m_arm.armPreset().onlyIf(m_arm.getWristSetpointStatus());
     m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 
