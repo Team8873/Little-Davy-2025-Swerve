@@ -67,23 +67,32 @@ public class Arm extends SubsystemBase{
  */
     private void readFromController(CommandXboxController operator){
         setArmTarget(operator.getRightX(),operator.getRightY()); 
-        setSpeed();
+        setArmSpeed();
+        setWristSpeed();
     }
     public Command armPreset (){
       return this.run(
           () -> {
-              while(!armPid.atSetpoint()&&!wristPid.atSetpoint()){setSpeed();}
+              while(!armPid.atSetpoint()){setArmSpeed();}
           }
       );
   }
+  public Command wristPreset (){
+    return this.run(
+        () -> {
+            while(!wristPid.atSetpoint()){setWristSpeed();}
+        }
+    );
+}
+  private void setArmSpeed(){
+      armSpeed = armPid.calculate(armPosition);
+      armMotor.set(armSpeed);
+  }
 
-    private void setSpeed(){
-        armSpeed = armPid.calculate(armPosition);
-        wristSpeed = wristPid.calculate(wristPosition);
-        armMotor.set(armSpeed);
-        wristMotor.set(wristSpeed);
-    }
-
+  private void setWristSpeed(){
+    wristSpeed = wristPid.calculate(wristPosition);
+    wristMotor.set(wristSpeed);
+}
 /**
  * @return Runs speed = 0 once
  */
