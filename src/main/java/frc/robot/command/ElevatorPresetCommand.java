@@ -38,10 +38,11 @@ public class ElevatorPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_elevator.elevatorPreset();
     m_arm.armPreset();
     m_arm.wristPreset().onlyIf(m_arm.getArmSetpointStatus());
-    m_elevator.elevatorPreset();
     m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget));
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -52,6 +53,7 @@ public class ElevatorPresetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_elevator.getElevatorSetpointStatus().getAsBoolean() && 
+    (m_arm.getArmSetpointStatus().getAsBoolean() && m_arm.getWristSetpointStatus().getAsBoolean());
   }
 }
