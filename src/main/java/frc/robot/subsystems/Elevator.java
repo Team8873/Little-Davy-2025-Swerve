@@ -28,7 +28,7 @@ public class Elevator extends SubsystemBase{
 
     private final SparkMax motorLeft = new SparkMax(ElevatorConstants.elevatorLCanId, MotorType.kBrushless);
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
-    private BooleanSupplier elevatorAtSetpoimt = ()-> false;
+    private BooleanSupplier elevatorAtSetpoint = ()-> false;
     private boolean configured = false;
     private double speed = 0; 
 
@@ -51,6 +51,11 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(2,1)
          .getEntry();
+    private GenericEntry elevatorSetpointWidget =
+      tab.add("arm atSetpoint", false)
+         .withWidget(BuiltInWidgets.kBooleanBox)
+         .withPosition(3,5)
+         .getEntry();
 
     private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
     
@@ -59,9 +64,6 @@ public class Elevator extends SubsystemBase{
     private double elevatorPosition = 0;
     private double targetPosition = 0;
 
-    public Elevator(){
-
-    }
     public void setFollower(){
         SparkMaxConfig globalConfig = new SparkMaxConfig();
         SparkMaxConfig FollowerConfig = new SparkMaxConfig();
@@ -121,6 +123,7 @@ public class Elevator extends SubsystemBase{
                 speed = 0;
             });
     }
+
     public Command elevatorPreset (){
         return this.run(
             () -> {
@@ -138,22 +141,29 @@ public class Elevator extends SubsystemBase{
     private void getEncoderData(){
         elevatorPosition = elevatorEncoder.getPosition();
     }
+
     public void targetPosition(double target){
         elevatorPid.setSetpoint(target);
     }
+
     public BooleanSupplier getElevatorSetpointStatus(){
         targetPosition = elevatorPid.getSetpoint();
-       return elevatorAtSetpoimt = ()-> elevatorPid.atSetpoint();
+       return elevatorAtSetpoint = ()-> elevatorPid.atSetpoint();
     }
+
     public final Trigger elevatorAtTarget = new Trigger(getElevatorSetpointStatus());
 
     @Override
   public void periodic(){
-    positionEntry.setDouble(elevatorPosition);
-    speedEntry.setDouble(speed);
-    targetEntry.setDouble(targetPosition);
+    updateShuffleboardWidgets();
     getEncoderData();
     getElevatorSetpointStatus();
   } 
-       
+  private void updateShuffleboardWidgets(){
+    positionEntry.setDouble(elevatorPosition);
+    speedEntry.setDouble(speed);
+    targetEntry.setDouble(targetPosition);
+    elevatorSetpointWidget.setBoolean(elevatorAtSetpoint.getAsBoolean());
+  }
+
 }

@@ -48,6 +48,17 @@ public class Arm extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(0,4)
          .getEntry();
+    private GenericEntry armSetpointWidget =
+      tab.add("arm atSetpoint", false)
+         .withWidget(BuiltInWidgets.kBooleanBox)
+         .withPosition(3,3)
+         .getEntry();
+         
+    private GenericEntry wristSetpointWidget =
+      tab.add("wrist atSetpoint", false)
+         .withWidget(BuiltInWidgets.kBooleanBox)
+         .withPosition(3,4)
+         .getEntry();
 
     private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
@@ -135,13 +146,18 @@ public class Arm extends SubsystemBase{
   @Override
   public void periodic (){
     getEncoderData();
-    armPosWidget.setDouble(armPosition);
-    wristPosWidget.setDouble(wristPosition);
+    updateShuffleboardWidgets();
     getArmSetpointStatus();
     getWristSetpointStatus();
     getArmMechSetpointStatus();
 
   } 
+  private void updateShuffleboardWidgets(){
+    armPosWidget.setDouble(armPosition);
+    wristPosWidget.setDouble(wristPosition);
+    armSetpointWidget.setBoolean(armAtSetpoint.getAsBoolean());
+    wristSetpointWidget.setBoolean(wristAtSetpoint.getAsBoolean());
+  }
 
 }
 
