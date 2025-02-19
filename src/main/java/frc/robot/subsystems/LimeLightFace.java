@@ -5,6 +5,7 @@ import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
+import frc.robot.LimelightHelpers;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -18,6 +19,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,12 +30,19 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.LimelightHelpers;
 
 
+
 public class LimeLightFace {
 
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
+  private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
+
+  private final XboxController joystick = new XboxController(0);
+  private final CommandXboxController operator = new CommandXboxController(1);
+  //double getPeriod=0;  -> trying to solve error in last line
+
 
 // simple proportional turning control with Limelight.
   // "proportional control" is a control algorithm in which the output is proportional to the error.
@@ -96,7 +105,9 @@ public class LimeLightFace {
             * RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
 
     // while the A-button is pressed, overwrite some of the driving values with the output of our limelight methods
-    if(joystick.rightBumper().ontrue)
+    //joystick.rightBumper().whileTrue( joystickrightbumper = 1);
+
+    if(joystick.getRawButtonPressed(6))
     {
         final var rot_limelight = limelight_aim_proportional();
         rot = rot_limelight;
@@ -108,6 +119,6 @@ public class LimeLightFace {
         fieldRelative = false;
     }
 
-    m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
+    //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
   }
 }
