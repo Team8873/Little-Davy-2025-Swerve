@@ -14,7 +14,11 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +29,12 @@ import frc.robot.LimelightHelpers;
 
 
 public class LimeLightFace {
+
+  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
+
 // simple proportional turning control with Limelight.
   // "proportional control" is a control algorithm in which the output is proportional to the error.
   // in this case, we are going to return an angular velocity that is proportional to the 
@@ -43,7 +53,7 @@ public class LimeLightFace {
     double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
 
     // convert to radians per second for our drive method
-    targetingAngularVelocity *= RobotContainer.MaxAngularRate;
+    targetingAngularVelocity *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
 
     //invert since tx is positive when the target is to the right of the crosshair
     targetingAngularVelocity *= -1.0;
@@ -58,7 +68,7 @@ public class LimeLightFace {
   {    
     double kP = .1;
     double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    targetingForwardSpeed *= Drivetrain.kMaxSpeed;
+    targetingForwardSpeed *= RobotContainer.MaxSpeed; //from drivetrain.kmaxspeed
     targetingForwardSpeed *= -1.0;
     return targetingForwardSpeed;
   }
@@ -67,26 +77,26 @@ public class LimeLightFace {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
     var xSpeed =
-        -m_xspeedLimiter.calculate(MathUtil.applyDeadband(m_controller.getLeftY(), 0.02))
-            * Drivetrain.kMaxSpeed;
+        -m_xspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftY(), 0.02))
+            * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
     var ySpeed =
-        -m_yspeedLimiter.calculate(MathUtil.applyDeadband(m_controller.getLeftX(), 0.02))
-            * Drivetrain.kMaxSpeed;
+        -m_yspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftX(), 0.02))
+            * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
     var rot =
-        -m_rotLimiter.calculate(MathUtil.applyDeadband(m_controller.getRightX(), 0.02))
-            * Drivetrain.kMaxAngularSpeed;
+        -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02))
+            * RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
 
     // while the A-button is pressed, overwrite some of the driving values with the output of our limelight methods
-    if(m_controller.getAButton())
+    if(joystick.rightBumper().ontrue)
     {
         final var rot_limelight = limelight_aim_proportional();
         rot = rot_limelight;
