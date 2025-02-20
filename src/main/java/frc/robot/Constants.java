@@ -47,6 +47,12 @@ public class Constants {
         public static final double lvl2ElevatorSide = 0;
         public static final double lvl3ElevatorSide = 0;
 
+        public static final double wristDockPos = 0;
+        public static final double armDockPos = 0;
+
+        public static final double humanIntakeDockPos = 0;
+        public static final double humanIntakeActivePos = 0; 
+
     }
 
 }
