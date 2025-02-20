@@ -6,20 +6,22 @@ package frc.robot.command;
 
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.subsystems.TimeOfFlightSensor;
 /** An  command that uses an  subsystem. */
 public class IntakeEjectCommand extends Command {
   private final Intake m_subsystem;
+  private final TimeOfFlightSensor m_tOFsensor;
 
   /**
    * Creates a new Command.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeEjectCommand(Intake subsystem) {
-    m_subsystem = subsystem;
+  public IntakeEjectCommand(Intake intake, TimeOfFlightSensor tOF) {
+    m_subsystem = intake;
+    m_tOFsensor = tOF;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(intake,tOF);
   }
 
   // Called when the command is initially scheduled.
@@ -43,6 +45,6 @@ public class IntakeEjectCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_tOFsensor.coralInRange.getAsBoolean();
   }
 }
