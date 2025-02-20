@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
@@ -10,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase{
@@ -19,7 +23,7 @@ public class Intake extends SubsystemBase{
     private final PIDController humanPid = new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
     private final RelativeEncoder humanEncoder = humanMotor.getEncoder();
     private double humanEncoderPosition = 0;
-    private boolean humanAtSetpoint = false;
+    private BooleanSupplier humanAtSetpoint = ()-> false;
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private GenericEntry speedEntry =
       tab.add("Intake Motor", 0)
@@ -79,12 +83,13 @@ public Command moveHumanMotor(){
     });
 }
 private void humanAtSetpointStatus(){
-  humanAtSetpoint = humanPid.atSetpoint();
+  humanAtSetpoint = ()->humanPid.atSetpoint();
 }
+public final Trigger humanIntakeAtPos = new Trigger(humanAtSetpoint);
   @Override
   public void periodic(){
     speedEntry.setDouble(speed);
-    humanEntry.setBoolean(humanAtSetpoint);
+    humanEntry.setBoolean(humanAtSetpoint.getAsBoolean());
     getHumanPosition();
     humanAtSetpointStatus();
   } 
