@@ -33,7 +33,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.command.IntakeEjectCommand;
 import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.ArmDockCommand;
-
+import frc.robot.command.ActiveHumanIntakeCommand;
+import frc.robot.command.DockHumanIntakeCommand;
 
 
 public class RobotContainer {
@@ -56,8 +57,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final TestMotor test = new TestMotor();
-    //public final Arm arm = new Arm();
-    //public final Intake intake = new Intake();
+    public final Arm arm = new Arm();
+    public final Intake intake = new Intake();
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
@@ -80,21 +81,23 @@ public class RobotContainer {
         //intake.setDefaultCommand(intake.runIntake());
 
         //If sensor detects something close it stops the intake
-        //tOFSensor.coralInRange.whileTrue(intake.stopIntake());
+        tOFSensor.coralInRange.whileTrue(intake.stopIntake());
 
-        //operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake));
+        operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake, tOFSensor));
 
-        //arm.setDefaultCommand(arm.moveArm(operator));
+        arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
-        //operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false));
-        //operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false));
-        //operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false));
-        //operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false));
-        //operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
-        //operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
-        //operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
-        //operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+        operator.leftBumper().negate().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
+        operator.leftBumper().negate().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false)));
+        operator.leftBumper().negate().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false)));
+        operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
+        operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
+        operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
+        operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
+        operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
+        operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+        
 
         //climber stuff:
         joystick.x().onTrue(climber.moveToClimbed());
