@@ -28,6 +28,7 @@ public class humanIntakeCommand extends Command {
     m_tOF = tOFsensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake,arm);
+    getInterruptionBehavior();
   }
 
   // Called when the command is initially scheduled.
@@ -52,6 +53,6 @@ public class humanIntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_tOF.checkInRange().getAsBoolean();
+    return m_tOF.coralInRange.getAsBoolean();
   }
 }
