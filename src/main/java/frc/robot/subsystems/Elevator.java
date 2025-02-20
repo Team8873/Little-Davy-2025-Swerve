@@ -114,7 +114,6 @@ public class Elevator extends SubsystemBase{
     private void readFromController(CommandXboxController op){
         targetPosition(op.getLeftY()*10);
         setSpeed();
-
     }
 
     public Command stopElevator(){
@@ -159,6 +158,7 @@ public class Elevator extends SubsystemBase{
     getEncoderData();
     getElevatorSetpointStatus();
   } 
+
   private void updateShuffleboardWidgets(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
