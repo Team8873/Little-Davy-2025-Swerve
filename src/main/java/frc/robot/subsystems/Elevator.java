@@ -133,7 +133,7 @@ public class Elevator extends SubsystemBase{
 
     private void getEncoderData(){
         elevatorPosition = elevatorEncoder.getPosition();
-        elevatorPosition *= ElevatorConstants.gearRatio;
+        //elevatorPosition *= ElevatorConstants.gearRatio;
     }
 
     public void targetPosition(double target){
