@@ -88,15 +88,18 @@ public class RobotContainer {
         arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
+        
         operator.leftBumper().negate().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
         operator.leftBumper().negate().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false)));
         operator.leftBumper().negate().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false)));
         operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
-        operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
-        operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
+
         operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
         operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
         operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+
+        operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
+        operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
         
 
         //climber stuff:
