@@ -32,7 +32,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.command.IntakeEjectCommand;
 import frc.robot.command.ElevatorPresetCommand;
-import frc.robot.command.humanIntakeCommand;
+import frc.robot.command.ArmDockCommand;
 
 
 
@@ -91,7 +91,7 @@ public class RobotContainer {
         //operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false));
         //operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false));
         //operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false));
-        //operator.back().toggleOnTrue(intake.moveHumanMotor());
+        //operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
         //operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
         //operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
         //operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
