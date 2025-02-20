@@ -134,13 +134,12 @@ public class Arm extends SubsystemBase{
     }
 
   public BooleanSupplier getArmSetpointStatus(){
-    armAtSetpoint = ()-> armPid.atSetpoint();
-    return armAtSetpoint;
+    return armAtSetpoint = ()-> armPid.atSetpoint();
   }
 
   public BooleanSupplier getWristSetpointStatus(){
-    wristAtSetpoint = ()-> wristPid.atSetpoint();
-    return wristAtSetpoint;
+    return wristAtSetpoint = ()-> wristPid.atSetpoint();
+    
   }
 
   public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
