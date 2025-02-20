@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkRelativeEncoder;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -58,7 +59,7 @@ public class Elevator extends SubsystemBase{
          .getEntry();
 
     private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
-    
+    private Encoder encoder = new Encoder(1,1);
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
 
     private double elevatorPosition = 0;
@@ -116,13 +117,6 @@ public class Elevator extends SubsystemBase{
         setSpeed();
     }
 
-    public Command stopElevator(){
-        return this.runOnce(
-            ()-> {
-                speed = 0;
-            });
-    }
-
     public Command elevatorPreset (){
         return this.run(
             () -> {
@@ -139,6 +133,7 @@ public class Elevator extends SubsystemBase{
 
     private void getEncoderData(){
         elevatorPosition = elevatorEncoder.getPosition();
+        elevatorPosition *= ElevatorConstants.gearRatio;
     }
 
     public void targetPosition(double target){
