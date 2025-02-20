@@ -6,6 +6,7 @@ package frc.robot.command;
 import frc.robot.subsystems.Intake;
 
 import frc.robot.Constants;
+import frc.robot.Constants.PresetConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An  command that uses an  subsystem. */
@@ -28,7 +29,7 @@ public class DockHumanIntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.humanTargetPosition(0);
+    m_intake.humanTargetPosition(PresetConstants.humanIntakeDockPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
