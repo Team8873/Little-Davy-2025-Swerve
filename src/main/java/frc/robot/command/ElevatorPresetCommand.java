@@ -9,7 +9,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PresetConstants;
-import edu.wpi.first.wpilibj.XboxController;
 
 /** An  command that uses an  subsystem. */
 public class ElevatorPresetCommand extends Command {
@@ -21,19 +20,17 @@ public class ElevatorPresetCommand extends Command {
   private double elevatorPos = PresetConstants.lvl1Elevator;
   private char m_button_pressed = 'a';
   private boolean m_wristSide = false;
-  private XboxController m_operator;
   /**
    * Creates a new Command.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ElevatorPresetCommand(Elevator elevator, Intake intake, Arm arm, char button, boolean wristSide, XboxController operator) {
+  public ElevatorPresetCommand(Elevator elevator, Intake intake, Arm arm, char button, boolean wristSide) {
     m_elevator = elevator;
     m_intake = intake;
     m_arm = arm;
     m_button_pressed = button;
     m_wristSide  = wristSide;
-    m_operator = operator;
     
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -54,7 +51,6 @@ public class ElevatorPresetCommand extends Command {
     m_arm.armPreset();
     m_arm.wristPreset().onlyIf(m_arm.getArmSetpointStatus());
     m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget));
-    
   }
 
   // Called once the command ends or is interrupted.
@@ -68,10 +64,8 @@ public class ElevatorPresetCommand extends Command {
     return m_elevator.getElevatorSetpointStatus().getAsBoolean() && 
     (m_arm.getArmSetpointStatus().getAsBoolean() && m_arm.getWristSetpointStatus().getAsBoolean());
   }
+
   private void checkPresetLvl(){
-    if(m_operator.getRawButtonPressed(6))
-    {
-    }
     if(m_wristSide){
       armPos = PresetConstants.lvl1to3ArmPosSide;
       switch (m_button_pressed) {
@@ -89,7 +83,8 @@ public class ElevatorPresetCommand extends Command {
         break;
       case 'y': elevatorPos = PresetConstants.lvl4Elevator;
                 armPos = PresetConstants.lvl4ArmPos;
-        break;}
+        break;
+        }
       }
 
   }
