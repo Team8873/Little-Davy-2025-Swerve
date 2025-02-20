@@ -61,8 +61,7 @@ public class ElevatorPresetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_elevator.getElevatorSetpointStatus().getAsBoolean() && 
-    (m_arm.getArmSetpointStatus().getAsBoolean() && m_arm.getWristSetpointStatus().getAsBoolean());
+    return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean();
   }
 
   private void checkPresetLvl(){
