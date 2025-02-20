@@ -22,6 +22,7 @@ public class IntakeEjectCommand extends Command {
     m_tOFsensor = tOF;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake,tOF);
+    getInterruptionBehavior();
   }
 
   // Called when the command is initially scheduled.
