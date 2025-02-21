@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -36,6 +37,7 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
+    private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
 
     private GenericEntry armPosWidget =
       tab.add("arm position", 0)
