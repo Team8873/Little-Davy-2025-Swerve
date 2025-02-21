@@ -23,6 +23,7 @@ import frc.robot.Constants.ElevatorConstants;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 
 public class Elevator extends SubsystemBase{
@@ -59,7 +60,9 @@ public class Elevator extends SubsystemBase{
          .getEntry();
 
     private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
-    private Encoder encoder = new Encoder(1,1);
+    private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+    ;
+
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
 
     private double elevatorPosition = 0;
