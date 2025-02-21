@@ -32,9 +32,9 @@ public class ElevatorPresetCommand extends Command {
     m_button_pressed = button;
     m_wristSide  = wristSide;
     
-    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator,intake,arm);
+    getInterruptionBehavior();
   }
   // Called when the command is initially scheduled.
   @Override

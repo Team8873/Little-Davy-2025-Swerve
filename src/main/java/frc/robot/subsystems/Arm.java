@@ -91,6 +91,7 @@ public class Arm extends SubsystemBase{
           }
       );
   }
+
   public Command wristPreset (){
     return this.run(
         () -> {
@@ -117,7 +118,6 @@ public class Arm extends SubsystemBase{
             wristSpeed = 0;
         });
   }
-  
   
   public void setArmMechTarget(double wristTarget, double armTarget){
     armPid.setSetpoint(armTarget);
