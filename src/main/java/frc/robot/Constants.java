@@ -30,6 +30,8 @@ public class Constants {
         public static final double wristkP = 0.1;
         public static final double wristkI = 0.0;
         public static final double wristkD = 0.0;
+        public static final double wristGearRatio = 16;
+        public static final double armGearRatio = 0;
         
     }
     public static class PresetConstants {
