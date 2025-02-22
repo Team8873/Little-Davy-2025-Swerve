@@ -101,7 +101,7 @@ public class Arm extends SubsystemBase{
           }
       );
   }
-  
+
  /**
    * @return runs wrist motor while it is not at the setpoint
    */
@@ -140,8 +140,14 @@ public class Arm extends SubsystemBase{
   * sets Target position for both arm and wrist
   */
   public void setArmMechTarget(double wristTarget, double armTarget){
-    armPid.setSetpoint(armTarget);
-    wristPid.setSetpoint(wristTarget);
+    setArmTarget(armTarget);
+    setWristTarget(wristTarget);
+  }
+  public void setArmTarget(double target){
+    armPid.setSetpoint(target);
+  }
+  public void setWristTarget(double target){
+    wristPid.setSetpoint(target);
   }
 
   /**
