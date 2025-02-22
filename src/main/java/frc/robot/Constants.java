@@ -60,7 +60,29 @@ public class Constants {
         public static final double humanIntakeActivePos = 0; 
 
     }
+    public static class ClimberConstants {
+        //every deg is about 42/360 which is 0.1167
+        //Ticks per deg converts from deg to ticks
+        public static final double ticksPerDegClimber = 42/360;
+        //a 100:1 motor
+        public static final double motorRatioClimberMultiplier = 100;
    
+        //defined positions; now everythings in ticks
+        public static final double restingPosition = 0*ticksPerDegClimber*motorRatioClimberMultiplier;
+        public static final double engagedPosition = 90*ticksPerDegClimber*motorRatioClimberMultiplier;
+        public static final double climbedPositon = 45*ticksPerDegClimber*motorRatioClimberMultiplier;
+
+
+        //PID constants:
+        public static final double ClimberkP = 0;
+        public static final double ClimberkI = 0;
+        public static final double ClimberkD = 0;
+
+
+        //Identification
+        public static final int motorForClimberId = 0;
+        public static final int servoID = 0;
+    }
 }
      
 
