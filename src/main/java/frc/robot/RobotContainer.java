@@ -77,13 +77,14 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
 
-        //runs intake forever while robot is on
-        //intake.setDefaultCommand(intake.runIntake());
+        
+        intake.setDefaultCommand(intake.moveIntake(operator));
 
-        //If sensor detects something close it stops the intake
-        tOFSensor.coralInRange.whileTrue(intake.stopIntake());
+        //If sensor detects something close holds
+        tOFSensor.coralInRange.whileTrue(intake.holdIntake());
+        operator.rightTrigger(.05).whileTrue(intake.reverseIntake(operator));
 
-        operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake, tOFSensor));
+        //operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake, tOFSensor).andThen(new ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
 
         arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());

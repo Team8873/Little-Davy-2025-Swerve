@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IntakeConstants;
 
@@ -87,6 +88,22 @@ public class Intake extends SubsystemBase{
         () -> { 
             setSpeed();
         });
+  }
+  public Command moveIntake(CommandXboxController operator){
+    return this.run(
+      ()-> {
+        speed = operator.getRightTriggerAxis();
+        setSpeed();
+      }
+    );
+  }
+  public Command reverseIntake(CommandXboxController operator){
+    return this.run(
+      ()-> {
+        speed = -operator.getLeftTriggerAxis();
+        setSpeed();
+      }
+    );
   }
   /**
    * sets the speed of the intake motor
