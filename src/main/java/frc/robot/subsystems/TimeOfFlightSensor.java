@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 
+
 public class TimeOfFlightSensor extends SubsystemBase {
 
     private final TimeOfFlight sensor = new TimeOfFlight(ToFConstants.SensorId);

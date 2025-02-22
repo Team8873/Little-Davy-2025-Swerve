@@ -35,6 +35,7 @@ public class Intake extends SubsystemBase{
          .withWidget(BuiltInWidgets.kBooleanBox)
          .withPosition(0,3)
          .getEntry();
+         
 /**
  * @return the action to run 
  */

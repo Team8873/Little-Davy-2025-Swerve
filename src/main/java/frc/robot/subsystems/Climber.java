@@ -79,6 +79,7 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     climberServo.set(0.0);
     }
  
+    
 
     //PID STUFF:
  private final PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI, ClimberConstants.ClimberkD);

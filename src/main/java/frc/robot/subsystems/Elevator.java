@@ -58,6 +58,7 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kBooleanBox)
          .withPosition(3,5)
          .getEntry();
+         
 
     private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
     private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
