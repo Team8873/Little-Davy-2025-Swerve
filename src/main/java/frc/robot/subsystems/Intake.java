@@ -16,12 +16,20 @@ import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase{
     private double speed = 0;
+
     private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeCanId, MotorType.kBrushless); //create the motor object
     private final SparkMax humanMotor = new SparkMax(IntakeConstants.humanIntakeCanId, MotorType.kBrushless);
+
+    // creates PIDController object
     private final PIDController humanPid = new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
+
+    // create RelativeEncoder object 
     private final RelativeEncoder humanEncoder = humanMotor.getEncoder();
+
+    //creates variables
     private double humanEncoderPosition = 0;
     private BooleanSupplier humanAtSetpoint = ()-> false;
+    // creates shuffleboard stuff
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private GenericEntry speedEntry =
       tab.add("Intake Motor", 0)
@@ -35,6 +43,7 @@ public class Intake extends SubsystemBase{
          .getEntry();
          
 /**
+ * sets speed to 1
  * @return the action to run 
  */
   public Command runIntake(){
@@ -46,45 +55,77 @@ public class Intake extends SubsystemBase{
   }
 
 /**
- * @return Runs speed = 0 once
+ * sets speed to 0
+ * @return the action to run 
  */
   public Command stopIntake() {
     speed = 0;
     return this.runOnce(
         () -> {
-            
             setSpeed();
         });
   }
-  
+  /**
+   * sets speed 0.15
+   * @return references lastest object(intake) and runs the motor
+   */
+  public Command holdIntake(){
+    speed = 0.15;
+    return this.run(
+      () -> {
+        setSpeed();
+      }
+    );
+  }
+  /**
+   * sets speed to -1
+   * @return references latest object(intake) and runs the motor
+   */
   public Command intakeEject(){
     speed = -1;
     return this.runOnce(
         () -> { 
-            
             setSpeed();
         });
   }
-
+  /**
+   * sets the speed of the intake motor
+   */
   private void setSpeed(){
     intakeMotor.set(speed);
   }
+/**
+ * get the position of the human encoder and sets it equal the variable humanEncoderPosition
+ */
   private void getHumanPosition(){
     humanEncoderPosition = humanEncoder.getPosition();
   }
+/**
+ * sets the target position of the humanPid
+ * @param target the target position
+ */
   public void humanTargetPosition(double target){
-    humanPid.setSetpoint(target);
+      humanPid.setSetpoint(target);
   }
-public Command moveHumanMotor(){
-  return this.run(
-    () -> { 
-        humanMotor.set(humanPid.calculate(humanEncoderPosition));
-    });
-}
-private void humanAtSetpointStatus(){
-  humanAtSetpoint = ()->humanPid.atSetpoint();
-}
-public final Trigger humanIntakeAtPos = new Trigger(humanAtSetpoint);
+/**
+ * @return references the latest object(intake) then runs the humanMotor based of the calculation of the Pid Loop
+ */
+  public Command moveHumanMotor(){
+    return this.run(
+      () -> { 
+          humanMotor.set(humanPid.calculate(humanEncoderPosition));
+      });
+  }
+/**
+ * equates the variable humanAtSetpoint to the boolean value of whether the position is within the error parameters
+ */
+  private void humanAtSetpointStatus(){
+    humanAtSetpoint = ()-> humanPid.atSetpoint();
+  }
+  //creates trigger object
+  public final Trigger humanIntakeAtPos = new Trigger(humanAtSetpoint);
+
+// things that get called every 20 ms
   @Override
   public void periodic(){
     speedEntry.setDouble(speed);
