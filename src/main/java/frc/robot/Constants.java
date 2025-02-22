@@ -57,7 +57,9 @@ public class Constants {
         public static final double humanIntakeActivePos = 0; 
 
     }
-
+    public static class CANdleConstants {
+        public static final int CANdleID = 14;
+    }
 }
      
 
