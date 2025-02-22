@@ -72,7 +72,6 @@ public class Arm extends SubsystemBase{
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
 
 /**
- * 
  * @param operator the joystick port
  * @return the action/method to run
  */
@@ -162,13 +161,13 @@ public class Arm extends SubsystemBase{
         return armMechAtSetpoint = ()-> armAtSetpoint.getAsBoolean() && wristAtSetpoint.getAsBoolean();
     }
 /**
- * @return returns the arm position status
+ * @return returns the arm position status as a boolean
  */
   public BooleanSupplier getArmSetpointStatus(){
     return armAtSetpoint = ()-> armPid.atSetpoint();
   }
 /**
- * @return returns wrist position status
+ * @return returns wrist position status as a boolean
  */
   public BooleanSupplier getWristSetpointStatus(){
     return wristAtSetpoint = ()-> wristPid.atSetpoint();

@@ -26,11 +26,11 @@ public class ElevatorPresetCommand extends Command {
    * @param subsystem The subsystem used by this command.
    */
   public ElevatorPresetCommand(Elevator elevator, Intake intake, Arm arm, char button, boolean wristSide) {
-    m_elevator = elevator;
-    m_intake = intake;
-    m_arm = arm;
-    m_button_pressed = button;
-    m_wristSide  = wristSide;
+    m_elevator = elevator;  //saves a local reference to the elevator subsystem
+    m_intake = intake;  //saves a local reference to the intake subsystem
+    m_arm = arm;  //saves a local reference to the arm subsystem
+    m_button_pressed = button;  //saves a local reference to what button was pressed 
+    m_wristSide  = wristSide; //saves a local reference if whether the wirst needs to be on its side or not
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator,intake,arm);
@@ -49,8 +49,8 @@ public class ElevatorPresetCommand extends Command {
   public void execute() {
     m_elevator.elevatorPreset();
     m_arm.armPreset();
-    m_arm.wristPreset().onlyIf(m_arm.getArmSetpointStatus());
-    m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget));
+    m_arm.wristPreset().onlyIf(m_arm.getArmSetpointStatus()); //runs the wirst preset ONLY IF the arm is in position
+    m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget)); //ejects intake ONLY IF elevator and arm mechanism are in position
   }
 
   // Called once the command ends or is interrupted.
@@ -64,6 +64,9 @@ public class ElevatorPresetCommand extends Command {
     return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean();
   }
 
+  /**
+   * takes the wristSide boolean and button pressed to determine which preset level to use
+   */
   private void checkPresetLvl(){
     if(m_wristSide){
       armPos = PresetConstants.lvl1to3ArmPosSide;
