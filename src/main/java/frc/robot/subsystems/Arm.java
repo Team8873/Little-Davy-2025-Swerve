@@ -24,20 +24,25 @@ public class Arm extends SubsystemBase{
     private double armSpeed = 0;
     private double wristSpeed = 0;
 
+    //creates the Motor objects using sparkMax
     private final SparkMax armMotor = new SparkMax(ArmConstants.armCanId, MotorType.kBrushless); //create the motor object
     private final SparkMax wristMotor = new SparkMax(ArmConstants.wristCanId, MotorType.kBrushless);
 
-    private final RelativeEncoder armEncoder = armMotor.getEncoder();
+    //get the encoders plugged into the sparkMax or connected to it
+    private final RelativeEncoder armEncoder = armMotor.getAlternateEncoder();
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
 
+    //potential through Bore encoder not using sparkMax connection
+    //private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
     private double armPosition;
     private double wristPosition; 
 
+    //shuffleboard stuff
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
-    private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+    
 
     private GenericEntry armPosWidget =
       tab.add("arm position", 0)
@@ -62,12 +67,14 @@ public class Arm extends SubsystemBase{
          .withPosition(3,4)
          .getEntry();
 
+    //creates the PID loop for the arm and wrist motors
     private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
 
 /**
- * @param drive the joystick port
- * @return the action to run 
+ * 
+ * @param operator the joystick port
+ * @return the action/method to run
  */
     public Command moveArm(CommandXboxController operator){
            return this.run(
@@ -76,15 +83,20 @@ public class Arm extends SubsystemBase{
             });
     }
 /**
- * Controls the acceleration of Neo by adding and subtracting the trigger axis
- * @param drive controller port
+ * Sets the target position of the arm and wrist then call set speed
+ * @param operator the joystick port
  */
     private void readFromController(CommandXboxController operator){
         setArmMechTarget(operator.getRightX(),operator.getRightY()); 
         setArmSpeed();
         setWristSpeed();
     }
-    public Command armPreset (){
+
+  /**
+   * Runs arm while it is not at the target position
+   * @return
+   */
+  public Command armPreset (){
       return this.run(
           () -> {
               while(!armPid.atSetpoint()){setArmSpeed();}
