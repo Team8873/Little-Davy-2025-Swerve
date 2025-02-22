@@ -86,7 +86,7 @@ public class Constants {
 
 
         //Identification
-        public static final int motorForClimberId = 0;
+        public static final int motorForClimberID = 0;
         public static final int servoID = 0;
     }
 }

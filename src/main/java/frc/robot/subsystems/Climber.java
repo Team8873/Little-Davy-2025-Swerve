@@ -40,7 +40,7 @@ import edu.wpi.first.wpilibj.Servo;
 
 public class Climber extends SubsystemBase{ // puts climber as a subsystem; inside is code for the climber
   //introduce stuff
-    private final SparkMax motorForClimber = new SparkMax (ClimberConstants.motorForClimberId, MotorType.kBrushless);//a motor motorForClimber
+    private final SparkMax motorForClimber = new SparkMax (ClimberConstants.motorForClimberID, MotorType.kBrushless);//a motor motorForClimber
     private RelativeEncoder encoderForClimber = motorForClimber.getEncoder(); //a relative encoder called "encoder for climber"
     private Servo climberServo = new Servo(ClimberConstants.servoID); //a servo called climberServo
 
