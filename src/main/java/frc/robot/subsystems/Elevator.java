@@ -27,12 +27,15 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class Elevator extends SubsystemBase{
 
+    // creates Sparkmax object 
     private final SparkMax motorLeft = new SparkMax(ElevatorConstants.elevatorLCanId, MotorType.kBrushless);
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
+    // creates private variables
     private BooleanSupplier elevatorAtSetpoint = ()-> false;
     private boolean configured = false;
     private double speed = 0; 
 
+    // shuffleboard thing I don't know what shuffleboard is
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
 
     private GenericEntry speedEntry =
@@ -58,15 +61,17 @@ public class Elevator extends SubsystemBase{
          .withPosition(3,5)
          .getEntry();
          
-
+    //gets the encoders and creates a object to talk to the encoders
     private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
     private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
-
+    //creates PID loop
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
 
+    //defines variables to 0 
     private double elevatorPosition = 0;
     private double targetPosition = 0;
 
+    //sets follower
     public void setFollower(){
         SparkMaxConfig globalConfig = new SparkMaxConfig();
         SparkMaxConfig FollowerConfig = new SparkMaxConfig();
@@ -101,52 +106,74 @@ public class Elevator extends SubsystemBase{
         
     }
 
+   //if not configured set to follower
     public void checkIfSetFollow(){
         if(!configured){
             setFollower();
         }
     }
-
+    /**
+     * @param operator the joystick to read from
+     * @return the action/method to run
+     */
     public Command moveElevator(CommandXboxController operator){
         return this.run(
             () -> {
             readFromController(operator);
             });
     }
-
-    private void readFromController(CommandXboxController op){
-        targetPosition(op.getLeftY()*10);
+    /**
+     * Calls targetposition and sets the target to be the y values of the left joystick 
+     * sets elevator motor speed
+     * @param operator the joystick to read from
+     */
+    private void readFromController(CommandXboxController operator){
+        targetPosition(operator.getLeftY()*10);
         setSpeed();
     }
-
+    /**
+     * @return while the elevator pid is NOT at the setpoint it runs the motor
+     */
     public Command elevatorPreset (){
         return this.run(
             () -> {
-                while(!elevatorPid.atSetpoint()){setSpeed();}
+                while(!elevatorPid.atSetpoint()) {setSpeed();}
             }
         );
     }
-
+    /**
+     * Sets speed equal to Pid Calculation
+     * sets motor to referenced speed
+     */
     private void setSpeed(){
         speed = elevatorPid.calculate(elevatorPosition);
         leadMotorRight.set(speed);
         motorLeft.set(speed);
     }
-
+    /**
+     * sets elevator position equal to encoder position
+     */
     private void getEncoderData(){
         elevatorPosition = elevatorEncoder.getPosition();
         //elevatorPosition *= ElevatorConstants.gearRatio;
     }
-
+    /**
+     * sets the setpoint for the PID controller
+     * @param target the target position
+     */
     public void targetPosition(double target){
         elevatorPid.setSetpoint(target);
     }
-
+    /**
+     * setting the targetPosition to the current set point 
+     * @return the boolean value if whether the elevator is at the set point or not
+     */
     public BooleanSupplier getElevatorSetpointStatus(){
         targetPosition = elevatorPid.getSetpoint();
        return elevatorAtSetpoint = ()-> elevatorPid.atSetpoint();
     }
 
+    //creates an unchangeable trigger boolean if whether the elevator is at the setpoint
     public final Trigger elevatorAtTarget = new Trigger(getElevatorSetpointStatus());
 
     @Override
@@ -156,6 +183,9 @@ public class Elevator extends SubsystemBase{
     getElevatorSetpointStatus();
   } 
 
+  /**
+   * updates the shuffleboard stuff
+   */
   private void updateShuffleboardWidgets(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
