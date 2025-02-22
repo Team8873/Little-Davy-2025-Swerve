@@ -39,6 +39,7 @@ public class Constants {
         
     }
     public static class PresetConstants {
+        //default flat wrist pos
         public static final double lvl1to3ArmPos = 0;
         public static final double lvl4ArmPos = 0; 
         public static final double wristFlatPos = 0;
@@ -47,16 +48,19 @@ public class Constants {
         public static final double lvl3Elevator = 0;
         public static final double lvl4Elevator = 0;
 
+        //side wrist pos
         public static final double wristSidePos = 0;
         public static final double lvl1to3ArmPosSide = 0;
         public static final double lvl1ElevatorSide = 0;
         public static final double lvl2ElevatorSide = 0;
         public static final double lvl3ElevatorSide = 0;
 
+        //dock pos
         public static final double wristDockPos = 0;
         public static final double armDockPos = 0;
-
         public static final double humanIntakeDockPos = 0;
+
+        //active intake pos
         public static final double humanIntakeActivePos = 0; 
 
     }
