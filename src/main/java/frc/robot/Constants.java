@@ -63,6 +63,11 @@ public class Constants {
         //active intake pos
         public static final double humanIntakeActivePos = 0; 
 
+        //ground intake 
+        public static final double goundElevator = 0;
+        public static final double groundArm = 0;
+
+
     }
     public static class ClimberConstants {
         //every deg is about 42/360 which is 0.1167

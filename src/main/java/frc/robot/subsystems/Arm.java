@@ -179,6 +179,9 @@ public class Arm extends SubsystemBase{
   public BooleanSupplier getWristSetpointStatus(){
     return wristAtSetpoint = ()-> wristPid.atSetpoint();
   }
+  public double getWristPosition(){
+    return wristPid.getSetpoint();
+  }
   //creates a trigger for armMech Status that can be used to automatic run command when true
   public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
 

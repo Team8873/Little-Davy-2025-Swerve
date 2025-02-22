@@ -33,7 +33,7 @@ public class ElevatorPresetCommand extends Command {
     m_wristSide  = wristSide; //saves a local reference if whether the wirst needs to be on its side or not
     
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevator,intake,arm);
+    addRequirements(elevator,arm);
     getInterruptionBehavior();
   }
   // Called when the command is initially scheduled.
@@ -85,6 +85,10 @@ public class ElevatorPresetCommand extends Command {
         break;
       case 'y': elevatorPos = PresetConstants.lvl4Elevator;
                 armPos = PresetConstants.lvl4ArmPos;
+                break;
+      case'd': elevatorPos = PresetConstants.goundElevator;
+                armPos = PresetConstants.groundArm;
+                wristPos = PresetConstants.wristSidePos;
         break;
         }
       }
