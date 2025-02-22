@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 /** An  command that uses an  subsystem. */
 public class ArmDockCommand extends Command {
-  private final Intake m_intake;
+  //private final Intake m_intake;
   private final Arm m_arm;
   private final TimeOfFlightSensor m_tOF;
 
@@ -21,12 +21,12 @@ public class ArmDockCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmDockCommand(Intake intake, Arm arm, TimeOfFlightSensor tOFsensor) {
-    m_intake = intake;
+  public ArmDockCommand(Arm arm, TimeOfFlightSensor tOFsensor) {
+    //m_intake = intake;
     m_arm = arm;
     m_tOF = tOFsensor;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake,arm);
+    addRequirements(arm);
     getInterruptionBehavior();
   }
 
@@ -41,7 +41,7 @@ public class ArmDockCommand extends Command {
   public void execute() {
     m_arm.wristPreset();
     m_arm.armPreset().onlyIf(m_arm.getWristSetpointStatus());
-    m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
+    //m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 
   // Called once the command ends or is interrupted.
