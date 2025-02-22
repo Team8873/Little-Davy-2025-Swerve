@@ -93,8 +93,7 @@ public class Arm extends SubsystemBase{
     }
 
   /**
-   * Runs arm while it is not at the target position
-   * @return
+   * @return runs arm motor while it is not at the setpoint
    */
   public Command armPreset (){
       return this.run(
@@ -103,7 +102,9 @@ public class Arm extends SubsystemBase{
           }
       );
   }
-
+ /**
+   * @return runs wrist motor while it is not at the setpoint
+   */
   public Command wristPreset (){
     return this.run(
         () -> {
@@ -111,11 +112,16 @@ public class Arm extends SubsystemBase{
         }
     );
 }
+/**
+ * sets arm speed based on armPid loop
+ */
   private void setArmSpeed(){
       armSpeed = armPid.calculate(armPosition);
       armMotor.set(armSpeed);
   }
-
+/**
+ * sets wrist speed based on armPid loop
+ */
   private void setWristSpeed(){
     wristSpeed = wristPid.calculate(wristPosition);
     wristMotor.set(wristSpeed);
@@ -130,31 +136,44 @@ public class Arm extends SubsystemBase{
             wristSpeed = 0;
         });
   }
-  
+ /**
+  * sets Target position for both arm and wrist
+  */
   public void setArmMechTarget(double wristTarget, double armTarget){
     armPid.setSetpoint(armTarget);
     wristPid.setSetpoint(wristTarget);
   }
 
+  /**
+   * gets encoder position and saves it as a value
+   */
   private void getEncoderData(){
     armPosition = armEncoder.getPosition();
     wristPosition = wristEncoder.getPosition();
   }
 
+  /**
+   * gets arm and wrist position status
+   * @return returns status of the whole arm Mech
+   */
   public BooleanSupplier getArmMechSetpointStatus(){
     getArmSetpointStatus();
     getWristSetpointStatus();
         return armMechAtSetpoint = ()-> armAtSetpoint.getAsBoolean() && wristAtSetpoint.getAsBoolean();
     }
-
+/**
+ * @return returns the arm position status
+ */
   public BooleanSupplier getArmSetpointStatus(){
     return armAtSetpoint = ()-> armPid.atSetpoint();
   }
-
+/**
+ * @return returns wrist position status
+ */
   public BooleanSupplier getWristSetpointStatus(){
     return wristAtSetpoint = ()-> wristPid.atSetpoint();
   }
-
+  //creates a trigger for armMech Status that can be used to automatic run command when true
   public final Trigger armMechAtTarget = new Trigger(getArmMechSetpointStatus());
 
   @Override
@@ -164,6 +183,9 @@ public class Arm extends SubsystemBase{
     getArmMechSetpointStatus();
 
   } 
+  /**
+   * updates shuffleboard widgets
+   */
   private void updateShuffleboardWidgets(){
     armPosWidget.setDouble(armPosition);
     wristPosWidget.setDouble(wristPosition);
