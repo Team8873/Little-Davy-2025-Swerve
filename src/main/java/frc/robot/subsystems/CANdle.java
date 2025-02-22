@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class CANdle {
+public class CANdleSystem {
   // The robot's subsystems and commands are defined here...
   private final XboxController joy = new XboxController(Constants.JoystickId);
 
