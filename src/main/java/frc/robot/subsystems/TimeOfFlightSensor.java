@@ -2,16 +2,12 @@ package frc.robot.subsystems;
 import frc.robot.Constants.ToFConstants;
 
 import java.util.function.BooleanSupplier;
-
-
 import com.playingwithfusion.TimeOfFlight;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.*;
-
 
 public class TimeOfFlightSensor extends SubsystemBase {
 

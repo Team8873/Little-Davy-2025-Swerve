@@ -1,11 +1,9 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 import java.util.function.BooleanSupplier;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
