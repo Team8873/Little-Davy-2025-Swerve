@@ -71,8 +71,8 @@ public class ElevatorPresetCommand extends Command {
     if(m_wristSide){
       armPos = PresetConstants.lvl1to3ArmPosSide;
       switch (m_button_pressed) {
-        case 'a': elevatorPos = PresetConstants.lvl1ElevatorSide;
-          break;
+        // case 'a': elevatorPos = PresetConstants.lvl1ElevatorSide;
+        //   break;
         case 'b': elevatorPos = PresetConstants.lvl2ElevatorSide;
           break;
         case 'x': elevatorPos = PresetConstants.lvl3ElevatorSide;
