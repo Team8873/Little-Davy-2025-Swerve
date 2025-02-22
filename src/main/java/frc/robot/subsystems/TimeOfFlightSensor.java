@@ -45,7 +45,6 @@ public class TimeOfFlightSensor extends SubsystemBase {
     }
     /**
      * If you dont understand GET OUT
-     * @return 
      */
     private void convertMmToInches(){
         distanceInInches = distanceInmm/mmToInches;
