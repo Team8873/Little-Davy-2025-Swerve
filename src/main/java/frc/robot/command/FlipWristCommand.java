@@ -19,7 +19,7 @@ public class FlipWristCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmDockCommand(Arm arm) {
+  public FlipWristCommand(Arm arm) {
     m_arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
@@ -29,7 +29,7 @@ public class FlipWristCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setArmMechTarget(PresetConstants.wristDockPos,PresetConstants.armDockPos);
+    checkWristPos();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,5 +49,17 @@ public class FlipWristCommand extends Command {
   @Override
   public boolean isFinished() {
     return m_arm.armMechAtTarget.getAsBoolean();
+  }
+
+  private void checkWristPos(){
+    if(m_arm.getWristPosition() == PresetConstants.wristSidePos){
+      m_arm.setWristTarget(PresetConstants.wristFlatPos);
+    }
+    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPos){
+      m_arm.setWristTarget(PresetConstants.wristSidePos);
+    }
+    else{
+      m_arm.setWristTarget(PresetConstants.wristFlatPos);
+    }
   }
 }
