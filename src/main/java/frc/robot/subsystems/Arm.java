@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase{
 
     //get the encoders plugged into the sparkMax or connected to it
     private final RelativeEncoder armEncoder = armMotor.getAlternateEncoder();
-    private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
+    private final RelativeEncoder wristEncoder = wristMotor.getAlternateEncoder();
 
     //potential through Bore encoder not using sparkMax connection
     //private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
@@ -101,6 +101,7 @@ public class Arm extends SubsystemBase{
           }
       );
   }
+  
  /**
    * @return runs wrist motor while it is not at the setpoint
    */
