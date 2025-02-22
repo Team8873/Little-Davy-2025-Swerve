@@ -82,8 +82,8 @@ public class RobotContainer {
         intake.setDefaultCommand(intake.moveIntake(operator));
 
         //If sensor detects something close holds
-        tOFSensor.coralInRange.whileTrue(intake.holdIntake());
-        operator.rightTrigger(.05).whileTrue(intake.reverseIntake(operator));
+        //tOFSensor.coralInRange.whileTrue(intake.holdIntake());
+        operator.rightTrigger(1).whileTrue(intake.reverseIntake(operator));
 
         //operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake, tOFSensor).andThen(new ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
 
