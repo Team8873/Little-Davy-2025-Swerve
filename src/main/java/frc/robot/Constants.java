@@ -66,11 +66,17 @@ public class Constants {
         public static final double ticksPerDegClimber = 42/360;
         //a 100:1 motor
         public static final double motorRatioClimberMultiplier = 100;
+
+        //1 DEG of climber climber : (pi*H)/180y) rotations of spool
+        //Y is circumference of spool and H is length of climber (measured to the point where the rope is tied)
+        //right now Y is 3.125inches and H is ___
+        public static final double climberLength = 0;
+        public static final double circumferenceOfSpool = 3.125;
    
         //defined positions; now everythings in ticks
-        public static final double restingPosition = 0*ticksPerDegClimber*motorRatioClimberMultiplier;
-        public static final double engagedPosition = 90*ticksPerDegClimber*motorRatioClimberMultiplier;
-        public static final double climbedPositon = 45*ticksPerDegClimber*motorRatioClimberMultiplier;
+        public static final double restingPosition = 0*(3.141592654*climberLength)/(180*circumferenceOfSpool)*ticksPerDegClimber*motorRatioClimberMultiplier;
+        public static final double engagedPosition = 90*(3.141592654*climberLength)/(180*circumferenceOfSpool)*ticksPerDegClimber*motorRatioClimberMultiplier;
+        public static final double climbedPositon = 45*(3.141592654*climberLength)/(180*circumferenceOfSpool)*ticksPerDegClimber*motorRatioClimberMultiplier;
 
 
         //PID constants:
