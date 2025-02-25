@@ -136,7 +136,7 @@ public class Elevator extends SubsystemBase{
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator){
-        targetPos += operator.getRightY();
+        targetPos = operator.getRightY();
         targetPosition(targetPos);
         setSpeed();
     }

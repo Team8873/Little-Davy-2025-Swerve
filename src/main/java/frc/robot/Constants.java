@@ -77,7 +77,8 @@ public class Constants {
         //gearbox stuff
         //every deg is about 42/360 which is 0.1167
         //Ticks per deg converts from deg to ticks
-        public static final double ticksPerDegClimber = 42/360;
+        //public static final double ticksPerDegClimber = 42/360;
+
         //a 100:1 gearbox
         public static final double motorRatioClimberMultiplier = 100;
 
@@ -87,11 +88,11 @@ public class Constants {
         public static final double spoolRotationsEngagedToClimbed = 1.9;
         //360 deg is one spool rotations       
    
-        //defined positions; everythings in ticks
+        //defined positions, getPosition measures in rotations
         //360 deg is 1 spool rotation so multiply 360 by that many spool rotations
-        public static final double restingPosition = 0*ticksPerDegClimber*motorRatioClimberMultiplier;
-        public static final double engagedPosition = restingPosition + 360*spoolRotationsRestingToEngaged*ticksPerDegClimber*motorRatioClimberMultiplier;
-        public static final double climbedPositon = restingPosition + 360*spoolRotationsEngagedToClimbed*ticksPerDegClimber*motorRatioClimberMultiplier;
+        public static final double restingPosition = 0*motorRatioClimberMultiplier;
+        public static final double engagedPosition = restingPosition + spoolRotationsRestingToEngaged*motorRatioClimberMultiplier;
+        public static final double climbedPositon = restingPosition + spoolRotationsEngagedToClimbed*motorRatioClimberMultiplier;
 
         //PID constants:
         public static final double ClimberkP = 0.1;
