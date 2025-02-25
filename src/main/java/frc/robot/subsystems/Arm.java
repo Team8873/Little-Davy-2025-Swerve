@@ -86,7 +86,7 @@ public class Arm extends SubsystemBase{
  * @param operator the joystick port
  */
     private void readFromController(CommandXboxController operator){
-        setArmMechTarget(operator.getRightX(),operator.getRightY()); 
+        setArmMechTarget(operator.getLeftX(),operator.getLeftY()); 
         setArmSpeed();
         setWristSpeed();
     }
