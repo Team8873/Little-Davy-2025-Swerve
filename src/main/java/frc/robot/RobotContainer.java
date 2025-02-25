@@ -111,6 +111,7 @@ public class RobotContainer {
         joystick.x().onTrue(climber.moveToClimbed());
         joystick.povUp().onTrue(climber.moveToEngaged());
         joystick.povDown().whileTrue(climber.moveClimberDown());
+        joystick.povLeft().onTrue(climber.defineClimberZero());
 
         
         drivetrain.setDefaultCommand(
