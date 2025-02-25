@@ -11,7 +11,7 @@ import frc.robot.subsystems.TimeOfFlightSensor;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An  command that uses an  subsystem. */
-public class FlipWristCommand extends Command {
+public class FlipWrist90Command extends Command {
   private final Arm m_arm;
 
   /**
@@ -19,7 +19,7 @@ public class FlipWristCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FlipWristCommand(Arm arm) {
+  public FlipWrist90Command(Arm arm) {
     m_arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
@@ -53,17 +53,15 @@ public class FlipWristCommand extends Command {
 
   private void checkWristPos(){
     if(m_arm.getWristPosition() == PresetConstants.wristSidePos){
-      m_arm.setWristTarget(PresetConstants.wristSidePosNeg);
-    }
-    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPos){
-      m_arm.setWristTarget(PresetConstants.wristFlatPosNeg);
-    }
-    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPosNeg){
       m_arm.setWristTarget(PresetConstants.wristFlatPos);
     }
-    else if(m_arm.getWristPosition() == PresetConstants.wristSidePosNeg){
+    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPos){
       m_arm.setWristTarget(PresetConstants.wristSidePos);
+    }else if(m_arm.getWristPosition() == PresetConstants.wristSidePosNeg){
+      m_arm.setWristTarget(PresetConstants.wristFlatPosNeg);
     }
-
+    else{
+      m_arm.setWristTarget(PresetConstants.wristFlatPos);
+    }
   }
 }
