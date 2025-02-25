@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 //spark max imports
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase; //used for getBusVoltage
 
 
 import com.revrobotics.RelativeEncoder;
@@ -48,8 +49,26 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     private BooleanSupplier climberAtSetpoint = ()-> false;
 
     private double speed = 0;
-    private double motorPosition = 0;
+    private double climberMotorPosition = 0;
     private double target = 0;
+    private double climberVoltage = 0;
+
+    //what is zero? activated by left dpad
+    public Command defineClimberZero(){
+        //once turned on motor run backwards until high voltage
+        if (climberVoltage < 5) {
+            motorForClimber.set(-0.5);
+        }
+        else {
+            encoderForClimber.setPosition(0);
+        };
+        return this.runOnce(
+            ()-> {
+                setSpeed();
+            }
+        );
+        
+    }
  
  //SERVOSTUFF
     //need to trip the servo to move the motor in positive direction. 1.0 is engaged 0.0 is disengaged
@@ -71,12 +90,12 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
 
  // defines set speed as making the motor go to target (speed is how much motor has to move)
  private void setSpeed(){
-    speed = climberPid.calculate(motorPosition);
+    speed = climberPid.calculate(climberMotorPosition);
     motorForClimber.set(speed);
     }
  // while it's not at the setpoint set the speed to get to the setpoint
  //will set to 0 if no setpoint because in beginning speed = 0
-    public Command climberPreset(){
+    public Command climberFindZero(){
     targetPosition(ClimberConstants.restingPosition);
     return this.run(
         () -> {
@@ -122,7 +141,8 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
 //Periodically gets motorPosition
  @Override
     public void periodic() {
-        motorPosition = encoderForClimber.getPosition();
+        climberMotorPosition = encoderForClimber.getPosition();
         getClimberSetpointStatus();
+        double climberVoltage = motorForClimber.getBusVoltage();
 }
 }
