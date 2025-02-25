@@ -64,7 +64,7 @@ public class Elevator extends SubsystemBase{
          
     //gets the encoders and creates a object to talk to the encoders
     //private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
-    private DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(0);
+    private DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(0,20,0);
     //creates PID loop
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
 
