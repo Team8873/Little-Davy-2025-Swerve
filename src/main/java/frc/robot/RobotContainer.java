@@ -84,9 +84,7 @@ public class RobotContainer {
 
         //If sensor detects something close holds
         //tOFSensor.coralInRange.whileTrue(intake.holdIntake());//commented this out w/ the threshold change
-        operator.leftTrigger(5).whileTrue(intake.reverseIntake(operator));//changed threshold to 1 from 0.05
-        operator.rightTrigger(5).whileTrue(intake.moveIntake(operator)); //copied from line above
-
+        
         //operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new IntakeEjectCommand(intake, tOFSensor).andThen(new ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
 
         arm.setDefaultCommand(arm.moveArm(operator));

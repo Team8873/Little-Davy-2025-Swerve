@@ -92,19 +92,13 @@ public class Intake extends SubsystemBase{
   public Command moveIntake(CommandXboxController operator){
     return this.run(
       ()-> {
-        speed = operator.getRightTriggerAxis();
+        speed = operator.getRightTriggerAxis() - operator.getLeftTriggerAxis();
         setSpeed();
       }
     );
   }
-  public Command reverseIntake(CommandXboxController operator){
-    return this.run(
-      ()-> {
-        speed = -operator.getLeftTriggerAxis();
-        setSpeed();
-      }
-    );
-  }
+  
+  
   /**
    * sets the speed of the intake motor
    */
