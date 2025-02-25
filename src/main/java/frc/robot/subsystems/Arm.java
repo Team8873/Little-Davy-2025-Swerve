@@ -30,8 +30,11 @@ public class Arm extends SubsystemBase{
     private final SparkMax wristMotor = new SparkMax(ArmConstants.wristCanId, MotorType.kBrushless);
 
     //get the encoders plugged into the sparkMax or connected to it
-    private final SparkAbsoluteEncoder armEncoder = armMotor.getAbsoluteEncoder();
-    private final SparkAbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder();
+    //private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(1);
+    private final RelativeEncoder armEncoder = armMotor.getEncoder();
+    private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
+    //private final DutyCycleEncoder wristEncoder = new DutyCycleEncoder(2);
+
 
 
     private double armPosition;
@@ -47,7 +50,7 @@ public class Arm extends SubsystemBase{
     private GenericEntry armPosWidget =
       tab.add("arm position", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(0,3)
+         .withPosition(0,5)
          .getEntry();
          
     private GenericEntry wristPosWidget =
@@ -154,7 +157,10 @@ public class Arm extends SubsystemBase{
    * gets encoder position and saves it as a value
    */
   private void getEncoderData(){
+    //armPosition = armEncoder.get();
     armPosition = armEncoder.getPosition();
+    //wristPosition = armEncoder.get();
+
     wristPosition = wristEncoder.getPosition();
   }
 
