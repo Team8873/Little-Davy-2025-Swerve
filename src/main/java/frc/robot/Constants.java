@@ -15,6 +15,7 @@ public class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double gearRatio = .05;
+        public static final double maxElevatorInput = 50;
 
     }
     public static class IntakeConstants{

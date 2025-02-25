@@ -71,6 +71,9 @@ public class Elevator extends SubsystemBase{
     //defines variables to 0 
     private double elevatorPosition = 0;
     private double targetPosition = 0;
+    public Elevator(){
+        elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
+    }
 
     //sets follower
     public void setFollower(){

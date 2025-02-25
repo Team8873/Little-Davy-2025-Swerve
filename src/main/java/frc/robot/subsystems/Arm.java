@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
@@ -29,11 +30,10 @@ public class Arm extends SubsystemBase{
     private final SparkMax wristMotor = new SparkMax(ArmConstants.wristCanId, MotorType.kBrushless);
 
     //get the encoders plugged into the sparkMax or connected to it
-    private final RelativeEncoder armEncoder = armMotor.getAlternateEncoder();
-    private final RelativeEncoder wristEncoder = wristMotor.getAlternateEncoder();
+    private final SparkAbsoluteEncoder armEncoder = armMotor.getAbsoluteEncoder();
+    private final SparkAbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder();
 
-    //potential through Bore encoder not using sparkMax connection
-    //private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+
     private double armPosition;
     private double wristPosition; 
 
