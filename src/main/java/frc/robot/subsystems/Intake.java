@@ -45,7 +45,7 @@ public class Intake extends SubsystemBase{
          private GenericEntry currentWid =
       tab.add("Intake Speed", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(0,2)
+         .withPosition(2,3)
          .getEntry();
          
 /**
