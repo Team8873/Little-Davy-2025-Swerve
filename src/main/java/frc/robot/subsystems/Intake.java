@@ -42,6 +42,11 @@ public class Intake extends SubsystemBase{
          .withWidget(BuiltInWidgets.kBooleanBox)
          .withPosition(0,3)
          .getEntry();
+         private GenericEntry currentWid =
+      tab.add("Intake Speed", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,2)
+         .getEntry();
          
 /**
  * sets speed to 1
@@ -78,6 +83,7 @@ public class Intake extends SubsystemBase{
       }
     );
   }
+
   /**
    * sets speed to -1
    * @return references latest object(intake) and runs the motor
@@ -141,6 +147,7 @@ public class Intake extends SubsystemBase{
   public void periodic(){
     speedEntry.setDouble(speed);
     humanEntry.setBoolean(humanAtSetpoint.getAsBoolean());
+    currentWid.setDouble(intakeMotor.getAppliedOutput());
     getHumanPosition();
     humanAtSetpointStatus();
   } 
