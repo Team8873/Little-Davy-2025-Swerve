@@ -34,6 +34,7 @@ public class Elevator extends SubsystemBase{
     private BooleanSupplier elevatorAtSetpoint = ()-> false;
     private boolean configured = false;
     private double speed = 0; 
+    private double targetPos = 0;
 
     // shuffleboard thing I don't know what shuffleboard is
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
@@ -62,8 +63,8 @@ public class Elevator extends SubsystemBase{
          .getEntry();
          
     //gets the encoders and creates a object to talk to the encoders
-    private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
-    private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+    //private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
+    private DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(0);
     //creates PID loop
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
 
@@ -112,6 +113,7 @@ public class Elevator extends SubsystemBase{
             setFollower();
         }
     }
+    
     /**
      * @param operator the joystick to read from
      * @return the action/method to run
@@ -122,15 +124,18 @@ public class Elevator extends SubsystemBase{
             readFromController(operator);
             });
     }
+
     /**
      * Calls targetposition and sets the target to be the y values of the left joystick 
      * sets elevator motor speed
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator){
-        targetPosition(operator.getLeftY()*10);
+        targetPos += operator.getRightY();
+        targetPosition(targetPos);
         setSpeed();
     }
+
     /**
      * @return while the elevator pid is NOT at the setpoint it runs the motor
      */
@@ -141,6 +146,7 @@ public class Elevator extends SubsystemBase{
             }
         );
     }
+
     /**
      * Sets speed equal to Pid Calculation
      * sets motor to referenced speed
@@ -154,8 +160,7 @@ public class Elevator extends SubsystemBase{
      * sets elevator position equal to encoder position
      */
     private void getEncoderData(){
-        elevatorPosition = elevatorEncoder.getPosition();
-        //elevatorPosition *= ElevatorConstants.gearRatio;
+        elevatorPosition = elevatorEncoder.get();
     }
     /**
      * sets the setpoint for the PID controller
