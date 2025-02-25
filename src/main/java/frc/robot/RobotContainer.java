@@ -32,6 +32,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.command.IntakeEjectCommand;
 import frc.robot.command.ElevatorPresetCommand;
+import frc.robot.command.FlipWrist90Command;
 import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
 import frc.robot.command.ActiveHumanIntakeCommand;
@@ -104,8 +105,9 @@ public class RobotContainer {
         operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
         operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
         operator.button(9).onTrue(new FlipWristCommand(arm));
+        operator.button(10).onTrue(new FlipWrist90Command(arm));
         
-        operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'd', false));
+        operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
 
         //climber stuff:
         joystick.x().onTrue(climber.moveToClimbed());
