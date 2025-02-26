@@ -148,7 +148,7 @@ public class Elevator extends SubsystemBase{
      */
     public Command elevatorPreset (){
         return this.runOnce(()->{
-        while(!elevatorPid.atSetpoint()) {goToPreset();}}
+        goToPreset();}
         );
     }
 
