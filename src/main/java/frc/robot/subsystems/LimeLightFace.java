@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.LimelightHelpers;
 
-public class LimeLightFace {
+public class LimeLightFace{
 
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
@@ -38,7 +38,6 @@ public class LimeLightFace {
   private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
 
   private final XboxController joystick = new XboxController(0);
-  private final CommandXboxController operator = new CommandXboxController(1);
   //double getPeriod=0;  -> trying to solve error in last line
 
 
@@ -58,6 +57,7 @@ public class LimeLightFace {
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
     double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+    System.out.print(LimelightHelpers.getTX("limelight"));
 
     // convert to radians per second for our drive method
     targetingAngularVelocity *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
@@ -119,5 +119,5 @@ public class LimeLightFace {
 
     //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
   }
-  
+ 
 }
