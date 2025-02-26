@@ -31,7 +31,7 @@ public class ElevatorPresetCommand extends Command {
     m_arm = arm;  //saves a local reference to the arm subsystem
     m_button_pressed = button;  //saves a local reference to what button was pressed 
     m_wristSide  = wristSide; //saves a local reference if whether the wirst needs to be on its side or not
-    
+    System.out.print("got here");
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator,arm);
     getInterruptionBehavior();
@@ -39,6 +39,7 @@ public class ElevatorPresetCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.print("Presets not set");
     checkPresetLvl();
     m_arm.setArmMechTarget(wristPos, armPos);
     m_elevator.targetPosition(elevatorPos);
