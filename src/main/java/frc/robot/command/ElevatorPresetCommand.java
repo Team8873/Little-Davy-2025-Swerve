@@ -49,7 +49,7 @@ public class ElevatorPresetCommand extends Command {
   public void execute() {
     m_elevator.elevatorPreset();
     m_arm.armPreset();
-    m_arm.wristPreset().onlyIf(m_arm.getArmSetpointStatus()); //runs the wirst preset ONLY IF the arm is in position
+    while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
     m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget)); //ejects intake ONLY IF elevator and arm mechanism are in position
   }
 
