@@ -21,11 +21,15 @@ public class Intake extends SubsystemBase{
     private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeCanId, MotorType.kBrushless); //create the motor object
     private final SparkMax humanMotor = new SparkMax(IntakeConstants.humanIntakeCanId, MotorType.kBrushless);
 
+    private final PIDController velocityPid = new PIDController(IntakeConstants.velocitykP, IntakeConstants.velocitykI, IntakeConstants.velocitykD);
     // creates PIDController object
-    private final PIDController humanPid = new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
+    private final PIDController humanPid = new PIDController(IntakeConstants.humankP, IntakeConstants.humankI, IntakeConstants.humankD);
 
+    public BooleanSupplier atVelocity = ()-> false;
+    private double velocityRPM = 0;
     // create RelativeEncoder object 
     private final RelativeEncoder humanEncoder = humanMotor.getEncoder();
+    private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
 
     //creates variables
     private double humanEncoderPosition = 0;
@@ -56,6 +60,11 @@ public class Intake extends SubsystemBase{
       tab.add(" bus volt", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(4,3)
+         .getEntry();
+         private GenericEntry velocityEntry =
+      tab.add("Intake Motor", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,6)
          .getEntry();
          
 /**
@@ -113,13 +122,23 @@ public class Intake extends SubsystemBase{
       }
     );
   }
+  public void setTargetVelocity(double target){
+    velocityPid.setSetpoint(target);
+  } 
   
+  private void getVelocityStatus(){
+    atVelocity = ()-> velocityPid.atSetpoint();
+  }
   
   /**
    * sets the speed of the intake motor
    */
   private void setSpeed(){
+    speed = velocityPid.calculate(velocityRPM);
     intakeMotor.set(speed);
+  }
+  private void getVelocity(){
+    velocityRPM = intakeEncoder.getVelocity();
   }
 /**
  * get the position of the human encoder and sets it equal the variable humanEncoderPosition
@@ -155,14 +174,20 @@ public class Intake extends SubsystemBase{
 // things that get called every 20 ms
   @Override
   public void periodic(){
+    getHumanPosition();
+    humanAtSetpointStatus();
+    getVelocity();
+    updateShuffleboard();
+  } 
+ 
+  private void updateShuffleboard(){
     speedEntry.setDouble(speed);
     humanEntry.setBoolean(humanAtSetpoint.getAsBoolean());
     outputWid.setDouble(intakeMotor.getAppliedOutput());
     currentWid.setDouble(intakeMotor.getOutputCurrent());
     busVoltWid.setDouble(intakeMotor.getBusVoltage());
-    getHumanPosition();
-    humanAtSetpointStatus();
-  } 
- 
+    velocityEntry.setDouble(velocityRPM);
+    
+  }
 }
 
