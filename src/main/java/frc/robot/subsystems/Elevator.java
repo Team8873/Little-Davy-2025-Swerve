@@ -148,7 +148,6 @@ public class Elevator extends SubsystemBase{
      */
     public void elevatorPreset (){
         while(!elevatorPid.atSetpoint()) {goToPreset();}
-            
     }
 
     /**

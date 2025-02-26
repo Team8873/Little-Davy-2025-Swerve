@@ -30,13 +30,14 @@ import frc.robot.subsystems.TimeOfFlightSensor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
-import frc.robot.command.IntakeEjectCommand;
+import frc.robot.command.StopCommandsCommand;
 import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.FlipWrist90Command;
 import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
 import frc.robot.command.ActiveHumanIntakeCommand;
 import frc.robot.command.DockHumanIntakeCommand;
+import frc.robot.command.StopCommandsCommand;
 
 
 public class RobotContainer {
@@ -99,6 +100,8 @@ public class RobotContainer {
         operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
         operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
         operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+
+        operator.pov(0).onTrue(new StopCommandsCommand(elevator, intake, arm));
 
         operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
         operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));

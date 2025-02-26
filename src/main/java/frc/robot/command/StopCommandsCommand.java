@@ -4,48 +4,48 @@
 
 package frc.robot.command;
 
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.TimeOfFlightSensor;
 /** An  command that uses an  subsystem. */
-public class IntakeEjectCommand extends Command {
+public class StopCommandsCommand extends Command {
   private final Intake m_subsystem;
-  private final TimeOfFlightSensor m_tOFsensor;
-
+  private final Elevator m_elevator;
+  private final Arm m_arm;
   /**
    * Creates a new Command.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeEjectCommand(Intake intake, TimeOfFlightSensor tOF) {
+  public StopCommandsCommand(Elevator elevator, Intake intake, Arm arm) {
     m_subsystem = intake;
-    m_tOFsensor = tOF;
+    m_arm = arm;
+    m_elevator = elevator;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake,tOF);
+    addRequirements(intake,arm,elevator);
     getInterruptionBehavior();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.stopIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.intakeEject();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_tOFsensor.coralInRange.getAsBoolean();
+    return true;
   }
 }
