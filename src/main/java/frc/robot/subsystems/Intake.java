@@ -117,11 +117,12 @@ public class Intake extends SubsystemBase{
   public Command moveIntake(CommandXboxController operator){
     return this.run(
       ()-> {
-        speed = operator.getRightTriggerAxis() - operator.getLeftTriggerAxis();
+        setTargetVelocity((operator.getRightTriggerAxis()*1000 - operator.getLeftTriggerAxis())*1000);
         setSpeed();
       }
     );
   }
+
   public void setTargetVelocity(double target){
     velocityPid.setSetpoint(target);
   } 
