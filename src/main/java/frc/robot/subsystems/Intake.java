@@ -42,10 +42,20 @@ public class Intake extends SubsystemBase{
          .withWidget(BuiltInWidgets.kBooleanBox)
          .withPosition(0,3)
          .getEntry();
-         private GenericEntry currentWid =
-      tab.add("Intake Speed", 0)
+         private GenericEntry outputWid =
+      tab.add("Intake Output", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(2,3)
+         .withPosition(4,2)
+         .getEntry();
+         private GenericEntry currentWid =
+      tab.add("Intake current", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(4,4)
+         .getEntry();
+         private GenericEntry busVoltWid =
+      tab.add(" bus volt", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(4,3)
          .getEntry();
          
 /**
@@ -147,7 +157,9 @@ public class Intake extends SubsystemBase{
   public void periodic(){
     speedEntry.setDouble(speed);
     humanEntry.setBoolean(humanAtSetpoint.getAsBoolean());
-    currentWid.setDouble(intakeMotor.getAppliedOutput());
+    outputWid.setDouble(intakeMotor.getAppliedOutput());
+    currentWid.setDouble(intakeMotor.getOutputCurrent());
+    busVoltWid.setDouble(intakeMotor.getBusVoltage());
     getHumanPosition();
     humanAtSetpointStatus();
   } 
