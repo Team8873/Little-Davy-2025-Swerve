@@ -34,7 +34,8 @@ public class Elevator extends SubsystemBase{
     private BooleanSupplier elevatorAtSetpoint = ()-> false;
     private boolean configured = false;
     private double speed = 0; 
-    private double targetPos = 0;
+    private double elevatorRightPos= 0;
+    private double elevatorLeftPos = 0;
 
     // shuffleboard thing I don't know what shuffleboard is
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
@@ -166,7 +167,9 @@ public class Elevator extends SubsystemBase{
      * sets elevator position equal to encoder position
      */
     private void getEncoderData(){
-        elevatorPosition = (elevatorEncoder.getPosition() + elevatorLeftEncoder.getPosition())/2;
+        elevatorRightPos = elevatorEncoder.getPosition();
+        elevatorLeftPos = elevatorLeftEncoder.getPosition();
+        elevatorPosition = (elevatorLeftPos + elevatorRightPos) / 2;
     }
     /**
      * sets the setpoint for the PID controller
