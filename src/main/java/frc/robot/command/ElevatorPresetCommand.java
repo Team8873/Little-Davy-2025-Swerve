@@ -40,9 +40,10 @@ public class ElevatorPresetCommand extends Command {
   @Override
   public void initialize() {
     System.out.print("Presets not set");
-    checkPresetLvl();
-    m_arm.setArmMechTarget(wristPos, armPos);
     m_elevator.targetPosition(elevatorPos);
+    m_arm.setArmMechTarget(wristPos, armPos);
+    checkPresetLvl();
+    
     System.out.print("Presets set");
   }
 
