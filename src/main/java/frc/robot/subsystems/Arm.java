@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.LimelightHelpers;
 
 import static frc.robot.Constants.ArmConstants;
 
@@ -45,6 +47,7 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
+    private double armTarget = 0;
     
 
     private GenericEntry armPosWidget =
@@ -69,7 +72,11 @@ public class Arm extends SubsystemBase{
          .withWidget(BuiltInWidgets.kBooleanBox)
          .withPosition(3,4)
          .getEntry();
-
+         private GenericEntry armTargetWidget =
+         tab.add("arm Target", 0)
+            .withWidget(BuiltInWidgets.kNumberBar)
+            .withPosition(4,4)
+            .getEntry();
     //creates the PID loop for the arm and wrist motors
     private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
@@ -135,8 +142,8 @@ public class Arm extends SubsystemBase{
   * sets Target position for both arm and wrist
   */
   public void setArmMechTarget(double wristTarget, double armTarget){
-    setArmTarget(armTarget);
-    setWristTarget(wristTarget);
+    setArmTarget(armTarget * 10);
+    setWristTarget(wristTarget * 2);
   }
   public void setArmTarget(double target){
     armPid.setSetpoint(target);
@@ -169,6 +176,7 @@ public class Arm extends SubsystemBase{
  * @return returns the arm position status as a boolean
  */
   public BooleanSupplier getArmSetpointStatus(){
+    armTarget = armPid.getSetpoint();
     return armAtSetpoint = ()-> armPid.atSetpoint();
   }
 /**
@@ -188,6 +196,7 @@ public class Arm extends SubsystemBase{
     getEncoderData();
     updateShuffleboardWidgets();
     getArmMechSetpointStatus();
+    System.out.print(LimelightHelpers.getTX("limelight"));
 
   } 
   /**
@@ -198,6 +207,7 @@ public class Arm extends SubsystemBase{
     wristPosWidget.setDouble(wristPosition);
     armSetpointWidget.setBoolean(armAtSetpoint.getAsBoolean());
     wristSetpointWidget.setBoolean(wristAtSetpoint.getAsBoolean());
+    armTargetWidget.setDouble(armTarget);
   }
 
 }

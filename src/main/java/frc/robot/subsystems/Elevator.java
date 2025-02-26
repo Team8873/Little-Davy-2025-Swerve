@@ -175,6 +175,7 @@ public class Elevator extends SubsystemBase{
      * @param target the target position
      */
     public void targetPosition(double target){
+        if(target < 0){target = 0;}
         elevatorPid.setSetpoint(target);
     }
     /**

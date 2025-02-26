@@ -32,10 +32,10 @@ public class Constants {
     public static class ArmConstants {
         public static final int armCanId = 13;
         public static final int wristCanId = 14;
-        public static final double armkP = 0.1;
+        public static final double armkP = 0.2;
         public static final double armkI = 0.0;
         public static final double armkD = 0.0;
-        public static final double wristkP = 0.1;
+        public static final double wristkP = 0.05;
         public static final double wristkI = 0.0;
         public static final double wristkD = 0.0;
         public static final double wristGearRatio = 16;

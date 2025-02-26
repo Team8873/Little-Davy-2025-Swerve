@@ -92,7 +92,7 @@ public class RobotContainer {
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
         
-        operator.leftBumper().negate().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
+        operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false));
         operator.leftBumper().negate().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false)));
         operator.leftBumper().negate().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false)));
         operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
