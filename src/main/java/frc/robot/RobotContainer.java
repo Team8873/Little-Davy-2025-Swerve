@@ -93,28 +93,28 @@ public class RobotContainer {
         elevator.setDefaultCommand(elevator.moveElevator(operator));
         
         operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', false));
-        operator.leftBumper().negate().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false)));
-        operator.leftBumper().negate().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false)));
-        operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
+        // operator.leftBumper().negate().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', false)));
+        // operator.leftBumper().negate().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', false)));
+        // operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
 
-        operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
-        operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
-        operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+        // operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
+        // operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
+        // operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
 
-        operator.pov(0).onTrue(new StopCommandsCommand(elevator, intake, arm));
+        //operator.pov(0).onTrue(new StopCommandsCommand(elevator, intake, arm));
 
-        operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
-        operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
-        operator.button(9).onTrue(new FlipWristCommand(arm));
-        operator.button(10).onTrue(new FlipWrist90Command(arm));
+        // operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
+        // operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
+        // operator.button(9).onTrue(new FlipWristCommand(arm));
+        // operator.button(10).onTrue(new FlipWrist90Command(arm));
         
-        operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
+        //operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
 
         //climber stuff:
-        joystick.x().onTrue(climber.moveToClimbed());
-        joystick.povUp().onTrue(climber.moveToEngaged());
-        joystick.povDown().whileTrue(climber.moveClimberDown());
-        joystick.povLeft().onTrue(climber.defineClimberZero());
+        // joystick.x().onTrue(climber.moveToClimbed());
+        // joystick.povUp().onTrue(climber.moveToEngaged());
+        // joystick.povDown().whileTrue(climber.moveClimberDown());
+        // joystick.povLeft().onTrue(climber.defineClimberZero());
 
         
         drivetrain.setDefaultCommand(
