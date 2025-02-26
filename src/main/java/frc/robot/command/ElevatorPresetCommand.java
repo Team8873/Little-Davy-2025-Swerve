@@ -42,6 +42,7 @@ public class ElevatorPresetCommand extends Command {
     checkPresetLvl();
     m_arm.setArmMechTarget(wristPos, armPos);
     m_elevator.targetPosition(elevatorPos);
+    System.out.print("Presets set");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,8 +51,7 @@ public class ElevatorPresetCommand extends Command {
     m_elevator.elevatorPreset();
     m_arm.armPreset();
     while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
-    m_intake.intakeEject().onlyIf(m_elevator.elevatorAtTarget.and(m_arm.armMechAtTarget)); //ejects intake ONLY IF elevator and arm mechanism are in position
-  }
+ }
 
   // Called once the command ends or is interrupted.
   @Override
