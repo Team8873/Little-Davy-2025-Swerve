@@ -41,9 +41,8 @@ public class ElevatorPresetCommand extends Command {
   public void initialize() {
     System.out.print("Presets not set");
     m_elevator.targetPosition(elevatorPos);
-    m_arm.setArmMechTarget(wristPos, armPos);
+    //m_arm.setArmMechTarget(wristPos, armPos);
     checkPresetLvl();
-    
     System.out.print("Presets set");
   }
 
@@ -52,7 +51,7 @@ public class ElevatorPresetCommand extends Command {
   public void execute() {
     System.out.print("running the command");
     m_elevator.elevatorPreset();
-    m_arm.armPreset();
+    //m_arm.armPreset();
     //while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
  }
 

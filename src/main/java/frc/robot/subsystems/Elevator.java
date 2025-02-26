@@ -146,8 +146,10 @@ public class Elevator extends SubsystemBase{
     /**
      * @return while the elevator pid is NOT at the setpoint it runs the motor
      */
-    public void elevatorPreset (){
-        while(!elevatorPid.atSetpoint()) {goToPreset();}
+    public Command elevatorPreset (){
+        return this.runOnce(()->{
+        while(!elevatorPid.atSetpoint()) {goToPreset();}}
+        );
     }
 
     /**
