@@ -40,7 +40,7 @@ public class ArmDockCommand extends Command {
   @Override
   public void execute() {
     m_arm.wristPreset();
-    m_arm.armPreset().onlyIf(m_arm.getWristSetpointStatus());
+    while(m_arm.getWristSetpointStatus().getAsBoolean()){m_arm.armPreset();}
     //m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 

@@ -36,8 +36,6 @@ public class FlipWrist90Command extends Command {
   @Override
   public void execute() {
     m_arm.wristPreset();
-    m_arm.armPreset().onlyIf(m_arm.getWristSetpointStatus());
-    //m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 
   // Called once the command ends or is interrupted.

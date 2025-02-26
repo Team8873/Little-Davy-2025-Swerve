@@ -97,23 +97,15 @@ public class Arm extends SubsystemBase{
   /**
    * @return runs arm motor while it is not at the setpoint
    */
-  public Command armPreset (){
-      return this.run(
-          () -> {
-              while(!armPid.atSetpoint()){setArmSpeed();}
-          }
-      );
+  public void armPreset (){
+      while(!armPid.atSetpoint()){setArmSpeed();}
   }
 
  /**
    * @return runs wrist motor while it is not at the setpoint
    */
-  public Command wristPreset (){
-    return this.run(
-        () -> {
-            while(!wristPid.atSetpoint()){setWristSpeed();}
-        }
-    );
+  public void wristPreset (){
+    while(!wristPid.atSetpoint()){setWristSpeed();}
 }
 /**
  * sets arm speed based on armPid loop
