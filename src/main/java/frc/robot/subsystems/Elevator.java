@@ -192,9 +192,9 @@ public class Elevator extends SubsystemBase{
 
     @Override
   public void periodic(){
-    updateShuffleboardWidgets();
     getEncoderData();
     getElevatorSetpointStatus();
+    updateShuffleboardWidgets();
   } 
 
   /**
