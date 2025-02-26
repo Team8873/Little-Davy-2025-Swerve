@@ -52,7 +52,7 @@ public class ElevatorPresetCommand extends Command {
     System.out.print("running the command");
     m_elevator.elevatorPreset();
     m_arm.armPreset();
-    while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
+    //while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
  }
 
   // Called once the command ends or is interrupted.
