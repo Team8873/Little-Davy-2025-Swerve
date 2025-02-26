@@ -50,7 +50,7 @@ public class Arm extends SubsystemBase{
     private GenericEntry armPosWidget =
       tab.add("arm position", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(0,5)
+         .withPosition(1,3)
          .getEntry();
          
     private GenericEntry wristPosWidget =

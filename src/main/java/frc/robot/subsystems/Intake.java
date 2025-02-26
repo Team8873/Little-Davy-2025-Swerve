@@ -64,7 +64,7 @@ public class Intake extends SubsystemBase{
          private GenericEntry velocityEntry =
       tab.add("Intake Motor", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(0,6)
+         .withPosition(5,3)
          .getEntry();
          
 /**
