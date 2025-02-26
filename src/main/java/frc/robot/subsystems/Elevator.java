@@ -147,7 +147,7 @@ public class Elevator extends SubsystemBase{
      * @return while the elevator pid is NOT at the setpoint it runs the motor
      */
     public void elevatorPreset (){
-        while(!elevatorPid.atSetpoint()) {setSpeed();}
+        while(!elevatorPid.atSetpoint()) {goToPreset();}
             
     }
 
@@ -156,9 +156,12 @@ public class Elevator extends SubsystemBase{
      * sets motor to referenced speed
      */
     private void setSpeed(){
-        //speed = elevatorPid.calculate(elevatorPosition);
         leadMotorRight.set(speed);
         motorLeft.set(speed);
+    }
+    private void goToPreset(){
+        speed = elevatorPid.calculate(elevatorPosition);
+        setSpeed();
     }
     /**
      * sets elevator position equal to encoder position
