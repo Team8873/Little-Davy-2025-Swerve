@@ -55,9 +55,8 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
 
     //what is zero? activated by left dpad
     public Command defineClimberZero(){
-        //once turned on motor run backwards until high voltage
         if (climberVoltage < 5) {
-            motorForClimber.set(-0.5);
+            motorForClimber.set(-0.05);
         }
         else {
             encoderForClimber.setPosition(0);
@@ -135,7 +134,7 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
         disengageServo();
         return this.runOnce(
             ()-> {
-                motorForClimber.set(-0.2);
+                motorForClimber.set(-0.05);
             });
     }
 //Periodically gets motorPosition
