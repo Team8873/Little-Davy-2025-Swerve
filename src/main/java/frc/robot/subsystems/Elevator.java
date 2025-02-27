@@ -63,6 +63,11 @@ public class Elevator extends SubsystemBase{
          .withPosition(3,5)
          .getEntry();
          
+    private GenericEntry elevatorPast =
+      tab.add("Elevator Past", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(4,5)
+         .getEntry();
     //gets the encoders and creates a object to talk to the encoders
     //private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
     private RelativeEncoder elevatorEncoder = leadMotorRight.getEncoder();
@@ -132,18 +137,19 @@ public class Elevator extends SubsystemBase{
             readFromController(operator);
             });
     }
-    // private void stopElevatorFall(CommandXboxController operator){
-    //     while(operator.getRightY() < 0.1||operator.getRightY() > -0.1)
-    //     {
-    //         speed = elevatorPid.calculate(elevatorPosition);
-    //     }
-    // }
-    // private void saveState(){
-    //     while(!brakeOn){
-    //         pastPosition = elevatorPosition;
-    //         targetPosition(pastPosition);
-    //     }
-    // }
+    private void stopElevatorFall(CommandXboxController operator){
+        while((operator.getRightY() < 0.1 || operator.getRightY() > -0.1) && pastPosition > 1)
+        {
+            speed = elevatorPid.calculate(elevatorPosition);
+        }
+    }
+    private void saveState(){
+
+        while(!brakeOn){
+            pastPosition = elevatorPosition;
+            targetPosition(pastPosition);
+        }
+    }
 
     /**
      * Calls targetposition and sets the target to be the y values of the left joystick 
@@ -153,8 +159,8 @@ public class Elevator extends SubsystemBase{
     private void readFromController(CommandXboxController operator){
         //targetPos = operator.getRightY();
         //targetPosition(targetPos);
+        stopElevatorFall(operator);
         speed = operator.getRightY();
-        //stopElevatorFall(operator);
         setSpeed();
     }
 
@@ -186,6 +192,7 @@ public class Elevator extends SubsystemBase{
         elevatorRightPos = elevatorEncoder.getPosition();
         elevatorLeftPos = elevatorLeftEncoder.getPosition();
         elevatorPosition = (elevatorLeftPos + elevatorRightPos) / 2;
+        elevatorPosition *= ElevatorConstants.gearRatio;
     }
     
     /**
@@ -213,7 +220,7 @@ public class Elevator extends SubsystemBase{
     getEncoderData();
     getElevatorSetpointStatus();
     updateShuffleboardWidgets();
-    //saveState();
+    saveState();
   } 
 
   /**
@@ -224,6 +231,7 @@ public class Elevator extends SubsystemBase{
     speedEntry.setDouble(speed);
     targetEntry.setDouble(targetPosition);
     elevatorSetpointWidget.setBoolean(elevatorAtSetpoint.getAsBoolean());
+    elevatorPast.setDouble(pastPosition);
   }
 
 }
