@@ -67,10 +67,10 @@ public class Intake extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(5,2)
          .getEntry();
-         private ComplexWidget pidEntry =
-      tab.add("Intake Pid", velocityPid)
-        .withWidget(BuiltInWidgets.kPIDController)
-         .withPosition(6,1);
+      //    private ComplexWidget pidEntry =
+      // tab.add("Intake Pid", velocityPid)
+      //   .withWidget(BuiltInWidgets.kPIDController)
+      //    .withPosition(6,1);
          private GenericEntry pEntry =
       tab.add("Velocity P", 0)
          .withWidget(BuiltInWidgets.kNumberBar)

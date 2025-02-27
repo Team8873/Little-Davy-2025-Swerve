@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkRelativeEncoder;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -68,6 +69,7 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(4,5)
          .getEntry();
+    
 
         
     //gets the encoders and creates a object to talk to the encoders
@@ -77,7 +79,10 @@ public class Elevator extends SubsystemBase{
 
     //creates PID loop
     private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-
+    private ComplexWidget pidEntry =
+      tab.add("Elevator Pid", elevatorPid)
+        .withWidget(BuiltInWidgets.kPIDController)
+         .withPosition(6,1);
     //defines variables to 0 
     private double elevatorPosition = 0;
     private double targetPosition = 0;
@@ -154,7 +159,7 @@ public class Elevator extends SubsystemBase{
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator){
-        speed = operator.getRightY();
+        speed = 0.02 + operator.getRightY();
         //stopElevatorFall(operator);
         //targetPosition(pastPosition);
         setSpeed();
@@ -187,7 +192,7 @@ public class Elevator extends SubsystemBase{
         elevatorLeftPos = elevatorLeftEncoder.getPosition();
         elevatorPosition = (elevatorLeftPos + elevatorRightPos) / 2;
         elevatorPosition *= ElevatorConstants.gearRatio;
-        //if(!brakeOn){pastPosition = elevatorPosition;}
+        
     }
     
     /**
