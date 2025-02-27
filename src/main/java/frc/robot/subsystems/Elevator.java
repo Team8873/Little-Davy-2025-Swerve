@@ -68,6 +68,8 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(4,5)
          .getEntry();
+
+        
     //gets the encoders and creates a object to talk to the encoders
     //private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
     private RelativeEncoder elevatorEncoder = leadMotorRight.getEncoder();
