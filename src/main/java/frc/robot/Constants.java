@@ -75,6 +75,8 @@ public class Constants {
         public static final double wristSidePosNeg = -wristSidePos;
         public static final double wristFlatPosNeg = 0;
 
+        public static final double carriageMultipler = 2;
+
     }
     public static class ClimberConstants {
         //gearbox stuff
