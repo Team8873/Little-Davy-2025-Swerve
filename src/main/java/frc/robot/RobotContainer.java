@@ -111,10 +111,10 @@ public class RobotContainer {
         //operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
 
         //climber stuff:
-        // joystick.x().onTrue(climber.moveToClimbed());
-        // joystick.povUp().onTrue(climber.moveToEngaged());
-        // joystick.povDown().whileTrue(climber.moveClimberDown());
-        // joystick.povLeft().onTrue(climber.defineClimberZero());
+        joystick.x().onTrue(climber.moveToClimbed());
+        joystick.povUp().onTrue(climber.moveToEngaged());
+        joystick.povDown().whileTrue(climber.moveClimberDown());
+        joystick.povLeft().onTrue(climber.defineClimberZero());
 
         
         drivetrain.setDefaultCommand(
