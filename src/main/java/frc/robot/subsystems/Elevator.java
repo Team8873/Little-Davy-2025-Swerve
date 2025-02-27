@@ -137,12 +137,14 @@ public class Elevator extends SubsystemBase{
             readFromController(operator);
             });
     }
-    private void stopElevatorFall(CommandXboxController operator){
-        while((operator.getRightY() < 0.1 || operator.getRightY() > -0.1) && pastPosition > 1)
-        {
-            speed = elevatorPid.calculate(elevatorPosition);
-        }
-    }
+    // private void stopElevatorFall(CommandXboxController operator){
+    //     while((operator.getRightY() < 0.1 || operator.getRightY() > -0.1) && pastPosition > 1)
+    //     {
+    //         speed = elevatorPid.calculate(elevatorPosition);
+    //         brakeOn = true;
+    //     }
+    
+    // }
     private void saveState(){
 
         while(!brakeOn){
@@ -159,7 +161,7 @@ public class Elevator extends SubsystemBase{
     private void readFromController(CommandXboxController operator){
         //targetPos = operator.getRightY();
         //targetPosition(targetPos);
-        stopElevatorFall(operator);
+        //stopElevatorFall(operator);
         speed = operator.getRightY();
         setSpeed();
     }
