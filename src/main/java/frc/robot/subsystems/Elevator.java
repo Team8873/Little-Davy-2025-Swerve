@@ -74,6 +74,8 @@ public class Elevator extends SubsystemBase{
     //defines variables to 0 
     private double elevatorPosition = 0;
     private double targetPosition = 0;
+    private double pastPosition = 0;
+    private boolean brakeOn = false;
     public Elevator(){
         //elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
     }
@@ -130,6 +132,22 @@ public class Elevator extends SubsystemBase{
             readFromController(operator);
             });
     }
+    public void stopElevatorFall(CommandXboxController operator){
+        if(operator.getRightY() == 0)
+        {
+            speed = elevatorPid.calculate(elevatorPosition);
+            brakeOn = true;
+        }else
+        {
+            brakeOn = false;
+        }
+    }
+    private void saveState(){
+        while(!brakeOn){
+            pastPosition = elevatorPosition;
+            targetPosition(pastPosition);
+        }
+    }
 
     /**
      * Calls targetposition and sets the target to be the y values of the left joystick 
@@ -140,6 +158,7 @@ public class Elevator extends SubsystemBase{
         //targetPos = operator.getRightY();
         //targetPosition(targetPos);
         speed = operator.getRightY();
+        stopElevatorFall(operator);
         setSpeed();
     }
 
@@ -172,6 +191,7 @@ public class Elevator extends SubsystemBase{
         elevatorLeftPos = elevatorLeftEncoder.getPosition();
         elevatorPosition = (elevatorLeftPos + elevatorRightPos) / 2;
     }
+    
     /**
      * sets the setpoint for the PID controller
      * @param target the target position
@@ -197,6 +217,7 @@ public class Elevator extends SubsystemBase{
     getEncoderData();
     getElevatorSetpointStatus();
     updateShuffleboardWidgets();
+    saveState();
   } 
 
   /**
