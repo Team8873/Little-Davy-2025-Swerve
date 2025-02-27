@@ -145,13 +145,12 @@ public class Elevator extends SubsystemBase{
     //     }
     
     // }
-    private void saveState(){
-
-        while(!brakeOn){
-            pastPosition = elevatorPosition;
-            targetPosition(pastPosition);
-        }
-    }
+    // private void saveState(){
+    //     while(!brakeOn){
+    //         pastPosition = elevatorPosition;
+    //         targetPosition(pastPosition);
+    //     }
+    // }
 
     /**
      * Calls targetposition and sets the target to be the y values of the left joystick 
@@ -222,7 +221,7 @@ public class Elevator extends SubsystemBase{
     getEncoderData();
     getElevatorSetpointStatus();
     updateShuffleboardWidgets();
-    saveState();
+    //saveState();
   } 
 
   /**
