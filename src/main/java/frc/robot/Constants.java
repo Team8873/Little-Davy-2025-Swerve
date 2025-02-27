@@ -47,7 +47,7 @@ public class Constants {
         public static final double lvl1to3ArmPos = 0;
         public static final double lvl4ArmPos = 0; 
         public static final double wristFlatPos = 0;
-        public static final double lvl1Elevator = 3;
+        public static final double lvl1Elevator = 2.3;
         public static final double lvl2Elevator = 0;
         public static final double lvl3Elevator = 0;
         public static final double lvl4Elevator = 0;
