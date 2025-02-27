@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -64,8 +65,33 @@ public class Intake extends SubsystemBase{
          private GenericEntry velocityEntry =
       tab.add("Intake Velocity", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(5,3)
+         .withPosition(5,2)
          .getEntry();
+         private ComplexWidget pidEntry =
+      tab.add("Intake Pid", velocityPid)
+        .withWidget(BuiltInWidgets.kPIDController)
+         .withPosition(6,1);
+         private GenericEntry pEntry =
+      tab.add("Velocity P", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(6,3)
+         .getEntry();
+         private GenericEntry iEntry =
+         tab.add("Velocity I", 0)
+            .withWidget(BuiltInWidgets.kNumberBar)
+            .withPosition(6,2)
+            .getEntry();
+            private GenericEntry dEntry =
+            tab.add("Velocity d", 0)
+               .withWidget(BuiltInWidgets.kNumberBar)
+               .withPosition(6,4)
+               .getEntry();
+        private GenericEntry setPointEntry =
+      tab.add("Velocity target", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(5,1)
+         .getEntry();
+         
          
 /**
  * sets speed to 1
@@ -117,7 +143,8 @@ public class Intake extends SubsystemBase{
   public Command moveIntake(CommandXboxController operator){
     return this.run(
       ()-> {
-        setTargetVelocity((operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()));
+        //setTargetVelocity((operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()));
+        speed = operator.getLeftTriggerAxis() - operator.getRightTriggerAxis();
         setSpeed();
       }
     );
@@ -135,7 +162,7 @@ public class Intake extends SubsystemBase{
    * sets the speed of the intake motor
    */
   private void setSpeed(){
-    speed = velocityPid.calculate(velocityRPM);
+    //speed = velocityPid.calculate(velocityRPM);
     intakeMotor.set(speed);
   }
   private void getVelocity(){
@@ -188,7 +215,11 @@ public class Intake extends SubsystemBase{
     currentWid.setDouble(intakeMotor.getOutputCurrent());
     busVoltWid.setDouble(intakeMotor.getBusVoltage());
     velocityEntry.setDouble(velocityRPM);
-    
+    pEntry.setDouble(velocityPid.getP());
+    iEntry.setDouble(velocityPid.getI());
+    dEntry.setDouble(velocityPid.getD());
+    setPointEntry.setDouble(velocityPid.getSetpoint());
+
   }
 }
 
