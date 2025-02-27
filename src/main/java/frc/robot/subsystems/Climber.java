@@ -8,16 +8,14 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase; //used for getBusVoltage
-
-
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
-//relative encoder is magic import. has pretty much all encoder stuff but I had other stuff imported before I saw this one. Need this one because has RelativeEncoder
-
+//switched to throughbore so don't need
 
 //shuffleboard imports but don't use for now
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //command imports
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,15 +33,16 @@ import frc.robot.Constants.ClimberConstants;
 import java.util.function.BooleanSupplier;
 //pid import
 import edu.wpi.first.math.controller.PIDController;
-
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 //servo import
 import edu.wpi.first.wpilibj.Servo;
 
 public class Climber extends SubsystemBase{ // puts climber as a subsystem; inside is code for the climber
   //introduce stuff
     private final SparkMax motorForClimber = new SparkMax (ClimberConstants.motorForClimberID, MotorType.kBrushless);//a motor motorForClimber
-    private RelativeEncoder encoderForClimber = motorForClimber.getEncoder(); //a relative encoder called "encoder for climber"
-    private Servo climberServo = new Servo(ClimberConstants.servoID); //a servo called climberServo
+    private final DutyCycleEncoder encoderForClimber = new DutyCycleEncoder(ClimberConstants.encoderForClimberDIOPort); //through-bore encoder
+    private final Servo climberServo = new Servo(ClimberConstants.servoID); //a servo called climberServo
 
     //its not at the setpoint when we turn it on
     private BooleanSupplier climberAtSetpoint = ()-> false;
@@ -52,34 +51,46 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     private double climberMotorPosition = 0;
     private double target = 0;
     private double climberVoltage = 0;
+    private double servoValue = 0;
+    //shuffleboard entries
+        private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
 
-    //what is zero? activated by left dpad
-    public Command defineClimberZero(){
-        if (climberVoltage < 5) {
-            motorForClimber.set(-0.05);
-        }
-        else {
-            encoderForClimber.setPosition(0);
-        };
-        return this.runOnce(
-            ()-> {
-                setSpeed();
-            }
-        );
-        
-    }
+    private GenericEntry positionEntry =
+      tab.add("Climber Position", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,1)
+         .getEntry();
+     private GenericEntry targetEntry =
+      tab.add("Climber target", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(0,2)
+         .getEntry();
+     private GenericEntry statusEntry =
+         tab.add("Servo Status", 0)
+            .withWidget(BuiltInWidgets.kNumberBar)
+            .withPosition(0,3)
+            .getEntry();
  
  //SERVOSTUFF
     //need to trip the servo to move the motor in positive direction. 1.0 is engaged 0.0 is disengaged
     //use 1.0 for positive direction and 0.0 for negative. It's location but this how to use it. It might be flipped around, don't know until test
-    private void engageServo(){
+    private Command engageServo(){
     climberServo.set(1.0);
+    return this.runOnce(
+        () -> {
+            servoValue = 1.0;
+        }
+    );
     }
-    private void disengageServo(){
+    private Command disengageServo(){
     climberServo.set(0.0);
+    return this.runOnce(
+        () -> {
+            servoValue = 0.0;
+        }
+    );
     }
  
-
     //PID STUFF:
  private final PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI, ClimberConstants.ClimberkD);
 
@@ -92,23 +103,14 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     speed = climberPid.calculate(climberMotorPosition);
     motorForClimber.set(speed);
     }
- // while it's not at the setpoint set the speed to get to the setpoint
- //will set to 0 if no setpoint because in beginning speed = 0
-    public Command climberFindZero(){
-    targetPosition(ClimberConstants.restingPosition);
-    return this.run(
-        () -> {
-            while(!climberPid.atSetpoint()){setSpeed();}
-        }
-    );
-}
+
 //get the set point and put it as the target. Return if its at the setpoint or not.
     public BooleanSupplier getClimberSetpointStatus(){
     target = climberPid.getSetpoint();
    return climberAtSetpoint = ()-> climberPid.atSetpoint();
 }
 
-    //up d-pad will shoot to 90 deg
+    //Y will shoot to 90 deg
     public Command moveToEngaged(){
     targetPosition(ClimberConstants.engagedPosition);
     disengageServo();
@@ -119,29 +121,27 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     );
 
     }
-    //Xbutton will shoot down to climbed
-    public Command moveToClimbed(){
-        targetPosition(ClimberConstants.climbedPositon);
-        engageServo();
-        return this.runOnce(
-            ()-> {
-                setSpeed();
-            }
-        );
-    }
-    //down d-pad will move down
+    //Xbutton will move down to climbed
     public Command moveClimberDown(){
-        disengageServo();
+        engageServo();
         return this.runOnce(
             ()-> {
                 motorForClimber.set(-0.05);
             });
     }
-//Periodically gets motorPosition
+
+    private void updateShuffleboardWidgetsClimber(){
+        positionEntry.setDouble(climberMotorPosition);
+        targetEntry.setDouble(target);
+        statusEntry.setDouble(servoValue);
+        
+    }
+//Periodically gets motorPosition, voltage, and updates shuffleboard
  @Override
     public void periodic() {
-        climberMotorPosition = encoderForClimber.getPosition();
+        climberMotorPosition = encoderForClimber.get();
         getClimberSetpointStatus();
         double climberVoltage = motorForClimber.getBusVoltage();
+        updateShuffleboardWidgetsClimber();
 }
 }
