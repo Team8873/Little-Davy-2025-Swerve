@@ -137,20 +137,14 @@ public class Elevator extends SubsystemBase{
             readFromController(operator);
             });
     }
-    // private void stopElevatorFall(CommandXboxController operator){
-    //     while((operator.getRightY() < 0.1 || operator.getRightY() > -0.1) && pastPosition > 1)
-    //     {
-    //         speed = elevatorPid.calculate(elevatorPosition);
-    //         brakeOn = true;
-    //     }
+    private void stopElevatorFall(CommandXboxController operator){
+        while((operator.getRightY() < 0.1 || operator.getRightY() > -0.1) && pastPosition > 1)
+        {
+            speed = elevatorPid.calculate(elevatorPosition);
+            brakeOn = true;
+        }
+    }
     
-    // }
-    // private void saveState(){
-    //     while(!brakeOn){
-    //         pastPosition = elevatorPosition;
-    //         targetPosition(pastPosition);
-    //     }
-    // }
 
     /**
      * Calls targetposition and sets the target to be the y values of the left joystick 
@@ -158,10 +152,9 @@ public class Elevator extends SubsystemBase{
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator){
-        //targetPos = operator.getRightY();
-        //targetPosition(targetPos);
-        //stopElevatorFall(operator);
         speed = operator.getRightY();
+        stopElevatorFall(operator);
+        targetPosition(pastPosition);
         setSpeed();
     }
 
@@ -169,9 +162,7 @@ public class Elevator extends SubsystemBase{
      * @return while the elevator pid is NOT at the setpoint it runs the motor
      */
     public void elevatorPreset (){
-       
         goToPreset();
-        
     }
 
     /**
@@ -194,10 +185,11 @@ public class Elevator extends SubsystemBase{
         elevatorLeftPos = elevatorLeftEncoder.getPosition();
         elevatorPosition = (elevatorLeftPos + elevatorRightPos) / 2;
         elevatorPosition *= ElevatorConstants.gearRatio;
+        if(!brakeOn){pastPosition = elevatorPosition;}
     }
     
     /**
-     * sets the setpoint for the PID controller
+     * sets the setpoint for the Elevator PID controller
      * @param target the target position
      */
     public void targetPosition(double target){
@@ -221,7 +213,6 @@ public class Elevator extends SubsystemBase{
     getEncoderData();
     getElevatorSetpointStatus();
     updateShuffleboardWidgets();
-    //saveState();
   } 
 
   /**
