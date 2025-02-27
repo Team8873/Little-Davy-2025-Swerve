@@ -95,9 +95,9 @@ public class Constants {
    
         //defined positions, getPosition measures in rotations
         //360 deg is 1 spool rotation so multiply 360 by that many spool rotations
-        public static final double restingPosition = 0*motorRatioClimberMultiplier;
-        public static final double engagedPosition = restingPosition + spoolRotationsRestingToEngaged*motorRatioClimberMultiplier;
-        public static final double climbedPositon = restingPosition + spoolRotationsEngagedToClimbed*motorRatioClimberMultiplier;
+        public static final double restingPosition = 0;
+        public static final double engagedPosition = 90;
+        public static final double climbedPositon = 45;
 
         //PID constants:
         public static final double ClimberkP = 0.1;
@@ -108,6 +108,7 @@ public class Constants {
         //Identification
         public static final int motorForClimberID = 16;
         public static final int servoID = 0;
+        public static final int encoderForClimberDIOPort = 0;
     }
 }
      
