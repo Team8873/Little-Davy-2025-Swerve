@@ -11,7 +11,7 @@ public class Constants {
     public static class ElevatorConstants{
         public static final int elevatorLCanId = 17;
         public static final int elevatorRCanId = 19;
-        public static final double kP = 0.35;
+        public static final double kP = 0.375;
         public static final double kI = 0.015;
         public static final double kD = 0.0;
         public static final double gearRatio = .05;
@@ -32,7 +32,7 @@ public class Constants {
     public static class ArmConstants {
         public static final int armCanId = 13;
         public static final int wristCanId = 14;
-        public static final double armkP = 0.15;
+        public static final double armkP = 0.13;
         public static final double armkI = 0.0;
         public static final double armkD = 0.0;
         public static final double wristkP = 0.05;
@@ -47,10 +47,10 @@ public class Constants {
         public static final double lvl1to3ArmPos = 0;
         public static final double lvl4ArmPos = 0; 
         public static final double wristFlatPos = 0;
-        public static final double lvl1Elevator = 1;
-        public static final double lvl2Elevator = 2;
-        public static final double lvl3Elevator = 3;
-        public static final double lvl4Elevator = 1.5;
+        public static final double lvl1Elevator = 2.5;
+        public static final double lvl2Elevator = 3.3;
+        public static final double lvl3Elevator = 4.75;
+        public static final double lvl4Elevator = 5;
 
         //side wrist pos
         public static final double wristSidePos = 0;

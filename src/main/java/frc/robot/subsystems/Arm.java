@@ -142,8 +142,8 @@ public class Arm extends SubsystemBase{
   * sets Target position for both arm and wrist
   */
   public void setArmMechTarget(double wristTarget, double armTarget){
-    setArmTarget(armTarget * 10);
-    setWristTarget(wristTarget * 2);
+    setArmTarget(armTarget * 13);
+    setWristTarget(wristTarget * 5);
   }
   public void setArmTarget(double target){
     armPid.setSetpoint(target);
