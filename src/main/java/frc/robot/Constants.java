@@ -32,7 +32,7 @@ public class Constants {
     public static class ArmConstants {
         public static final int armCanId = 13;
         public static final int wristCanId = 14;
-        public static final double armkP = 0.2;
+        public static final double armkP = 0.15;
         public static final double armkI = 0.0;
         public static final double armkD = 0.0;
         public static final double wristkP = 0.05;
@@ -50,7 +50,7 @@ public class Constants {
         public static final double lvl1Elevator = 1;
         public static final double lvl2Elevator = 2;
         public static final double lvl3Elevator = 3;
-        public static final double lvl4Elevator = 0;
+        public static final double lvl4Elevator = 1.5;
 
         //side wrist pos
         public static final double wristSidePos = 0;
