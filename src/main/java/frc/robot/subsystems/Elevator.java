@@ -192,7 +192,7 @@ public class Elevator extends SubsystemBase{
         motorLeft.set(speed);
     }
     private void goToPreset(){
-        speed = elevatorPid.calculate(elevatorPosition, goalPosition);
+        speed = elevatorPid.calculate(elevatorPosition, goalPosition) + m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
         setSpeed();
     }
     /**
