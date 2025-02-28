@@ -98,7 +98,7 @@ public class Elevator extends SubsystemBase{
     private State targetPosition;
     private double pastPosition = 0;
     private boolean brakeOn = false;
-    private State goalPosition;
+    private double goalPosition = 0;
     public Elevator(){
         //elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
     }
@@ -194,8 +194,7 @@ public class Elevator extends SubsystemBase{
     private void goToPreset(){
         speed = elevatorPid.calculate(elevatorPosition, goalPosition);
         //+ m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
-        leadMotorRight.setVoltage(speed);
-        motorLeft.setVoltage(speed);
+        setSpeed();
     }
     /**
      * sets elevator position equal to encoder position
@@ -220,6 +219,7 @@ public class Elevator extends SubsystemBase{
      */
     public void targetPosition(double target){
         //if(target < 0){target = 0.3;}
+        goalPosition = target;
         elevatorPid.setGoal(target);
     }
     public void resetPidError(){
