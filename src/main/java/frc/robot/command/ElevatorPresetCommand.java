@@ -38,7 +38,7 @@ public class ElevatorPresetCommand extends Command {
     
     //m_arm.setArmMechTarget(wristPos, armPos);
     checkPresetLvl();
-    m_elevator.targetPosition(elevatorPos);
+    m_elevator.targetElevatorPosition(elevatorPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
