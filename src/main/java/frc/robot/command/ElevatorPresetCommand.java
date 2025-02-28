@@ -7,6 +7,10 @@ package frc.robot.command;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PresetConstants;
 
@@ -31,7 +35,6 @@ public class ElevatorPresetCommand extends Command {
     m_arm = arm;  //saves a local reference to the arm subsystem
     m_button_pressed = button;  //saves a local reference to what button was pressed 
     m_wristSide  = wristSide; //saves a local reference if whether the wirst needs to be on its side or not
-    System.out.print("got here");
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator,arm);
     getInterruptionBehavior();
@@ -79,15 +82,20 @@ public class ElevatorPresetCommand extends Command {
           break;
         case 'x': elevatorPos = PresetConstants.lvl3ElevatorSide;
           break;
-      }}else{
+      }}
+      else{
         switch (m_button_pressed) {
+
       case 'b': elevatorPos = PresetConstants.lvl2Elevator;
         break;
+
       case 'x': elevatorPos = PresetConstants.lvl3Elevator;
         break;
+
       case 'y': elevatorPos = PresetConstants.lvl4Elevator;
                 armPos = PresetConstants.lvl4ArmPos;
                 break;
+
       case'g': elevatorPos = PresetConstants.goundElevator;
                 armPos = PresetConstants.groundArm;
                 wristPos = PresetConstants.wristSidePos;
