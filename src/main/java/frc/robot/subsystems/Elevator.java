@@ -193,7 +193,8 @@ public class Elevator extends SubsystemBase{
     }
     private void goToPreset(){
         speed = elevatorPid.calculate(elevatorPosition, goalPosition) + m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
-        setSpeed();
+        leadMotorRight.setVoltage(speed);
+        motorLeft.setVoltage(speed);
     }
     /**
      * sets elevator position equal to encoder position
@@ -248,7 +249,7 @@ public class Elevator extends SubsystemBase{
   private void updateShuffleboardWidgets(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
-    targetEntry.setValue(targetPosition);
+    //targetEntry.setValue(targetPosition);
     elevatorSetpointWidget.setBoolean(elevatorAtSetpoint.getAsBoolean());
     elevatorPast.setDouble(pastPosition);
   }
