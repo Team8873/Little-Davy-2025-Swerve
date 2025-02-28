@@ -203,6 +203,9 @@ public class Elevator extends SubsystemBase{
         //if(target < 0){target = 0.3;}
         elevatorPid.setSetpoint(target);
     }
+    public void resetPidError(){
+        elevatorPid.reset();
+    }
     /**
      * setting the targetPosition to the current set point 
      * @return the boolean value if whether the elevator is at the set point or not
