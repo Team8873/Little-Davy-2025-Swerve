@@ -30,6 +30,7 @@ import frc.robot.subsystems.TimeOfFlightSensor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimeLightFace;
 import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.FlipWrist90Command;
 import frc.robot.command.FlipWristCommand;
@@ -63,6 +64,7 @@ public class RobotContainer {
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
+    public final LimeLightFace limeLightFace = new LimeLightFace();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
