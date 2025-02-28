@@ -21,7 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ElevatorConstants;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 
 
 public class Elevator extends SubsystemBase{
@@ -35,6 +40,9 @@ public class Elevator extends SubsystemBase{
     private double speed = 0; 
     private double elevatorRightPos= 0;
     private double elevatorLeftPos = 0;
+    private double elevatorRightVel = 0;
+    private double elevatorLeftVel = 0;
+    private double elevatorVelocity = 0;
 
     // shuffleboard thing I don't know what shuffleboard is
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
@@ -77,7 +85,9 @@ public class Elevator extends SubsystemBase{
     private RelativeEncoder elevatorLeftEncoder = motorLeft.getEncoder();
 
     //creates PID loop
-    private final PIDController elevatorPid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
+    private final ProfiledPIDController elevatorPid = new ProfiledPIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD, 
+    new TrapezoidProfile.Constraints(ElevatorConstants.maxVelocity,ElevatorConstants.maxAcceleration));
+    private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kS, kG, kV);
     private ComplexWidget pidEntry =
       tab.add("Elevator Pid", elevatorPid)
         .withWidget(BuiltInWidgets.kPIDController)
@@ -85,9 +95,10 @@ public class Elevator extends SubsystemBase{
          
     //defines variables to 0 
     private double elevatorPosition = 0;
-    private double targetPosition = 0;
+    private State targetPosition;
     private double pastPosition = 0;
     private boolean brakeOn = false;
+    private State goalPosition;
     public Elevator(){
         //elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
     }
@@ -181,7 +192,7 @@ public class Elevator extends SubsystemBase{
         motorLeft.set(speed);
     }
     private void goToPreset(){
-        speed = elevatorPid.calculate(elevatorPosition);
+        speed = elevatorPid.calculate(elevatorPosition, goalPosition);
         setSpeed();
     }
     /**
@@ -191,6 +202,12 @@ public class Elevator extends SubsystemBase{
         elevatorRightPos = elevatorEncoder.getPosition();
         elevatorLeftPos = elevatorLeftEncoder.getPosition();
         elevatorPosition = (elevatorLeftPos + elevatorRightPos) / 2;
+
+        elevatorRightVel = elevatorEncoder.getVelocity();
+        elevatorLeftVel = elevatorLeftEncoder.getVelocity();
+
+        elevatorVelocity = (elevatorLeftVel + elevatorRightVel)/2;
+
         elevatorPosition *= ElevatorConstants.gearRatio;
         
     }
@@ -201,17 +218,17 @@ public class Elevator extends SubsystemBase{
      */
     public void targetPosition(double target){
         //if(target < 0){target = 0.3;}
-        elevatorPid.setSetpoint(target);
+        elevatorPid.setGoal(target);
     }
     public void resetPidError(){
-        elevatorPid.reset();
+        elevatorPid.reset(elevatorPosition, elevatorVelocity);
     }
     /**
      * setting the targetPosition to the current set point 
      * @return the boolean value if whether the elevator is at the set point or not
      */
     public BooleanSupplier getElevatorSetpointStatus(){
-        targetPosition = elevatorPid.getSetpoint();
+        targetPosition = elevatorPid.getGoal();
        return elevatorAtSetpoint = ()-> elevatorPid.atSetpoint();
     }
 
@@ -231,7 +248,7 @@ public class Elevator extends SubsystemBase{
   private void updateShuffleboardWidgets(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
-    targetEntry.setDouble(targetPosition);
+    targetEntry.setValue(targetPosition);
     elevatorSetpointWidget.setBoolean(elevatorAtSetpoint.getAsBoolean());
     elevatorPast.setDouble(pastPosition);
   }

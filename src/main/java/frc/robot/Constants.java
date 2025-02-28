@@ -16,7 +16,9 @@ public class Constants {
         public static final double kD = 0.0;
         public static final double gearRatio = .05;
         public static final double maxElevatorInput = 50;
-
+        public static final double maxVelocity = 2.5;
+        public static final double maxAcceleration = 5;
+        public static final double 
     }
     public static class IntakeConstants{
         public static final int intakeCanId = 15;
