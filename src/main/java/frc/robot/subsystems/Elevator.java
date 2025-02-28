@@ -60,7 +60,7 @@ public class Elevator extends SubsystemBase{
          .getEntry();
 
     private GenericEntry targetEntry =
-      tab.add("Elevator target", 0)
+      tab.add("Elevator busVolt", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(2,1)
          .getEntry();
@@ -87,7 +87,7 @@ public class Elevator extends SubsystemBase{
     //creates PID loop
     private final ProfiledPIDController elevatorPid = new ProfiledPIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD, 
     new TrapezoidProfile.Constraints(ElevatorConstants.maxVelocity,ElevatorConstants.maxAcceleration));
-    private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV);
+    //private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV);
     private ComplexWidget pidEntry =
       tab.add("Elevator Pid", elevatorPid)
         .withWidget(BuiltInWidgets.kPIDController)
@@ -192,7 +192,8 @@ public class Elevator extends SubsystemBase{
         motorLeft.set(speed);
     }
     private void goToPreset(){
-        speed = elevatorPid.calculate(elevatorPosition, goalPosition) + m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
+        speed = elevatorPid.calculate(elevatorPosition, goalPosition);
+        //+ m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
         leadMotorRight.setVoltage(speed);
         motorLeft.setVoltage(speed);
     }

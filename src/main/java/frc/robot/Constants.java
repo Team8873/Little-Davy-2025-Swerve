@@ -17,9 +17,9 @@ public class Constants {
         public static final double gearRatio = .05;
         public static final double maxElevatorInput = 50;
         public static final double maxVelocity = 2.5;
-        public static final double maxAcceleration = 5;
+        public static final double maxAcceleration = 1;
         public static final double kS = 0;
-        public static final double kG = 0;
+        public static final double kG = 0.246;
         public static final double kV = 60;
 
     }
