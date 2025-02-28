@@ -249,9 +249,11 @@ public class Elevator extends SubsystemBase{
   private void updateShuffleboardWidgets(){
     positionEntry.setDouble(elevatorPosition);
     speedEntry.setDouble(speed);
-    //targetEntry.setValue(targetPosition);
+    targetEntry.setDouble(leadMotorRight.getBusVoltage());
     elevatorSetpointWidget.setBoolean(elevatorAtSetpoint.getAsBoolean());
     elevatorPast.setDouble(pastPosition);
+
+
   }
 
 }
