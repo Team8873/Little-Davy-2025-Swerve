@@ -52,6 +52,7 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     private double target = 0;
     private double climberVoltage = 0;
     private double servoValue = 0;
+    private final BooleanSupplier somethingFalse = ()-> false; //use this because boolean supplier is weird
     //shuffleboard entries
         private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
 
@@ -103,12 +104,17 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     speed = climberPid.calculate(climberMotorPosition);
     motorForClimber.set(speed);
     }
-
-//get the set point and put it as the target. Return if its at the setpoint or not.
+ public void goToTarget(){
+ if(climberAtSetpoint.equals(somethingFalse)){
+    targetPosition(target);
+    setSpeed();
+ };
+}
+ //get the set point and put it as the target. Return if its at the setpoint or not.
     public BooleanSupplier getClimberSetpointStatus(){
     target = climberPid.getSetpoint();
    return climberAtSetpoint = ()-> climberPid.atSetpoint();
-}
+ }
 
     //Y will shoot to 90 deg
     public Command moveToEngaged(){
@@ -126,7 +132,7 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
         engageServo();
         return this.runOnce(
             ()-> {
-                motorForClimber.set(-0.05);
+                motorForClimber.set(-0.3);
             });
     }
 
