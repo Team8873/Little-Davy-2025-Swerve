@@ -18,7 +18,10 @@ public class Constants {
         public static final double maxElevatorInput = 50;
         public static final double maxVelocity = 2.5;
         public static final double maxAcceleration = 5;
-        public static final double 
+        public static final double kS = 0;
+        public static final double kG = 0;
+        public static final double kV = 0;
+
     }
     public static class IntakeConstants{
         public static final int intakeCanId = 15;

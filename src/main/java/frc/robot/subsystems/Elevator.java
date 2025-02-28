@@ -87,7 +87,7 @@ public class Elevator extends SubsystemBase{
     //creates PID loop
     private final ProfiledPIDController elevatorPid = new ProfiledPIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD, 
     new TrapezoidProfile.Constraints(ElevatorConstants.maxVelocity,ElevatorConstants.maxAcceleration));
-    private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kS, kG, kV);
+    private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV);
     private ComplexWidget pidEntry =
       tab.add("Elevator Pid", elevatorPid)
         .withWidget(BuiltInWidgets.kPIDController)
