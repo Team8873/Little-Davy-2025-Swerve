@@ -8,10 +8,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkRelativeEncoder;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -24,7 +22,7 @@ import frc.robot.Constants.ElevatorConstants;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+
 
 public class Elevator extends SubsystemBase{
 
@@ -58,6 +56,7 @@ public class Elevator extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(2,1)
          .getEntry();
+
     private GenericEntry elevatorSetpointWidget =
       tab.add("Elevator atSetpoint", false)
          .withWidget(BuiltInWidgets.kBooleanBox)
@@ -83,6 +82,7 @@ public class Elevator extends SubsystemBase{
       tab.add("Elevator Pid", elevatorPid)
         .withWidget(BuiltInWidgets.kPIDController)
          .withPosition(6,1);
+         
     //defines variables to 0 
     private double elevatorPosition = 0;
     private double targetPosition = 0;
