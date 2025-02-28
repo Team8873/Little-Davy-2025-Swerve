@@ -58,13 +58,12 @@ public class RobotContainer {
     private final CommandXboxController operator = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final TestMotor test = new TestMotor();
     public final Arm arm = new Arm();
     public final Intake intake = new Intake();
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
-    public final LimeLightFace limeLightFace = new LimeLightFace();
+    //public final LimeLightFace limeLightFace = new LimeLightFace();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
