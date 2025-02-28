@@ -52,7 +52,7 @@ public class LimeLightFace{
     // if it is too high, the robot will oscillate around.
     // if it is too low, the robot will never reach its target
     // if the robot never turns in the correct direction, kP should be inverted.
-    double kP = 10;
+    double kP = 0.035;
 
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
@@ -104,7 +104,7 @@ public class LimeLightFace{
     // while the A-button is pressed, overwrite some of the driving values with the output of our limelight methods
     //joystick.rightBumper().whileTrue( joystickrightbumper = 1);
 
-    if(joystick.getRawButtonPressed(6))
+    if(joystick.getRightBumperButtonPressed())
     {
         final var rot_limelight = limelight_aim_proportional();
         rot = rot_limelight;
