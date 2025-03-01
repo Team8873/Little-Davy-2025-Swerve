@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -23,7 +21,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
@@ -36,7 +33,6 @@ public class Elevator extends SubsystemBase{
     private final SparkMax leadMotorRight = new SparkMax(ElevatorConstants.elevatorRCanId, MotorType.kBrushless);
     // creates private variables
     private BooleanSupplier elevatorAtSetpoint = ()-> false;
-    private boolean configured = false;
     private double speed = 0; 
     private double elevatorRightPos= 0;
     private double elevatorLeftPos = 0;
@@ -97,7 +93,6 @@ public class Elevator extends SubsystemBase{
     private double elevatorPosition = 0;
     private State targetPosition;
     private double pastPosition = 0;
-    private boolean brakeOn = false;
     private double elevatorTarget = 0;
     public Elevator(){
         //elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
@@ -134,15 +129,6 @@ public class Elevator extends SubsystemBase{
      */
         leadMotorRight.configure(globalConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         motorLeft.configure(FollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-        configured = true;
-        
-    }
-
-   //if not configured set to follower
-    public void checkIfSetFollow(){
-        if(!configured){
-            setFollower();
-        }
     }
     
     /**
@@ -155,14 +141,6 @@ public class Elevator extends SubsystemBase{
             readFromController(operator);
             });
     }
-    // private void stopElevatorFall(CommandXboxController operator){
-    //     while((operator.getRightY() < 0.1 || operator.getRightY() > -0.1) && pastPosition > 1)
-    //     {
-    //         speed = elevatorPid.calculate(elevatorPosition);
-    //         brakeOn = true;
-    //     }
-    // }
-    
 
     /**
      * Calls targetposition and sets the target to be the y values of the left joystick 
@@ -172,29 +150,19 @@ public class Elevator extends SubsystemBase{
     private void readFromController(CommandXboxController operator){
         elevatorTarget += (operator.getRightY()/160);
         targetElevatorPosition(elevatorTarget);
-        goToPreset();
+        elevatorPreset();
     }
 
     /**
      * @return while the elevator pid is NOT at the setpoint it runs the motor
      */
     public void elevatorPreset (){
-        goToPreset();
-    }
-
-    /**
-     * Sets speed equal to Pid Calculation
-     * sets motor to referenced speed
-     */
-    private void setSpeed(){
+        speed = elevatorPid.calculate(elevatorPosition);
+        //+ m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
         leadMotorRight.set(speed);
         motorLeft.set(speed);
     }
-    private void goToPreset(){
-        speed = elevatorPid.calculate(elevatorPosition);
-        //+ m_feedforward.calculate(elevatorPid.getSetpoint().velocity);
-        setSpeed();
-    }
+    
     /**
      * sets elevator position equal to encoder position
      */
@@ -217,7 +185,7 @@ public class Elevator extends SubsystemBase{
      * @param target the target position
      */
     public void targetElevatorPosition(double target){
-        // if(target < 0){target = 0.3;}
+        // if(target < 0){target = 0.1;}
         // if(target > 5){target = 4.8;}
         elevatorPid.setGoal(target);
         elevatorTarget = target;

@@ -52,17 +52,7 @@ public class Intake extends SubsystemBase{
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(4,2)
          .getEntry();
-         private GenericEntry currentWid =
-      tab.add("Intake current", 0)
-         .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(4,4)
-         .getEntry();
-         private GenericEntry busVoltWid =
-      tab.add(" bus volt", 0)
-         .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(4,3)
-         .getEntry();
-         private GenericEntry velocityEntry =
+          private GenericEntry velocityEntry =
       tab.add("Intake Velocity", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
          .withPosition(5,2)
@@ -212,8 +202,6 @@ public class Intake extends SubsystemBase{
     speedEntry.setDouble(speed);
     humanEntry.setBoolean(humanAtSetpoint.getAsBoolean());
     outputWid.setDouble(intakeMotor.getAppliedOutput());
-    currentWid.setDouble(intakeMotor.getOutputCurrent());
-    busVoltWid.setDouble(intakeMotor.getBusVoltage());
     velocityEntry.setDouble(velocityRPM);
     pEntry.setDouble(velocityPid.getP());
     iEntry.setDouble(velocityPid.getI());

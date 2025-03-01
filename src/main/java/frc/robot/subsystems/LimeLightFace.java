@@ -1,34 +1,10 @@
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.LimelightHelpers.LimelightResults;
-import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.RobotContainer;
-import frc.robot.generated.TunerConstants;
 import frc.robot.LimelightHelpers;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
-
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
-import frc.robot.LimelightHelpers;
 
 public class LimeLightFace extends SubsystemBase{
 
@@ -129,6 +105,7 @@ public class LimeLightFace extends SubsystemBase{
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
     double targetAngleStrafe = (targetTx - LimelightHelpers.getTX("limelight")) * kP;
+    System.out.println(targetAngleStrafe);
 
     // convert to radians per second for our drive method
     //targetAngleStrafe *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed

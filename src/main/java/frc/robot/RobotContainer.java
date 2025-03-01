@@ -75,7 +75,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
-        elevator.checkIfSetFollow();
+        elevator.setFollower();
     }
 
     private void configureBindings() {
@@ -174,7 +174,7 @@ public class RobotContainer {
         forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() * 0.01))).withTimeout(.5)
         .andThen(
             drivetrain.applyRequest(()-> 
-            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() * 0.001)));
+            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() )));
  }
 
     public Command getAutonomousCommand() {
