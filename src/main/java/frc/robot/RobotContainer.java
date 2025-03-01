@@ -174,7 +174,7 @@ public class RobotContainer {
         forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() * 0.001))).withTimeout(.5)
         .andThen(
             drivetrain.applyRequest(()-> 
-            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() * 0.002)));
+            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() * 0.01)));
  }
 
     public Command getAutonomousCommand() {

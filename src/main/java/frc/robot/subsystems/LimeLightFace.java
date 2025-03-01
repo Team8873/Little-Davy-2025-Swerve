@@ -128,15 +128,15 @@ public class LimeLightFace extends SubsystemBase{
 
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetingAngularVelocity = (targetTx - LimelightHelpers.getTX("limelight")) * kP;
+    double targetAngleStrafe = (targetTx - LimelightHelpers.getTX("limelight")) * kP;
 
     // convert to radians per second for our drive method
-    targetingAngularVelocity *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
+    //targetAngleStrafe *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
 
     //invert since tx is positive when the target is to the right of the crosshair
     //targetingAngularVelocity *= -1.0;
 
-    return targetingAngularVelocity;
+    return targetAngleStrafe;
   }
 /**
      * @param joystick the joystick to read from
