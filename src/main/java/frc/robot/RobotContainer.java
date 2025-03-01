@@ -171,10 +171,10 @@ public class RobotContainer {
     }
     public SequentialCommandGroup strafeCommand(){
         return new SequentialCommandGroup(drivetrain.applyRequest(() ->
-        forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() * 0.001))).withTimeout(.5)
+        forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() * 0.01))).withTimeout(.5)
         .andThen(
             drivetrain.applyRequest(()-> 
-            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() * 0.01)));
+            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() * 0.001)));
  }
 
     public Command getAutonomousCommand() {
