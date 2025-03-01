@@ -32,20 +32,20 @@ import frc.robot.LimelightHelpers;
 
 public class LimeLightFace extends SubsystemBase{
 
-  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
- // private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
- // private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
- // private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
- // private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
+//   Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
+//  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
+//  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
+//  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
+//  private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
 
 
-  //double getPeriod=0;  -> trying to solve error in last line
+//   double getPeriod=0;  -> trying to solve error in last line
 
 
 // simple proportional turning control with Limelight.
-  // "proportional control" is a control algorithm in which the output is proportional to the error.
-  // in this case, we are going to return an angular velocity that is proportional to the 
-  // "tx" value from the Limelight.
+//   "proportional control" is a control algorithm in which the output is proportional to the error.
+//   in this case, we are going to return an angular velocity that is proportional to the 
+//   "tx" value from the Limelight.
   double limelight_aim_proportional()
   {    
     // kP (constant of proportionality)
@@ -80,27 +80,27 @@ public class LimeLightFace extends SubsystemBase{
     return targetingForwardSpeed;
   }
 
-  private void drive(boolean fieldRelative) {
+  //private void drive(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    var xSpeed =
-        -m_xspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftY(), 0.02))
-            * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
+   // var xSpeed =
+     //   -m_xspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftY(), 0.02))
+     //       * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    var ySpeed =
-        -m_yspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftX(), 0.02))
-            * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
+    //var ySpeed =
+     //   -m_yspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftX(), 0.02))
+      //      * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    var rot =
-        -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02))
-            * RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
+    //var rot =
+      //  -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02))
+      //      * RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
 
     // while the A-button is pressed, overwrite some of the driving values with the output of our limelight methods
     //joystick.rightBumper().whileTrue( joystickrightbumper = 1);
@@ -115,7 +115,7 @@ public class LimeLightFace extends SubsystemBase{
 
         //while using Limelight, turn off field-relative driving.
      //   fieldRelative = false;}
-    }
+    //}
 /**
      * @param joystick the joystick to read from
      * @return the action/method to run
