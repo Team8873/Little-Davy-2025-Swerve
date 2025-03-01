@@ -52,13 +52,13 @@ public class Constants {
     }
     public static class PresetConstants {
         //default flat wrist pos
-        public static final double lvl1to3ArmPos = 0.185;
-        public static final double lvl4ArmPos = 0.7; 
+        public static final double lvl1to3ArmPos = 0.186;
+        public static final double lvl4ArmPos = 3.7; 
         public static final double wristFlatPos = 0;
-        public static final double lvl1Elevator = 2.5;
-        public static final double lvl2Elevator = 3.5;
-        public static final double lvl3Elevator = 4.75;
-        public static final double lvl4Elevator = 5;
+        public static final double lvl1Elevator = 2.55;
+        public static final double lvl2Elevator = 3.55;
+        public static final double lvl3Elevator = 4.8;
+        public static final double lvl4Elevator = 4.8;
 
         //side wrist pos
         public static final double wristSidePos = 0;
@@ -78,12 +78,12 @@ public class Constants {
 
         //ground intake 
         public static final double goundElevator = 0;
-        public static final double groundArm = 0.25;
+        public static final double groundArm = 0.251;
 
-        public static final double wristSidePosNeg = -wristSidePos;
+        public static final double wristSidePosNeg = 1-wristSidePos;
         public static final double wristFlatPosNeg = 0;
 
-        public static final double travelArm = 0.45;
+        public static final double travelArm = 0.451;
 
     }
     public static class ClimberConstants {
