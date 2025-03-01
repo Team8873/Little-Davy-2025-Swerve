@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -32,12 +33,12 @@ import frc.robot.LimelightHelpers;
 public class LimeLightFace extends SubsystemBase{
 
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
-  private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
+ // private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
+ // private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
+ // private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
+ // private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
 
-  private final XboxController joystick = XboxController();
+
   //double getPeriod=0;  -> trying to solve error in last line
 
 
@@ -104,25 +105,25 @@ public class LimeLightFace extends SubsystemBase{
     // while the A-button is pressed, overwrite some of the driving values with the output of our limelight methods
     //joystick.rightBumper().whileTrue( joystickrightbumper = 1);
 
-    if(joystick.getRightBumperButtonPressed())
-    {
-        final var rot_limelight = limelight_aim_proportional();
-        rot = rot_limelight;
+   // if(joystick.getRightBumperButtonPressed())
+   // {
+     //   final var rot_limelight = limelight_aim_proportional();
+    //    rot = rot_limelight;
 
-        final var forward_limelight = limelight_range_proportional();
-        xSpeed = forward_limelight;
+     //   final var forward_limelight = limelight_range_proportional();
+     //   xSpeed = forward_limelight;
 
         //while using Limelight, turn off field-relative driving.
-        fieldRelative = false;
+     //   fieldRelative = false;}
     }
 /**
-     * @param operator the joystick to read from
+     * @param joystick the joystick to read from
      * @return the action/method to run
      */
-    public Command moveElevator(CommandXboxController joystick){
-      return this.run(
+    public Command face(){
+      return this.runOnce(
           () -> {
-          readFromController(operator);
+          
           });
     //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
   }
