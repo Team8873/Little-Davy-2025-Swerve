@@ -31,7 +31,7 @@ public class Constants {
     }
     public static class ArmConstants {
         public static final int armCanId = 13;
-        public static final int wristCanId = 14;
+        public static final int wristCanId = 16;
         public static final double armkP = 0.13;
         public static final double armkI = 0.0;
         public static final double armkD = 0.0;
@@ -96,19 +96,19 @@ public class Constants {
         //defined positions, getPosition measures in rotations
         //360 deg is 1 spool rotation so multiply 360 by that many spool rotations
         public static final double restingPosition = 0;
-        public static final double engagedPosition = 90;
-        public static final double climbedPositon = 45;
+        public static final double engagedPosition = 0.25;
+        public static final double climbedPositon = 0.125;
 
         //PID constants:
-        public static final double ClimberkP = 0.1;
+        public static final double ClimberkP = 0.4;
         public static final double ClimberkI = 0;
         public static final double ClimberkD = 0;
 
 
         //Identification
-        public static final int motorForClimberID = 16;
+        public static final int motorForClimberID = 14;
         public static final int servoID = 0;
-        public static final int encoderForClimberDIOPort = 0;
+        public static final int encoderForClimberDIOPort = 2;
     }
 }
      
