@@ -18,6 +18,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -138,11 +140,18 @@ public class RobotContainer {
             forwardStraight.withVelocityX(-0.5).withVelocityY(0))
         );
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() ->
-        forwardStraight.withVelocityX(0).withVelocityY(-0.5))
-    );
-    joystick.pov(270).whileTrue(drivetrain.applyRequest(() ->
-        forwardStraight.withVelocityX(0).withVelocityY(0.5))
-    );
+        forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional()* 0.001))
+        );
+        joystick.rightBumper().whileTrue(
+            lockOnCommand()
+            // Commands.sequence(
+            // drivetrain.applyRequest(() ->
+            // drive.withRotationalRate(limeLightFace.limelight_aim_proportional())).withTimeout(.5)
+            // .andThen(
+            //     drivetrain.applyRequest(()-> 
+            //     forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005))))
+        );
+            
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -156,6 +165,13 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
         
+    }
+    public SequentialCommandGroup lockOnCommand(){
+           return new SequentialCommandGroup(drivetrain.applyRequest(() ->
+           drive.withRotationalRate(limeLightFace.limelight_aim_proportional())).withTimeout(.5)
+           .andThen(
+               drivetrain.applyRequest(()-> 
+               forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005))));
     }
 
     public Command getAutonomousCommand() {
