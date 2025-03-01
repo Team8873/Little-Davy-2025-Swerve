@@ -169,6 +169,13 @@ public class RobotContainer {
                drivetrain.applyRequest(()-> 
                forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005))));
     }
+    public SequentialCommandGroup strafeCommand(){
+        return new SequentialCommandGroup(drivetrain.applyRequest(() ->
+        forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() * 0.001))).withTimeout(.5)
+        .andThen(
+            drivetrain.applyRequest(()-> 
+            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() * 0.002)));
+ }
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
