@@ -10,6 +10,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,7 +50,7 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
-    private double armTargetPos = 0;
+    private double armTargetPos = 0.5;
     
 
     private GenericEntry armPosWidget =
@@ -79,10 +80,14 @@ public class Arm extends SubsystemBase{
             .withWidget(BuiltInWidgets.kNumberBar)
             .withPosition(4,4)
             .getEntry();
+            
     //creates the PID loop for the arm and wrist motors
     private final ProfiledPIDController armPid = new ProfiledPIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD, new TrapezoidProfile.Constraints(ArmConstants.maxVelocity, ArmConstants.maxAcceleration));
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
-
+    private ComplexWidget pidEntry =
+          tab.add("arm Pid", armPid)
+            .withWidget(BuiltInWidgets.kPIDController)
+            .withPosition(6,1);
 /**
  * @param operator the joystick port
  * @return the action/method to run
@@ -111,7 +116,7 @@ public class Arm extends SubsystemBase{
     setArmSpeed();
   }
 
- /**
+ /*
    * @return runs wrist motor while it is not at the setpoint
    */
   public void wristPreset (){
@@ -200,8 +205,6 @@ public class Arm extends SubsystemBase{
     getEncoderData();
     updateShuffleboardWidgets();
     getArmMechSetpointStatus();
-    System.out.print(LimelightHelpers.getTX("limelight"));
-
   } 
   /**
    * updates shuffleboard widgets

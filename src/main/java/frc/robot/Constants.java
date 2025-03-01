@@ -46,14 +46,14 @@ public class Constants {
         public static final double wristGearRatio = 16;
         public static final double armGearRatio = 0;
         public static final int encoderId = 0;
-        public static final double maxVelocity = 1;
-        public static final double maxAcceleration = 0.5;
+        public static final double maxVelocity = .5;
+        public static final double maxAcceleration = 0.1;
         
     }
     public static class PresetConstants {
         //default flat wrist pos
-        public static final double lvl1to3ArmPos = 0.1;
-        public static final double lvl4ArmPos = 0; 
+        public static final double lvl1to3ArmPos = 0.4;
+        public static final double lvl4ArmPos = 0.7; 
         public static final double wristFlatPos = 0;
         public static final double lvl1Elevator = 2.5;
         public static final double lvl2Elevator = 3.3;
@@ -78,7 +78,7 @@ public class Constants {
 
         //ground intake 
         public static final double goundElevator = 0;
-        public static final double groundArm = 0;
+        public static final double groundArm = 0.25;
 
         public static final double wristSidePosNeg = -wristSidePos;
         public static final double wristFlatPosNeg = 0;
