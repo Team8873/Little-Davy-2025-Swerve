@@ -49,7 +49,7 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
-    private double armTarget = 0;
+    private double armTargetPos = 0;
     
 
     private GenericEntry armPosWidget =
@@ -98,7 +98,8 @@ public class Arm extends SubsystemBase{
  * @param operator the joystick port
  */
     private void readFromController(CommandXboxController operator){
-        setArmMechTarget(operator.getLeftX(),operator.getLeftY()); 
+      armTargetPos += (operator.getLeftY()/40);
+        setArmMechTarget(operator.getLeftX(),armTargetPos); 
         setArmSpeed();
         setWristSpeed();
     }
@@ -107,14 +108,13 @@ public class Arm extends SubsystemBase{
    * @return runs arm motor while it is not at the setpoint
    */
   public void armPreset (){
-      while(!armPid.atSetpoint()){setArmSpeed();}
+    setArmSpeed();
   }
 
  /**
    * @return runs wrist motor while it is not at the setpoint
    */
   public void wristPreset (){
-    while(!wristPid.atSetpoint()){setWristSpeed();}
 }
 /**
  * sets arm speed based on armPid loop
@@ -140,6 +140,9 @@ public class Arm extends SubsystemBase{
             wristSpeed = 0;
         });
   }
+  public void resetPidError(){
+    armPid.reset(armPosition);
+}
  /**
   * sets Target position for both arm and wrist
   */
@@ -208,7 +211,6 @@ public class Arm extends SubsystemBase{
     wristPosWidget.setDouble(wristPosition);
     armSetpointWidget.setBoolean(armAtSetpoint.getAsBoolean());
     wristSetpointWidget.setBoolean(wristAtSetpoint.getAsBoolean());
-    armTargetWidget.setDouble(armTarget);
   }
 
 }
