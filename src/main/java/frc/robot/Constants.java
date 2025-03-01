@@ -37,8 +37,8 @@ public class Constants {
     public static class ArmConstants {
         public static final int armCanId = 13;
         public static final int wristCanId = 14;
-        public static final double armkP = 6;
-        public static final double armkI = 0.1;
+        public static final double armkP = 4;
+        public static final double armkI = 0.0;
         public static final double armkD = 0.0;
         public static final double wristkP = 0.05;
         public static final double wristkI = 0.0;
@@ -47,7 +47,7 @@ public class Constants {
         public static final double armGearRatio = 0;
         public static final int encoderId = 0;
         public static final double maxVelocity = 1.5;
-        public static final double maxAcceleration = 1;
+        public static final double maxAcceleration = .5;
         
     }
     public static class PresetConstants {
@@ -57,8 +57,8 @@ public class Constants {
         public static final double wristFlatPos = 0;
         public static final double lvl1Elevator = 2.55;
         public static final double lvl2Elevator = 3.55;
-        public static final double lvl3Elevator = 4.8;
-        public static final double lvl4Elevator = 4.8;
+        public static final double lvl3Elevator = 4;
+        public static final double lvl4Elevator = 4;
 
         //side wrist pos
         public static final double wristSidePos = 0;

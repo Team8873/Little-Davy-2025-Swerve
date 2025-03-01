@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.LimelightHelpers;
 
 import static frc.robot.Constants.ArmConstants;
@@ -83,14 +85,22 @@ public class Arm extends SubsystemBase{
             
     //creates the PID loop for the arm and wrist motors
 
-    private final ProfiledPIDController armPid = new ProfiledPIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD, new TrapezoidProfile.Constraints(ArmConstants.maxVelocity, ArmConstants.maxAcceleration));
+    // private final ProfiledPIDController armPid = new ProfiledPIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD, new TrapezoidProfile.Constraints(ArmConstants.maxVelocity, ArmConstants.maxAcceleration));
+    private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
+    private final ArmFeedforward m_feedforward = new ArmFeedforward();
+  
     private ComplexWidget pidEntry =
           tab.add("arm Pid", armPid)
             .withWidget(BuiltInWidgets.kPIDController)
             .withPosition(8, 1);
     public Arm(){
       armPid.setTolerance(.005);
+      armPid.disableContinuousInput();
+      armPid.setSetpoint(armTargetPos);
+      tab.addDouble("Arm Target Real", () -> armPid.getSetpoint());
+      tab.addDouble("Arm Speed Real", () -> armSpeed);
+
     }
 /**
  * @param operator the joystick port
@@ -99,6 +109,8 @@ public class Arm extends SubsystemBase{
     public Command moveArm(CommandXboxController operator){
            return this.run(
             () -> {
+                  // armMotor.set(operator.getLeftY() / 5.0);
+                  // return;
                 readFromController(operator); 
             });
     }
@@ -150,17 +162,17 @@ public class Arm extends SubsystemBase{
   }
   public void resetPidError(){
 
-    armPid.reset(armPosition);
+    armPid.reset(  );
 }
  /**
   * sets Target position for both arm and wrist
   */
   public void setArmMechTarget(double wristTarget, double armTarget){
     setArmTarget(armTarget);
-    setWristTarget(wristTarget * 5);
+    setWristTarget(wristTarget);
   }
   public void setArmTarget(double target){
-    armPid.setGoal(target);
+    armPid.setSetpoint(target);
     armTargetPos = target;
   }
   public void setWristTarget(double target){

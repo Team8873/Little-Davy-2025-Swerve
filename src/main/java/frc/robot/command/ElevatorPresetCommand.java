@@ -46,8 +46,8 @@ public class ElevatorPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_elevator.elevatorPreset();
-    new WaitCommand(1.5).andThen(()->
+    m_elevator.elevatorPreset();
+    new WaitCommand(0.5).andThen(()->
       {
       m_arm.armPreset();
       }, m_arm);
