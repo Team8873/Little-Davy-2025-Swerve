@@ -45,6 +45,9 @@ public class Constants {
         public static final double wristkD = 0.0;
         public static final double wristGearRatio = 16;
         public static final double armGearRatio = 0;
+        public static final int encoderId = 0;
+        public static final double maxVelocity = 1;
+        public static final double maxAcceleration = 0.5;
         
     }
     public static class PresetConstants {
@@ -113,7 +116,7 @@ public class Constants {
         //Identification
         public static final int motorForClimberID = 16;
         public static final int servoID = 0;
-        public static final int encoderForClimberDIOPort = 0;
+        public static final int encoderForClimberDIOPort = 10;
     }
 }
      

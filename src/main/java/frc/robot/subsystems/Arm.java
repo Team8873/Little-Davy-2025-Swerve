@@ -5,6 +5,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -33,7 +35,7 @@ public class Arm extends SubsystemBase{
 
     //get the encoders plugged into the sparkMax or connected to it
     //private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(1);
-    private final RelativeEncoder armEncoder = armMotor.getEncoder();
+    private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(ArmConstants.encoderId);
     private final RelativeEncoder wristEncoder = wristMotor.getEncoder();
     //private final DutyCycleEncoder wristEncoder = new DutyCycleEncoder(2);
 
@@ -78,7 +80,7 @@ public class Arm extends SubsystemBase{
             .withPosition(4,4)
             .getEntry();
     //creates the PID loop for the arm and wrist motors
-    private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
+    private final ProfiledPIDController armPid = new ProfiledPIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD, new TrapezoidProfile.Constraints(ArmConstants.maxVelocity, ArmConstants.maxAcceleration));
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
 
 /**
@@ -146,7 +148,7 @@ public class Arm extends SubsystemBase{
     setWristTarget(wristTarget * 5);
   }
   public void setArmTarget(double target){
-    armPid.setSetpoint(target);
+    armPid.setGoal(target);
   }
   public void setWristTarget(double target){
     wristPid.setSetpoint(target);
@@ -157,7 +159,7 @@ public class Arm extends SubsystemBase{
    */
   private void getEncoderData(){
     //armPosition = armEncoder.get();
-    armPosition = armEncoder.getPosition();
+    armPosition = armEncoder.get();
     //wristPosition = armEncoder.get();
 
     wristPosition = wristEncoder.getPosition();
@@ -176,7 +178,6 @@ public class Arm extends SubsystemBase{
  * @return returns the arm position status as a boolean
  */
   public BooleanSupplier getArmSetpointStatus(){
-    armTarget = armPid.getSetpoint();
     return armAtSetpoint = ()-> armPid.atSetpoint();
   }
 /**
