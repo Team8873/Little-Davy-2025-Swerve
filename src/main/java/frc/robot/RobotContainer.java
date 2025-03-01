@@ -63,6 +63,7 @@ public class RobotContainer {
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
+    public final LimeLightFace limeLightFace  = new LimeLightFace();
     //public final LimeLightFace limeLightFace = new LimeLightFace();
 
     /* Path follower */
@@ -114,7 +115,7 @@ public class RobotContainer {
         //climber stuff:
         joystick.y().onTrue(climber.moveToEngaged());
         joystick.x().whileTrue(climber.moveClimberDown());
-        
+        joystick.rightBumper().whileTrue(face());
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             

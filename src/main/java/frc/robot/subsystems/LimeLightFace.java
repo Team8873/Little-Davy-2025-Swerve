@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.LimelightHelpers;
 
-public class LimeLightFace{
+public class LimeLightFace extends SubsystemBase{
 
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
@@ -37,7 +37,7 @@ public class LimeLightFace{
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
   private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
 
-  private final XboxController joystick = new XboxController(0);
+  private final XboxController joystick = XboxController();
   //double getPeriod=0;  -> trying to solve error in last line
 
 
@@ -115,7 +115,15 @@ public class LimeLightFace{
         //while using Limelight, turn off field-relative driving.
         fieldRelative = false;
     }
-
+/**
+     * @param operator the joystick to read from
+     * @return the action/method to run
+     */
+    public Command moveElevator(CommandXboxController joystick){
+      return this.run(
+          () -> {
+          readFromController(operator);
+          });
     //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
   }
  
