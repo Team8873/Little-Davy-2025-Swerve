@@ -44,8 +44,8 @@ public class ElevatorPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.elevatorPreset();
-    //m_arm.armPreset();
+    //m_elevator.elevatorPreset();
+    m_arm.armPreset();
     //while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
  }
 
@@ -53,6 +53,7 @@ public class ElevatorPresetCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_elevator.resetPidError();
+    m_arm.resetPidError();
   }
 
   // Returns true when the command should end.
