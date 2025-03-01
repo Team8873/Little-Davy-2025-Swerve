@@ -47,7 +47,7 @@ public class ElevatorPresetCommand extends Command {
   @Override
   public void execute() {
     //m_elevator.elevatorPreset();
-    //m_arm.armPreset();
+    new WaitCommand(1.5).andThen(()->{m_arm.armPreset();}, m_arm);
     
  }
 
