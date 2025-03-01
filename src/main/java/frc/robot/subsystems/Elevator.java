@@ -98,6 +98,7 @@ public class Elevator extends SubsystemBase{
     private State targetPosition;
     private double pastPosition = 0;
     private boolean brakeOn = false;
+    private double elevatorTarget = 0;
     public Elevator(){
         //elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
     }
@@ -169,7 +170,8 @@ public class Elevator extends SubsystemBase{
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator){
-        targetElevatorPosition((operator.getRightY() + 2.0) * 2.5);
+        elevatorTarget += operator.getRightY()/10;
+        targetElevatorPosition(elevatorTarget);
         //stopElevatorFall(operator);
         //targetPosition(pastPosition);
         setSpeed();
@@ -217,7 +219,8 @@ public class Elevator extends SubsystemBase{
      * @param target the target position
      */
     public void targetElevatorPosition(double target){
-        //if(target < 0){target = 0.3;}
+        if(target < 0){target = 0.3;}
+        if(target > 5){target = 4.8;}
         elevatorPid.setGoal(target);
     }
     public void resetPidError(){
