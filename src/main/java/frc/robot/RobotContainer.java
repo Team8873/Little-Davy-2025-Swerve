@@ -77,8 +77,39 @@ public class RobotContainer {
         operator.y().onTrue(intake.stopIntake().andThen(intake.intakeEject()));
 
         arm.setDefaultCommand(arm.moveArm(operator));
+<<<<<<< Updated upstream
 
         operator.b().onTrue(arm.stopArm());
+=======
+        tOFSensor.setDefaultCommand(tOFSensor.getDistance());
+        elevator.setDefaultCommand(elevator.moveElevator(operator));
+        limeLightFace.setDefaultCommand(limeLightFace.face(joystick));
+        
+        operator.a().onTrue(new ElevatorPresetCommand(elevator, arm, 'a', false).withTimeout(5));
+        operator.b().onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5));
+        operator.x().onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5));
+        operator.y().onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
+
+        // operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
+
+        // operator.leftBumper().and(operator.a().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
+        // operator.leftBumper().and(operator.b().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
+        // operator.leftBumper().and(operator.x().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
+
+        //operator.pov(0).onTrue(new StopCommandsCommand(elevator, intake, arm));
+
+        // operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
+        // operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
+        // operator.button(9).onTrue(new FlipWristCommand(arm));
+        // operator.button(10).onTrue(new FlipWrist90Command(arm));
+        
+        //operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
+
+        //climber stuff:
+        joystick.y().onTrue(climber.moveToEngaged());
+        joystick.x().whileTrue(climber.moveClimberDown());
+        joystick.rightBumper().whileTrue(limeLightFace.face());
+>>>>>>> Stashed changes
         
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
