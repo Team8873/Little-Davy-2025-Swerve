@@ -45,6 +45,10 @@ public class Arm extends SubsystemBase{
 
 
     private double armPosition;
+    private double armPreviousPosition;
+    private double armVelocity;
+
+
     private double wristPosition; 
 
     //shuffleboard stuff
@@ -88,7 +92,7 @@ public class Arm extends SubsystemBase{
     // private final ProfiledPIDController armPid = new ProfiledPIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD, new TrapezoidProfile.Constraints(ArmConstants.maxVelocity, ArmConstants.maxAcceleration));
     private final PIDController armPid = new PIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD);
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
-    private final ArmFeedforward m_feedforward = new ArmFeedforward();
+    private final ArmFeedforward m_feedforward = new ArmFeedforward(ArmConstants.kS, ArmConstants.kG, ArmConstants.kV);
   
     private ComplexWidget pidEntry =
           tab.add("arm Pid", armPid)
@@ -140,7 +144,7 @@ public class Arm extends SubsystemBase{
  * sets arm speed based on armPid loop
  */
   private void setArmSpeed(){
-      armSpeed = armPid.calculate(armPosition);
+      armSpeed = armPid.calculate(armPosition) + m_feedforward.calculate(armPosition, armVelocity);
       armMotor.set(armSpeed);
   }
 /**
@@ -186,7 +190,8 @@ public class Arm extends SubsystemBase{
     //armPosition = armEncoder.get();
     armPosition = armEncoder.get();
     //wristPosition = armEncoder.get();
-
+    armVelocity = armPosition - armPreviousPosition;
+    armPreviousPosition = armPosition;
     wristPosition = wristEncoder.getPosition();
   }
 

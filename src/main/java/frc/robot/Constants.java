@@ -48,6 +48,10 @@ public class Constants {
         public static final int encoderId = 0;
         public static final double maxVelocity = 1.5;
         public static final double maxAcceleration = .5;
+        public static final double kS = 0.025;
+        public static final double kG = 0.06;
+        public static final double kV = 0;
+        
         
     }
     public static class PresetConstants {
