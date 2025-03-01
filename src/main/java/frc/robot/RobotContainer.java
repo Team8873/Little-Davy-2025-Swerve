@@ -144,15 +144,7 @@ public class RobotContainer {
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() ->
         forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional()* 0.001))
         );
-        joystick.rightBumper().whileTrue(
-            lockOnCommand()
-            // Commands.sequence(
-            // drivetrain.applyRequest(() ->
-            // drive.withRotationalRate(limeLightFace.limelight_aim_proportional())).withTimeout(.5)
-            // .andThen(
-            //     drivetrain.applyRequest(()-> 
-            //     forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005))))
-        );
+        joystick.rightBumper().whileTrue(lockOnCommand());
             
 
         // Run SysId routines when holding back/start and X/Y.
