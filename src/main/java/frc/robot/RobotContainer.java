@@ -95,6 +95,8 @@ public class RobotContainer {
         operator.b().onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5));
         operator.x().onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5));
         operator.y().onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
+        operator.pov(270).onTrue(new ElevatorPresetCommand(elevator, arm, 't', false).withTimeout(5));
+
 
         // operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
 

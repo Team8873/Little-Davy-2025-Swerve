@@ -36,7 +36,7 @@ public class ElevatorPresetCommand extends Command {
   @Override
   public void initialize() {
     
-    //m_arm.setArmMechTarget(wristPos, armPos);
+    m_arm.setArmMechTarget(wristPos, armPos);
     checkPresetLvl();
     m_elevator.targetElevatorPosition(elevatorPos);
   }
@@ -44,7 +44,7 @@ public class ElevatorPresetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_elevator.elevatorPreset();
+    m_elevator.elevatorPreset();
     m_arm.armPreset();
     //while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
  }
@@ -93,6 +93,8 @@ public class ElevatorPresetCommand extends Command {
                 armPos = PresetConstants.groundArm;
                 wristPos = PresetConstants.wristSidePos;
           break;
+        case't': elevatorPos = PresetConstants.goundElevator;
+                  armPos = PresetConstants.travelArm;
         }
       }
 

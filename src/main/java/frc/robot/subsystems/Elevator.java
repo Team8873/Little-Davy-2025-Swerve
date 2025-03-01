@@ -170,7 +170,7 @@ public class Elevator extends SubsystemBase{
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator){
-        elevatorTarget += (operator.getRightY()/40);
+        elevatorTarget += (operator.getRightY()/160);
         targetElevatorPosition(elevatorTarget);
         goToPreset();
     }
@@ -220,6 +220,7 @@ public class Elevator extends SubsystemBase{
         // if(target < 0){target = 0.3;}
         // if(target > 5){target = 4.8;}
         elevatorPid.setGoal(target);
+        elevatorTarget = target;
     }
     public void resetPidError(){
         elevatorPid.reset(elevatorPosition, elevatorVelocity);

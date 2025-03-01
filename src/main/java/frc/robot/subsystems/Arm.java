@@ -50,7 +50,7 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armMechAtSetpoint = ()-> false; 
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
-    private double armTargetPos = 0.5;
+    private double armTargetPos = 0.35;
     
 
     private GenericEntry armPosWidget =
@@ -82,12 +82,16 @@ public class Arm extends SubsystemBase{
             .getEntry();
             
     //creates the PID loop for the arm and wrist motors
+
     private final ProfiledPIDController armPid = new ProfiledPIDController(ArmConstants.armkP, ArmConstants.armkI, ArmConstants.armkD, new TrapezoidProfile.Constraints(ArmConstants.maxVelocity, ArmConstants.maxAcceleration));
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
     private ComplexWidget pidEntry =
           tab.add("arm Pid", armPid)
             .withWidget(BuiltInWidgets.kPIDController)
-            .withPosition(6,1);
+            .withPosition(8, 1);
+    public Arm(){
+      armPid.setTolerance(.005);
+    }
 /**
  * @param operator the joystick port
  * @return the action/method to run
@@ -103,7 +107,7 @@ public class Arm extends SubsystemBase{
  * @param operator the joystick port
  */
     private void readFromController(CommandXboxController operator){
-      armTargetPos += (operator.getLeftY()/40);
+      armTargetPos += (operator.getLeftY()/160);
         setArmMechTarget(operator.getLeftX(),armTargetPos); 
         setArmSpeed();
         setWristSpeed();
@@ -146,17 +150,19 @@ public class Arm extends SubsystemBase{
         });
   }
   public void resetPidError(){
+
     armPid.reset(armPosition);
 }
  /**
   * sets Target position for both arm and wrist
   */
   public void setArmMechTarget(double wristTarget, double armTarget){
-    setArmTarget(armTarget * 13);
+    setArmTarget(armTarget);
     setWristTarget(wristTarget * 5);
   }
   public void setArmTarget(double target){
     armPid.setGoal(target);
+    armTargetPos = target;
   }
   public void setWristTarget(double target){
     wristPid.setSetpoint(target);
