@@ -114,7 +114,6 @@ public class Arm extends SubsystemBase{
     }
 
   /**
-   * @return runs arm motor while it is not at the setpoint
    */
   public void armPreset (){
     setArmSpeed();

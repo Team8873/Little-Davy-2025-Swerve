@@ -7,6 +7,7 @@ package frc.robot.command;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PresetConstants;
 
 /** An  command that uses an  subsystem. */
@@ -35,18 +36,19 @@ public class ElevatorPresetCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    m_arm.setArmMechTarget(wristPos, armPos);
+    m_elevator.resetPidError();
+    m_arm.resetPidError();
     checkPresetLvl();
     m_elevator.targetElevatorPosition(elevatorPos);
+    m_arm.setArmMechTarget(wristPos, armPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.elevatorPreset();
-    m_arm.armPreset();
-    //while(m_arm.getArmSetpointStatus().getAsBoolean()){m_arm.wristPreset();} //runs the wirst preset ONLY IF the arm is in position
+    //m_elevator.elevatorPreset();
+    //m_arm.armPreset();
+    
  }
 
   // Called once the command ends or is interrupted.
