@@ -104,7 +104,7 @@ public class LimeLightFace extends SubsystemBase{
 
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")-targetTx);
+    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")-targetTx*kP);
     System.out.println(targetAngleStrafe);
 
     // convert to radians per second for our drive method
