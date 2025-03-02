@@ -19,6 +19,7 @@ public class ElevatorPresetCommand extends Command {
   private double elevatorPos = PresetConstants.lvl1Elevator;
   private char m_button_pressed = 'a';
   private boolean m_wristSide = false;
+  private int timer = 0;
   /**
    * Creates a new Command.
    *
@@ -47,11 +48,13 @@ public class ElevatorPresetCommand extends Command {
   @Override
   public void execute() {
     m_elevator.elevatorPreset();
-    new WaitCommand(0.5).andThen(()->
-      {
-      m_arm.armPreset();
-      }, m_arm);
-    
+
+    if(timer < 25) {
+      timer++; 
+      return;
+    }
+
+    m_arm.armPreset();
  }
 
   // Called once the command ends or is interrupted.
@@ -59,6 +62,7 @@ public class ElevatorPresetCommand extends Command {
   public void end(boolean interrupted) {
     m_elevator.resetPidError();
     m_arm.resetPidError();
+    timer = 0;
   }
 
   // Returns true when the command should end.

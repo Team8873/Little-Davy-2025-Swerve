@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase{
     private final SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeCanId, MotorType.kBrushless); //create the motor object
     private final SparkMax humanMotor = new SparkMax(IntakeConstants.humanIntakeCanId, MotorType.kBrushless);
 
-    private final PIDController velocityPid = new PIDController(IntakeConstants.velocitykP, IntakeConstants.velocitykI, IntakeConstants.velocitykD);
+    //private final PIDController velocityPid = new PIDController(IntakeConstants.velocitykP, IntakeConstants.velocitykI, IntakeConstants.velocitykD);
     // creates PIDController object
     private final PIDController humanPid = new PIDController(IntakeConstants.humankP, IntakeConstants.humankI, IntakeConstants.humankD);
 
@@ -134,18 +134,18 @@ public class Intake extends SubsystemBase{
     return this.run(
       ()-> {
         //setTargetVelocity((operator.getRightTriggerAxis() - operator.getLeftTriggerAxis()));
-        speed = operator.getLeftTriggerAxis() - operator.getRightTriggerAxis();
+        speed = operator.getLeftTriggerAxis() - operator.getRightTriggerAxis() - .06;
         setSpeed();
       }
     );
   }
 
   public void setTargetVelocity(double target){
-    velocityPid.setSetpoint(target * 1000);
+    //velocityPid.setSetpoint(target * 1000);
   } 
   
   private void getVelocityStatus(){
-    atVelocity = ()-> velocityPid.atSetpoint();
+    //atVelocity = ()-> velocityPid.atSetpoint();
   }
   
   /**
@@ -203,10 +203,6 @@ public class Intake extends SubsystemBase{
     humanEntry.setBoolean(humanAtSetpoint.getAsBoolean());
     outputWid.setDouble(intakeMotor.getAppliedOutput());
     velocityEntry.setDouble(velocityRPM);
-    pEntry.setDouble(velocityPid.getP());
-    iEntry.setDouble(velocityPid.getI());
-    dEntry.setDouble(velocityPid.getD());
-    setPointEntry.setDouble(velocityPid.getSetpoint());
 
   }
 }

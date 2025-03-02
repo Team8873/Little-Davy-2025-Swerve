@@ -57,6 +57,8 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
     private double armTargetPos = 0.35;
+    private double wirstTargetPos = 0.35;
+
     
 
     private GenericEntry armPosWidget =
@@ -124,7 +126,8 @@ public class Arm extends SubsystemBase{
  */
     private void readFromController(CommandXboxController operator){
       armTargetPos += (operator.getLeftY()/160);
-        setArmMechTarget(operator.getLeftX(),armTargetPos); 
+      wirstTargetPos += (operator.getLeftX()/160);
+        setArmMechTarget(wirstTargetPos,armTargetPos); 
         setArmSpeed();
         setWristSpeed();
     }

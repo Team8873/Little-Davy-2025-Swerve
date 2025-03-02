@@ -37,7 +37,7 @@ public class Constants {
     public static class ArmConstants {
         public static final int armCanId = 13;
         public static final int wristCanId = 14;
-        public static final double armkP = 4;
+        public static final double armkP = 2;
         public static final double armkI = 0.025;
         public static final double armkD = 0.0;
         public static final double wristkP = 0.05;
@@ -56,13 +56,13 @@ public class Constants {
     }
     public static class PresetConstants {
         //default flat wrist pos
-        public static final double lvl1to3ArmPos = 0.186;
-        public static final double lvl4ArmPos = 3.7; 
+        public static final double lvl1to3ArmPos = 0.2;
+        public static final double lvl4ArmPos = 0.45; 
         public static final double wristFlatPos = 0;
         public static final double lvl1Elevator = 2.55;
-        public static final double lvl2Elevator = 3.55;
+        public static final double lvl2Elevator = 3.3;
         public static final double lvl3Elevator = 4;
-        public static final double lvl4Elevator = 4;
+        public static final double lvl4Elevator = 4.25;
 
         //side wrist pos
         public static final double wristSidePos = 0;
