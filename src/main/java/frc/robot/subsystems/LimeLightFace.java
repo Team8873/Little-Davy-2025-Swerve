@@ -92,7 +92,7 @@ public class LimeLightFace extends SubsystemBase{
         //while using Limelight, turn off field-relative driving.
      //   fieldRelative = false;}
     //}
-    public double limelight_strafe_proportional()
+    public double limelight_left_strafe_proportional()
   {    
     // kP (constant of proportionality)
     // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
@@ -100,11 +100,11 @@ public class LimeLightFace extends SubsystemBase{
     // if it is too low, the robot will never reach its target
     // if the robot never turns in the correct direction, kP should be inverted.
     double kP = 0.02;
-    double targetTx = 10;
+    double lefttargetTx = 10;
 
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")-targetTx*kP);
+    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")+lefttargetTx*kP);
     System.out.println(targetAngleStrafe);
 
     // convert to radians per second for our drive method
@@ -115,17 +115,30 @@ public class LimeLightFace extends SubsystemBase{
 
     return targetAngleStrafe;
   }
-/**
-     * @param joystick the joystick to read from
-     * @return the action/method to run
-     */
-    public Command face(){
-      return this.runOnce(
-          () -> {
-          
-          });
-    //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
+  public double limelight_right_strafe_proportional()
+  {    
+    // kP (constant of proportionality)
+    // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
+    // if it is too high, the robot will oscillate around.
+    // if it is too low, the robot will never reach its target
+    // if the robot never turns in the correct direction, kP should be inverted.
+    double kP = 0.02;
+    double righttargetTx = 10;
+
+    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
+    // your limelight 3 feed, tx should return roughly 31 degrees.
+    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")-righttargetTx*kP);
+    System.out.println(targetAngleStrafe);
+
+    // convert to radians per second for our drive method
+    //targetAngleStrafe *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
+
+    //invert since tx is positive when the target is to the right of the crosshair
+    //targetingAngularVelocity *= -1.0;
+
+    return targetAngleStrafe;
   }
+    //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
   @Override
   public void periodic(){
     System.out.print(limelight_aim_proportional());

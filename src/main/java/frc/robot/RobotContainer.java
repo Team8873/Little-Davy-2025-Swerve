@@ -119,7 +119,6 @@ public class RobotContainer {
         //climber stuff:
         joystick.y().onTrue(climber.moveToEngaged());
         joystick.x().whileTrue(climber.moveClimberDown());
-        joystick.rightBumper().whileTrue(limeLightFace.face());
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             
@@ -141,12 +140,13 @@ public class RobotContainer {
         joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(-0.5).withVelocityY(0))
         );
-        joystick.pov(90).whileTrue(drivetrain.applyRequest(() ->
-        forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional()* 0.001))
+        joystick.rightBumper().whileTrue(lockOnCommand()
         );
-        joystick.rightBumper().whileTrue(lockOnCommand());
+        joystick.pov(90).whileTrue(drivetrain.applyRequest(()->
+            forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_right_strafe_proportional() ))
+        );
         joystick.pov(270).whileTrue(drivetrain.applyRequest(()->
-            forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() )));
+            forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_left_strafe_proportional() )));
             
 
         // Run SysId routines when holding back/start and X/Y.
@@ -169,14 +169,16 @@ public class RobotContainer {
                drivetrain.applyRequest(()-> 
                forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005))));
     }
-    public SequentialCommandGroup strafeCommand(){
+    public SequentialCommandGroup strafeRightCommand(){
         return new SequentialCommandGroup(drivetrain.applyRequest(() ->
-        forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_strafe_proportional() * 0.01))).withTimeout(.5)
-        .andThen(
-            drivetrain.applyRequest(()-> 
-            forwardStraight.withVelocityX(limeLightFace.limelight_strafe_proportional() )));
+        forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_right_strafe_proportional() * 0.01)).withTimeout(.5)
+    );
  }
-
+ public SequentialCommandGroup strafeLeftCommand(){
+    return new SequentialCommandGroup(drivetrain.applyRequest(() ->
+    forwardStraight.withVelocityX(0).withVelocityY(limeLightFace.limelight_left_strafe_proportional() * 0.01)).withTimeout(.5)
+    );
+ }
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
