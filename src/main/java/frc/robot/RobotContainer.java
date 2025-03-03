@@ -111,7 +111,7 @@ public class RobotContainer {
         // operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
         // operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
         // operator.button(9).onTrue(new FlipWristCommand(arm));
-        // operator.button(10).onTrue(new FlipWrist90Command(arm));
+         operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(3));
         
         //operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
 
