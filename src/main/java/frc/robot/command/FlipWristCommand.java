@@ -36,6 +36,7 @@ public class FlipWristCommand extends Command {
   @Override
   public void execute() {
     m_arm.setWristSpeed();
+    m_arm.setArmSpeed();
   }
 
   // Called once the command ends or is interrupted.

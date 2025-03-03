@@ -84,7 +84,11 @@ public class ElevatorPresetCommand extends Command {
           break;
         case 'x': elevatorPos = PresetConstants.lvl3ElevatorSide;
           break;
+        case'h': elevatorPos = PresetConstants.humanElevatorPos;
+                 armPos = PresetConstants.humanArmPos;
+                 break;
       }}
+      
     else{
         switch (m_button_pressed) {
 

@@ -98,7 +98,7 @@ public class RobotContainer {
         operator.x().onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5));
         operator.y().onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
         operator.pov(270).onTrue(new ElevatorPresetCommand(elevator, arm, 't', false).withTimeout(5));
-
+        operator.pov(0).onTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5));
 
         // operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
 
@@ -110,7 +110,7 @@ public class RobotContainer {
 
         // operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
         // operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
-        // operator.button(9).onTrue(new FlipWristCommand(arm));
+         operator.button(9).onTrue(new FlipWristCommand(arm).withTimeout(5));
          operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(3));
         
         //operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
