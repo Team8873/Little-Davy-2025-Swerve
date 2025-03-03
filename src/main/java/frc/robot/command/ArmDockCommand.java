@@ -39,8 +39,8 @@ public class ArmDockCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.wristPreset();
-    while(m_arm.getWristSetpointStatus().getAsBoolean()){m_arm.armPreset();}
+    m_arm.setWristSpeed();
+    while(m_arm.getWristSetpointStatus().getAsBoolean()){m_arm.setArmSpeed();}
     //m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 

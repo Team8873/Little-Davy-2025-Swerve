@@ -95,7 +95,7 @@ public class Elevator extends SubsystemBase{
     private double pastPosition = 0;
     private double elevatorTarget = 0;
     public Elevator(){
-        //elevatorPid.enableContinuousInput(0, ElevatorConstants.maxElevatorInput);
+      elevatorPid.disableContinuousInput();
     }
 
     //sets follower

@@ -57,7 +57,7 @@ public class Arm extends SubsystemBase{
     private BooleanSupplier armAtSetpoint = ()-> false; 
     private BooleanSupplier wristAtSetpoint = ()-> false; 
     private double armTargetPos = 0.35;
-    private double wirstTargetPos = 0.35;
+    private double wristTargetPos = 0.35;
 
     
 
@@ -100,6 +100,10 @@ public class Arm extends SubsystemBase{
           tab.add("arm Pid", armPid)
             .withWidget(BuiltInWidgets.kPIDController)
             .withPosition(8, 1);
+            private ComplexWidget wpidEntry =
+          tab.add("wrist Pid", wristPid)
+            .withWidget(BuiltInWidgets.kPIDController)
+            .withPosition(8, 1);
     public Arm(){
       armPid.setTolerance(.005);
       armPid.disableContinuousInput();
@@ -126,34 +130,24 @@ public class Arm extends SubsystemBase{
  */
     private void readFromController(CommandXboxController operator){
       armTargetPos += (operator.getLeftY()/160);
-      wirstTargetPos += (operator.getLeftX()/160);
-        setArmMechTarget(wirstTargetPos,armTargetPos); 
+      wristTargetPos += (operator.getLeftX()/160);
+        setArmMechTarget(wristTargetPos,armTargetPos); 
         setArmSpeed();
         setWristSpeed();
     }
 
-  /**
-   */
-  public void armPreset (){
-    setArmSpeed();
-  }
 
- /*
-   * @return runs wrist motor while it is not at the setpoint
-   */
-  public void wristPreset (){
-}
 /**
  * sets arm speed based on armPid loop
  */
-  private void setArmSpeed(){
+  public void setArmSpeed(){
       armSpeed = armPid.calculate(armPosition) + m_feedforward.calculate(armPosition, armVelocity);
       armMotor.set(armSpeed);
   }
 /**
  * sets wrist speed based on armPid loop
  */
-  private void setWristSpeed(){
+  public void setWristSpeed(){
     wristSpeed = wristPid.calculate(wristPosition);
     wristMotor.set(wristSpeed);
 }
@@ -168,8 +162,7 @@ public class Arm extends SubsystemBase{
         });
   }
   public void resetPidError(){
-
-    armPid.reset(  );
+    armPid.reset();
 }
 
  /**
@@ -185,6 +178,7 @@ public class Arm extends SubsystemBase{
   }
   public void setWristTarget(double target){
     wristPid.setSetpoint(target);
+    wristTargetPos = target;
   }
 
   /**

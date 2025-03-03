@@ -84,8 +84,8 @@ public class Constants {
         public static final double goundElevator = 0;
         public static final double groundArm = 0.251;
 
-        public static final double wristSidePosNeg = 1-wristSidePos;
-        public static final double wristFlatPosNeg = 0;
+        public static final double wristSidePosNeg = -wristSidePos;
+        public static final double wristFlatPosNeg = -8;
 
         public static final double travelArm = 0.451;
 
