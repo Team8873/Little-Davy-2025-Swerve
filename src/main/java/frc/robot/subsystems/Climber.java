@@ -27,8 +27,6 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 //imports constants from Constants.java
 import frc.robot.Constants.ClimberConstants;
 
-
-
 //imports boolean supplier: used in get setpoint status
 import java.util.function.BooleanSupplier;
 //pid import
@@ -144,7 +142,7 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
         engageServo();
         return this.runOnce(
             ()-> {
-                motorForClimber.set(-0.15);
+                motorForClimber.set(0.15);
             });
     }
     public Command dontMoveClimberDown(){
@@ -168,6 +166,6 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
         getClimberSetpointStatus();
         double climberVoltage = motorForClimber.getBusVoltage();
         updateShuffleboardWidgetsClimber();
-        if(climberMotorPosition<0.05){motorForClimber.set(0);}
+        if(climberMotorPosition<0.12){motorForClimber.set(0);}
 }
 }
