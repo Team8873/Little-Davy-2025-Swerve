@@ -62,7 +62,7 @@ public class FlipWristCommand extends Command {
     }
     else if(m_arm.getWristPosition() == PresetConstants.wristSidePosNeg){
       m_arm.setWristTarget(PresetConstants.wristSidePos);
-    }
+    }else {m_arm.setWristTarget(PresetConstants.wristFlatPos);}
 
   }
 }
