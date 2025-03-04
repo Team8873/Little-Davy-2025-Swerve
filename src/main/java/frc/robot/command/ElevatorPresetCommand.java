@@ -13,11 +13,11 @@ import frc.robot.Constants.PresetConstants;
 public class ElevatorPresetCommand extends Command {
     private final Elevator m_elevator;
     private final Arm m_arm;
-    private double wristPos = PresetConstants.wristFlatPos;
-    private double armPos = PresetConstants.lvl1to3ArmPos;
-    private double elevatorPos = PresetConstants.lvl1Elevator;
-    private char m_button_pressed = 'a';
-    private boolean m_wristSide = false;
+    private double wristPos;
+    private double armPos;
+    private double elevatorPos;
+    private char m_button_pressed;
+    private boolean m_wristSide;
     private int timer = 0;
 
     public ElevatorPresetCommand(Elevator elevator, Arm arm, char button, boolean wristSide) {
@@ -75,10 +75,10 @@ public class ElevatorPresetCommand extends Command {
                 // case 'a': elevatorPos = PresetConstants.lvl1ElevatorSide;
                 // break;
                 case 'b':
-                    elevatorPos = PresetConstants.lvl2ElevatorSide;
+                    elevatorPos = PresetConstants.lvl2Elevator;
                     break;
                 case 'x':
-                    elevatorPos = PresetConstants.lvl3ElevatorSide;
+                    elevatorPos = PresetConstants.lvl3Elevator;
                     break;
                 case 'h':
                     elevatorPos = PresetConstants.humanElevatorPos;
@@ -86,7 +86,13 @@ public class ElevatorPresetCommand extends Command {
                     break;
             }
         } else {
+            wristPos = PresetConstants.wristFlatPos;
+            armPos = PresetConstants.lvl1to3ArmPos;
             switch (m_button_pressed) {
+
+                case 'a':
+                    elevatorPos = PresetConstants.lvl1Elevator;
+                    break;
 
                 case 'b':
                     elevatorPos = PresetConstants.lvl2Elevator;

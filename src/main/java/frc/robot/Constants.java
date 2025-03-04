@@ -66,11 +66,8 @@ public class Constants {
 
         //side wrist pos
         public static final double wristSidePos = 4.05;
-        public static final double lvl1to3ArmPosSide = 0;
 
         //public static final double lvl1ElevatorSide = 0;
-        public static final double lvl2ElevatorSide = 0;
-        public static final double lvl3ElevatorSide = 0;
 
         //dock pos
         public static final double wristDockPos = 0;
@@ -90,7 +87,7 @@ public class Constants {
         public static final double travelArm = 0.451;
         public static final double humanElevatorPos = 0.45;
         public static final double humanArmPos = 0.5;
-        public static final double wristTolerance = .2;
+        public static final double wristTolerance = 2;
 
     }
     public static class ClimberConstants {
