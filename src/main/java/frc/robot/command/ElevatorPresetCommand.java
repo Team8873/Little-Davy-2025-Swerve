@@ -75,10 +75,10 @@ public class ElevatorPresetCommand extends Command {
                 // case 'a': elevatorPos = PresetConstants.lvl1ElevatorSide;
                 // break;
                 case 'b':
-                    elevatorPos = PresetConstants.lvl2ElevatorSide;
+                    elevatorPos = PresetConstants.lvl2Elevator;
                     break;
                 case 'x':
-                    elevatorPos = PresetConstants.lvl3ElevatorSide;
+                    elevatorPos = PresetConstants.lvl3Elevator;
                     break;
                 case 'h':
                     elevatorPos = PresetConstants.humanElevatorPos;
