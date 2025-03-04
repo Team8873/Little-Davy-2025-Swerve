@@ -41,7 +41,6 @@ import frc.robot.command.DockHumanIntakeCommand;
 
 
 public class RobotContainer {
-    public static int gearing = 1;
     public static final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static final double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -118,15 +117,13 @@ public class RobotContainer {
         //climber stuff:
         joystick.y().onTrue(climber.moveToEngaged());
         joystick.x().whileTrue(climber.moveClimberDown());
-        joystick.rightBumper().onTrue(GearUp());
-        joystick.leftBumper().onTrue(GearDown());
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             
             drivetrain.applyRequest(() ->
-                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed)/gearing) // Drive forward with negative Y (forward)
-                     .withVelocityY((-joystick.getLeftX() * MaxSpeed)/gearing) // Drive left with negative X (left)
-                     .withRotationalRate((-joystick.getRightX() * MaxAngularRate)/gearing) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed)*(0.5+(joystick.getRightTriggerAxis()*0.5))) // Drive forward with negative Y (forward)
+                     .withVelocityY((-joystick.getLeftX() * MaxSpeed)*(0.5+(joystick.getRightTriggerAxis()*0.5))) // Drive left with negative X (left)
+                     .withRotationalRate((-joystick.getRightX() * MaxAngularRate)*(0.5+(joystick.getRightTriggerAxis()*0.5))) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -184,24 +181,6 @@ public class RobotContainer {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
     }
-    public static Command GearUp(){
-        return Commands.runOnce(
-            ()-> {
-                if(gearing < 3){
-                    gearing++;
-                }
-            }
-        );
-     }
-     public static Command GearDown(){
-        return Commands.runOnce(
-            ()-> {
-                if(gearing > 1){
-                    gearing--;
-                }
-            }
-        );
-}
 }
 
 
