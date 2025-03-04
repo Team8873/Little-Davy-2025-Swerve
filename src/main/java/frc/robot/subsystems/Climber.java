@@ -79,10 +79,12 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     //need to trip the servo to move the motor in positive direction. 1.0 is engaged 0.0 is disengaged
     //use 1.0 for positive direction and 0.0 for negative. It's location but this how to use it. It might be flipped around, don't know until test
     private void engageServo(){
-    climberServo.set(1.0);
+    servoValue = 1.0;
+    climberServo.set(servoValue);
     }
     private void disengageServo(){
-    climberServo.set(0.0);
+    servoValue = 0.5;
+    climberServo.set(servoValue);
     }
     //PID STUFF:
  private PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI, ClimberConstants.ClimberkD);
