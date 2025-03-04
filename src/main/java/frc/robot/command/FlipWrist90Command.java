@@ -52,12 +52,21 @@ public class FlipWrist90Command extends Command {
   }
 
   private void checkWristPos(){
-    if(m_arm.getWristPosition() == PresetConstants.wristSidePos){
+    if(PresetConstants.wristSidePos - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristSidePos + PresetConstants.wristTolerance)
+    {
       m_arm.setWristTarget(PresetConstants.wristFlatPos);
     }
-    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPos){
+
+    else if(PresetConstants.wristFlatPos - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristFlatPos + PresetConstants.wristTolerance)
+    {
       m_arm.setWristTarget(PresetConstants.wristSidePos);
-    }else if(m_arm.getWristPosition() == PresetConstants.wristSidePosNeg){
+    }
+
+    else if(PresetConstants.wristSidePosNeg - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristSidePosNeg + PresetConstants.wristTolerance)
+    {
       m_arm.setWristTarget(PresetConstants.wristFlatPosNeg);
     }
     

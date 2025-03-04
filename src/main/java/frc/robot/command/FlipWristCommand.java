@@ -52,18 +52,29 @@ public class FlipWristCommand extends Command {
   }
 
   private void checkWristPos(){
-    if(m_arm.getWristPosition() == PresetConstants.wristSidePos){
+    if(PresetConstants.wristSidePos - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristSidePos + PresetConstants.wristTolerance)
+    {
       m_arm.setWristTarget(PresetConstants.wristSidePosNeg);
     }
-    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPos){
+
+    else if(PresetConstants.wristFlatPos - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristFlatPos + PresetConstants.wristTolerance)
+    {
       m_arm.setWristTarget(PresetConstants.wristFlatPosNeg);
     }
-    else if(m_arm.getWristPosition() == PresetConstants.wristFlatPosNeg){
+
+    else if(PresetConstants.wristSidePosNeg - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristSidePosNeg + PresetConstants.wristTolerance)
+    {
+      m_arm.setWristTarget(PresetConstants.wristSidePos);
+    }
+    
+    else if(PresetConstants.wristFlatPosNeg - PresetConstants.wristTolerance < m_arm.getWristPosition()
+    && m_arm.getWristPosition() < PresetConstants.wristFlatPosNeg + PresetConstants.wristTolerance)
+   {
       m_arm.setWristTarget(PresetConstants.wristFlatPos);
     }
-    else if(m_arm.getWristPosition() == PresetConstants.wristSidePosNeg){
-      m_arm.setWristTarget(PresetConstants.wristSidePos);
-    }else {m_arm.setWristTarget(PresetConstants.wristFlatPos);}
 
   }
 }
