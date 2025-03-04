@@ -5,8 +5,10 @@ import frc.robot.LimelightHelpers;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.lang.Runtime;
 
 public class LimeLightFace extends SubsystemBase{
+  private static Runtime run = Runtime.getRuntime();
 
 //   Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
 //  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
@@ -138,10 +140,12 @@ public class LimeLightFace extends SubsystemBase{
 
     return targetAngleStrafe;
   }
+  
+  
     //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
   @Override
   public void periodic(){
-    System.out.print(limelight_aim_proportional());
+    System.out.print(run.freeMemory());
   }
  
 }
