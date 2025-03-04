@@ -118,6 +118,7 @@ public class RobotContainer {
 
         //climber stuff:
         joystick.y().onTrue(climber.moveToEngaged());
+        joystick.y().onFalse(climber.dontMoveClimberDown());
         joystick.x().whileTrue(climber.moveClimberDown());
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
