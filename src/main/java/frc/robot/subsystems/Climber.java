@@ -78,23 +78,12 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
  //SERVOSTUFF
     //need to trip the servo to move the motor in positive direction. 1.0 is engaged 0.0 is disengaged
     //use 1.0 for positive direction and 0.0 for negative. It's location but this how to use it. It might be flipped around, don't know until test
-    private Command engageServo(){
+    private void engageServo(){
     climberServo.set(1.0);
-    return this.runOnce(
-        () -> {
-            servoValue = 1.0;
-        }
-    );
     }
-    private Command disengageServo(){
+    private void disengageServo(){
     climberServo.set(0.0);
-    return this.runOnce(
-        () -> {
-            servoValue = 0.0;
-        }
-    );
     }
- 
     //PID STUFF:
  private PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI, ClimberConstants.ClimberkD);
  
@@ -117,11 +106,12 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     //Y will shoot to 90 deg
     public Command moveToEngaged(){
     targetPosition(ClimberConstants.engagedPosition);
-    disengageServo();
     return this.run(
         ()-> {
         speed = climberPid.calculate(climberMotorPosition);
             setSpeed();
+    disengageServo();
+
         }
     );}
 
@@ -129,20 +119,22 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     //go to zero at enabled
     public Command moveToResting(){
         targetPosition(ClimberConstants.restingPosition);
-        disengageServo();
         return this.run(
             ()-> {
         speed = climberPid.calculate(climberMotorPosition);
                 setSpeed();
+        disengageServo();
+
             }
         );
     }
     //Xbutton will move down to climbed
     public Command moveClimberDown(){
-        engageServo();
         return this.runOnce(
             ()-> {
                 motorForClimber.set(0.07);
+        engageServo();
+
             });
     }
     public Command dontMoveClimberDown(){

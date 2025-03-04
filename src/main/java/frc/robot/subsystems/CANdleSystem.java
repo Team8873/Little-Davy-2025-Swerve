@@ -63,7 +63,7 @@
  
  public class CANdleSystem extends SubsystemBase {
      private final int LEDS_PER_ANIMATION = 30;
-     private final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
+     public  final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
      private XboxController joystick;
      private int m_candleChannel = 0;
      private boolean m_clearAllAnims = false;
