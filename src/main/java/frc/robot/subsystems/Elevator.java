@@ -184,7 +184,7 @@ public class Elevator extends SubsystemBase {
      * @param target the target position
      */
     public void targetElevatorPosition(double target) {
-        MathUtil.clamp(target, 0.2, 4.22);
+        MathUtil.clamp(target, 0, 4.22);
         elevatorPid.setGoal(new State(target, 0.0));
         elevatorTarget = target;
     }
