@@ -142,7 +142,7 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
         engageServo();
         return this.runOnce(
             ()-> {
-                motorForClimber.set(0.1);
+                motorForClimber.set(0.07);
             });
     }
     public Command dontMoveClimberDown(){
