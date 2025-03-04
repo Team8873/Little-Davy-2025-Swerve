@@ -108,7 +108,7 @@ public class Elevator extends SubsystemBase{
          * the left leader config.
          */
         globalConfig
-            .smartCurrentLimit(50)
+            .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
     
         // Apply the global config and invert since it is on the opposite side
@@ -188,7 +188,9 @@ public class Elevator extends SubsystemBase{
         // if(target < 0){target = 0.1;}
         // if(target > 5){target = 4.8;}
         elevatorPid.setGoal(target);
-        elevatorTarget = target;
+    }
+    public double getElevatorPos(){
+      return elevatorPosition;
     }
     public void resetPidError(){
         elevatorPid.reset(elevatorPosition, elevatorVelocity);

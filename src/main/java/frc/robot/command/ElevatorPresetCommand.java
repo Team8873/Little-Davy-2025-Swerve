@@ -60,8 +60,9 @@ public class ElevatorPresetCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_elevator.resetPidError();
-    //m_arm.resetPidError();
+    m_elevator.targetElevatorPosition(m_elevator.getElevatorPos());
+    m_arm.setArmTarget(m_arm.getArmPos());
+    m_arm.setWristTarget(m_arm.getWristPosition());
     timer = 0;
   }
 
