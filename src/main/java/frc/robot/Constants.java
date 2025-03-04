@@ -99,20 +99,23 @@ public class Constants {
         //Ticks per deg converts from deg to ticks
         //public static final double ticksPerDegClimber = 42/360;
 
+
         //a 100:1 gearbox
         public static final double motorRatioClimberMultiplier = 100;
+
 
         //it takes approxamitely a little over 3 spool rotations to go from engaged-> resting
         //a little less than 2 to go from climbed -> engaged
         public static final double spoolRotationsRestingToEngaged = 3.2;
         public static final double spoolRotationsEngagedToClimbed = 1.9;
-        //360 deg is one spool rotations       
+        //360 deg is one spool rotations      
    
         //defined positions, getPosition measures in rotations
         //360 deg is 1 spool rotation so multiply 360 by that many spool rotations
         public static final double restingPosition = 0;
-        public static final double engagedPosition = 90;
-        public static final double climbedPositon = 45;
+        public static final double engagedPosition = 0.25;
+        public static final double climbedPositon = 0.125;
+
 
         //PID constants:
         public static final double ClimberkP = 0.1;
@@ -120,11 +123,11 @@ public class Constants {
         public static final double ClimberkD = 0;
 
 
+
+
         //Identification
         public static final int motorForClimberID = 16;
         public static final int servoID = 0;
-        public static final int encoderForClimberDIOPort = 10;
+        public static final int encoderForClimberDIOPort = 0;
     }
 }
-     
-

@@ -27,8 +27,6 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 //imports constants from Constants.java
 import frc.robot.Constants.ClimberConstants;
 
-
-
 //imports boolean supplier: used in get setpoint status
 import java.util.function.BooleanSupplier;
 //pid import
@@ -59,57 +57,48 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     private GenericEntry positionEntry =
       tab.add("Climber Position", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(0,1)
+         .withPosition(9,1)
          .getEntry();
      private GenericEntry targetEntry =
       tab.add("Climber target", 0)
          .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(0,2)
+         .withPosition(9,2)
          .getEntry();
      private GenericEntry statusEntry =
          tab.add("Servo Status", 0)
             .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(0,3)
+            .withPosition(9,3)
+            .getEntry();
+    private GenericEntry speedEntry =
+        tab.add("Climber Speed", 0)
+            .withWidget(BuiltInWidgets.kNumberBar)
+            .withPosition(9,4)
             .getEntry();
  
  //SERVOSTUFF
     //need to trip the servo to move the motor in positive direction. 1.0 is engaged 0.0 is disengaged
     //use 1.0 for positive direction and 0.0 for negative. It's location but this how to use it. It might be flipped around, don't know until test
-    private Command engageServo(){
-    climberServo.set(1.0);
-    return this.runOnce(
-        () -> {
-            servoValue = 1.0;
-        }
-    );
+    private void engageServo(){
+    servoValue = 1.0;
+    climberServo.set(servoValue);
     }
-    private Command disengageServo(){
-    climberServo.set(0.0);
-    return this.runOnce(
-        () -> {
-            servoValue = 0.0;
-        }
-    );
+    private void disengageServo(){
+    servoValue = 0.5;
+    climberServo.set(servoValue);
     }
- 
     //PID STUFF:
- private final PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI, ClimberConstants.ClimberkD);
-
+ private PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI, ClimberConstants.ClimberkD);
+ 
+ public Climber() {climberPid.setTolerance(0.001);}
  //defines targetPosition as the target
  public void targetPosition(double target){
     climberPid.setSetpoint(target);} //setSetpoint sets the setpoint after you get it in getClimberSetpointStatus
 
  // defines set speed as making the motor go to target (speed is how much motor has to move)
  private void setSpeed(){
-    speed = climberPid.calculate(climberMotorPosition);
-    motorForClimber.set(speed);
+    motorForClimber.set(-speed);
     }
- public void goToTarget(){
- if(climberAtSetpoint.equals(somethingFalse)){
-    targetPosition(target);
-    setSpeed();
- };
-}
+
  //get the set point and put it as the target. Return if its at the setpoint or not.
     public BooleanSupplier getClimberSetpointStatus(){
     target = climberPid.getSetpoint();
@@ -119,28 +108,50 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
     //Y will shoot to 90 deg
     public Command moveToEngaged(){
     targetPosition(ClimberConstants.engagedPosition);
-    disengageServo();
-    return this.runOnce(
+    return this.run(
         ()-> {
+        speed = climberPid.calculate(climberMotorPosition);
             setSpeed();
-        }
-    );
+    disengageServo();
 
+        }
+    );}
+
+
+    //go to zero at enabled
+    public Command moveToResting(){
+        targetPosition(ClimberConstants.restingPosition);
+        return this.run(
+            ()-> {
+        speed = climberPid.calculate(climberMotorPosition);
+                setSpeed();
+        disengageServo();
+
+            }
+        );
     }
     //Xbutton will move down to climbed
     public Command moveClimberDown(){
-        engageServo();
         return this.runOnce(
             ()-> {
-                motorForClimber.set(-0.3);
+                motorForClimber.set(0.07);
+        engageServo();
+
             });
+    }
+    public Command dontMoveClimberDown(){
+        return this.runOnce(
+            () -> {
+                motorForClimber.set(0);
+            }
+        );
     }
 
     private void updateShuffleboardWidgetsClimber(){
         positionEntry.setDouble(climberMotorPosition);
         targetEntry.setDouble(target);
         statusEntry.setDouble(servoValue);
-        
+        speedEntry.setDouble(speed);
     }
 //Periodically gets motorPosition, voltage, and updates shuffleboard
  @Override
@@ -149,5 +160,6 @@ public class Climber extends SubsystemBase{ // puts climber as a subsystem; insi
         getClimberSetpointStatus();
         double climberVoltage = motorForClimber.getBusVoltage();
         updateShuffleboardWidgetsClimber();
+        if(climberMotorPosition<0.05){motorForClimber.set(0);}
 }
 }
