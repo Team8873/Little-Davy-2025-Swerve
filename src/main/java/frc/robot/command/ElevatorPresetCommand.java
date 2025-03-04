@@ -60,9 +60,6 @@ public class ElevatorPresetCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_elevator.targetElevatorPosition(m_elevator.getElevatorPos());
-    m_arm.setArmTarget(m_arm.getArmPos());
-    m_arm.setWristTarget(m_arm.getWristPosition());
     timer = 0;
   }
 
@@ -78,6 +75,7 @@ public class ElevatorPresetCommand extends Command {
   private void checkPresetLvl(){
     if(m_wristSide){
       armPos = PresetConstants.lvl1to3ArmPosSide;
+      wristPos = PresetConstants.wristSidePos;
       switch (m_button_pressed) {
         // case 'a': elevatorPos = PresetConstants.lvl1ElevatorSide;
         //   break;

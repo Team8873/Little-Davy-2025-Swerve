@@ -173,10 +173,17 @@ public class Arm extends SubsystemBase{
     setWristTarget(wristTarget);
   }
   public void setArmTarget(double target){
+    double m_target = target;
+        if(m_target < 0.1){m_target = 0.1;}
     armPid.setSetpoint(target);
+    armTargetPos = m_target;
   }
   public void setWristTarget(double target){
+    double m_target = target;
+        if(m_target < -8){m_target = -8;}
+        if(m_target > 4.22){m_target = 4.22;}
     wristPid.setSetpoint(target);
+    wristTargetPos = m_target;
   }
   public double getArmPos(){
     return armPosition;

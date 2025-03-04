@@ -185,9 +185,11 @@ public class Elevator extends SubsystemBase{
      * @param target the target position
      */
     public void targetElevatorPosition(double target){
-        // if(target < 0){target = 0.1;}
-        // if(target > 5){target = 4.8;}
-        elevatorPid.setGoal(target);
+        double m_target = target;
+        if(m_target < 0.2){m_target = 0.2;}
+        if(m_target > 4.22){m_target = 4.22;}
+        elevatorPid.setGoal(m_target);
+        elevatorTarget = m_target;
     }
     public double getElevatorPos(){
       return elevatorPosition;
