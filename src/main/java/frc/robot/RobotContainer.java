@@ -55,7 +55,7 @@ public class RobotContainer {
     private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    // private final Telemetry logger = new Telemetry(MaxSpeed);
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
@@ -67,7 +67,6 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
     public final LimeLightFace limeLightFace  = new LimeLightFace();
-    //public final LimeLightFace limeLightFace = new LimeLightFace();
     public final CANdleSystem caNdleSystem = new CANdleSystem(joystick);
 
     /* Path follower */
