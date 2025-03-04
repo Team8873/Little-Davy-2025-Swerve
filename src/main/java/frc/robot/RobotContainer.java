@@ -27,6 +27,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.TimeOfFlightSensor;
@@ -58,7 +59,7 @@ public class RobotContainer {
     private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    // private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandXboxController operator = new CommandXboxController(1);
@@ -71,6 +72,7 @@ public class RobotContainer {
     public final Climber climber = new Climber();
     public final LimeLightFace limeLightFace  = new LimeLightFace();
     //public final LimeLightFace limeLightFace = new LimeLightFace();
+    public final CANdleSystem caNdleSystem = new CANdleSystem(joystick);
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;

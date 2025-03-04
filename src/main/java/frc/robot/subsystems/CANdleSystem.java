@@ -51,7 +51,8 @@
 
  import edu.wpi.first.wpilibj.XboxController;
  import edu.wpi.first.wpilibj2.command.SubsystemBase;
- import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
  
  import com.ctre.phoenix.led.*;
  import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -64,7 +65,7 @@
  public class CANdleSystem extends SubsystemBase {
      private final int LEDS_PER_ANIMATION = 30;
      private final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
-     private XboxController joystick;
+     private CommandXboxController joystick;
      private int m_candleChannel = 0;
      private boolean m_clearAllAnims = false;
      private boolean m_last5V = false;
@@ -88,7 +89,7 @@
      }
      private AnimationTypes m_currentAnimation;
  
-     public CANdleSystem(XboxController joy) {
+     public CANdleSystem(CommandXboxController joy) {
          this.joystick = joy;
          changeAnimation(AnimationTypes.SetAll);
          CANdleConfiguration configAll = new CANdleConfiguration();

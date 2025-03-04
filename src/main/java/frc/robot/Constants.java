@@ -3,7 +3,7 @@ package frc.robot;
 
 public class Constants {
     public static class CANdleConstants {
-        public static final int CANdleID = 14;
+        public static final int CANdleID = 7;
     }
     public static class ToFConstants{
         public static final int SensorId = 16;
