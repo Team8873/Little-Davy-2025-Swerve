@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -43,6 +45,10 @@ import frc.robot.command.DockHumanIntakeCommand;
 public class RobotContainer {
     public static final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static final double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+     // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -121,9 +127,9 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             
             drivetrain.applyRequest(() ->
-                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed)*(0.5+(joystick.getRightTriggerAxis()*0.5))) // Drive forward with negative Y (forward)
-                     .withVelocityY((-joystick.getLeftX() * MaxSpeed)*(0.5+(joystick.getRightTriggerAxis()*0.5))) // Drive left with negative X (left)
-                     .withRotationalRate((-joystick.getRightX() * MaxAngularRate)*(0.5+(joystick.getRightTriggerAxis()*0.5))) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(m_xspeedLimiter.calculate((-joystick.getLeftY() * MaxSpeed)*(0.5+(joystick.getRightTriggerAxis()*0.5)))) // Drive forward with negative Y (forward)
+                     .withVelocityY(m_yspeedLimiter.calculate((-joystick.getLeftX() * MaxSpeed)*(0.5+(joystick.getRightTriggerAxis()*0.5)))) // Drive left with negative X (left)
+                     .withRotationalRate(m_rotLimiter.calculate((-joystick.getRightX() * MaxAngularRate)*(0.5+(joystick.getRightTriggerAxis()*0.5)))) // Drive counterclockwise with negative X (left)
             )
         );
 
