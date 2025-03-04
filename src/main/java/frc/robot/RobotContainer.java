@@ -93,12 +93,12 @@ public class RobotContainer {
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
         
-        operator.a().onTrue(new ElevatorPresetCommand(elevator, arm, 'a', false).withTimeout(5));
-        operator.b().onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5));
-        operator.x().onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5));
-        operator.y().onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
-        operator.pov(270).onTrue(new ElevatorPresetCommand(elevator, arm, 't', false).withTimeout(5));
-        operator.pov(0).onTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5));
+        operator.a().debounce(0.5).onTrue(new ElevatorPresetCommand(elevator, arm, 'a', false).withTimeout(5));
+        operator.b().debounce(0.5).onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5));
+        operator.x().debounce(0.5).onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5));
+        operator.y().debounce(0.5).onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
+        operator.pov(270).debounce(0.5).onTrue(new ElevatorPresetCommand(elevator, arm, 't', false).withTimeout(5));
+        operator.pov(0).debounce(0.5).onTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5));
 
         // operator.leftBumper().negate().and(operator.y().onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
 
