@@ -153,10 +153,7 @@ public class Arm extends SubsystemBase{
   public void resetPidError(){
     armPid.reset();
 }
- public void stopArm(){
-    armMotor.set(0);
-    wristMotor.set(0);
- }
+
 
  /**
   * sets Target position for both arm and wrist

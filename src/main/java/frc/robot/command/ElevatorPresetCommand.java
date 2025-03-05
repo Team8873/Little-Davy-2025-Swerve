@@ -20,6 +20,8 @@ public class ElevatorPresetCommand extends Command {
     private char m_button_pressed;
     private boolean m_wristSide;
     private int timer = 0;
+    private boolean canMoveElevator;
+    private boolean canMoveArm;
 
     public ElevatorPresetCommand(Elevator elevator, Arm arm, char button, boolean wristSide) {
         m_elevator = elevator; // saves a local reference to the elevator subsystem
@@ -36,29 +38,28 @@ public class ElevatorPresetCommand extends Command {
         m_elevator.resetPidError();
         m_arm.resetPidError();
         checkPresetLvl();
-        m_elevator.targetElevatorPosition(elevatorPos);
-        m_arm.setArmMechTarget(wristPos, armPos);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        boolean canMoveElevator = m_arm.getArmPos() < 0.45;
-        boolean canMoveArm = true;
+        canMoveElevator = m_arm.getArmPos() < 0.45;
+        canMoveArm = true;
         canMoveArm &= m_arm.getArmTarget() > 0.45 && MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
         canMoveArm &= m_arm.getArmTarget() < 0.24 && m_elevator.getElevatorPos() > 1;
 
         if (canMoveElevator) {
-            m_elevator.updateElevatorPID();
-        } else {
-            m_elevator.stopElevator();
+            m_elevator.targetElevatorPosition(elevatorPos);
         }
+
+        m_elevator.updateElevatorPID();
+
         if (canMoveArm) {
-            m_arm.setArmSpeed();
-            m_arm.setWristSpeed();
-        } else {
-            m_arm.stopArm();
+            m_arm.setArmMechTarget(wristPos, armPos);
         }
+
+        m_arm.setArmSpeed();
+        m_arm.setWristSpeed();
 
     }
 
@@ -71,7 +72,8 @@ public class ElevatorPresetCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean();
+        return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm
+                && canMoveElevator;
     }
 
     /**
@@ -82,8 +84,9 @@ public class ElevatorPresetCommand extends Command {
         if (m_wristSide) {
             wristPos = PresetConstants.wristSidePos;
             switch (m_button_pressed) {
-                // case 'a': elevatorPos = PresetConstants.lvl1ElevatorSide;
-                // break;
+                case 'a':
+                    elevatorPos = PresetConstants.lvl1Elevator;
+                    break;
                 case 'b':
                     elevatorPos = PresetConstants.lvl2Elevator;
                     break;
@@ -98,10 +101,6 @@ public class ElevatorPresetCommand extends Command {
             wristPos = PresetConstants.wristFlatPos;
             armPos = PresetConstants.lvl1to3ArmPos;
             switch (m_button_pressed) {
-
-                case 'a':
-                    elevatorPos = PresetConstants.lvl1Elevator;
-                    break;
 
                 case 'b':
                     elevatorPos = PresetConstants.lvl2Elevator;
