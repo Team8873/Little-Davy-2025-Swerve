@@ -155,6 +155,7 @@ public class Arm extends SubsystemBase{
 }
  public void stopArm(){
     armMotor.set(0);
+    wristMotor.set(0);
  }
 
  /**
