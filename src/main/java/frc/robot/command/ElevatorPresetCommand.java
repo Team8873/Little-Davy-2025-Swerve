@@ -8,7 +8,6 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PresetConstants;
 
 public class ElevatorPresetCommand extends Command {
@@ -19,7 +18,6 @@ public class ElevatorPresetCommand extends Command {
     private double elevatorPos;
     private char m_button_pressed;
     private boolean m_wristSide;
-    private int timer = 0;
     private boolean canMoveElevator;
     private boolean canMoveArm;
 
@@ -76,7 +74,6 @@ public class ElevatorPresetCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        timer = 0;
     }
 
     // Returns true when the command should end.
