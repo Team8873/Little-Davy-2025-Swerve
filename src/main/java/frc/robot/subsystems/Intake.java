@@ -60,26 +60,6 @@ public class Intake extends SubsystemBase{
       // tab.add("Intake Pid", velocityPid)
       //   .withWidget(BuiltInWidgets.kPIDController)
       //    .withPosition(6,1);
-         private GenericEntry pEntry =
-      tab.add("Velocity P", 0)
-         .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(6,3)
-         .getEntry();
-         private GenericEntry iEntry =
-         tab.add("Velocity I", 0)
-            .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(6,2)
-            .getEntry();
-            private GenericEntry dEntry =
-            tab.add("Velocity d", 0)
-               .withWidget(BuiltInWidgets.kNumberBar)
-               .withPosition(6,4)
-               .getEntry();
-        private GenericEntry setPointEntry =
-      tab.add("Velocity target", 0)
-         .withWidget(BuiltInWidgets.kNumberBar)
-         .withPosition(5,1)
-         .getEntry();
          
          
 /**
@@ -143,9 +123,9 @@ public class Intake extends SubsystemBase{
     //velocityPid.setSetpoint(target * 1000);
   } 
   
-  private void getVelocityStatus(){
-    //atVelocity = ()-> velocityPid.atSetpoint();
-  }
+  // private void getVelocityStatus(){
+  // atVelocity = ()-> velocityPid.atSetpoint();
+  // }
   
   /**
    * sets the speed of the intake motor
