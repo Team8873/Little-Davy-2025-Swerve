@@ -38,8 +38,6 @@ public class ElevatorPresetCommand extends Command {
         // m_elevator.resetPidError();
         // m_arm.resetPidError();
         checkPresetLvl();
-        armPos = PresetConstants.lvl1to3ArmPos;
-
     }
 
     // Called every time the scheduler runs while the command is scheduled.
