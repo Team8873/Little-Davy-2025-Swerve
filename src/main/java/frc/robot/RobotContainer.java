@@ -29,6 +29,7 @@ import frc.robot.subsystems.TestMotor;
 import frc.robot.subsystems.TimeOfFlightSensor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.FlipWrist90Command;
@@ -63,6 +64,7 @@ public class RobotContainer {
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
+    public final CANdleSystem candle = new CANdleSystem(joystick);
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -111,8 +113,8 @@ public class RobotContainer {
         //operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm, 'g', false));
 
         //climber stuff:
-        joystick.y().onTrue(climber.moveToEngaged());
-        joystick.x().onTrue(climber.moveClimberDown());
+        joystick.y().onTrue(climber.engageServo().andThen(candle.magicUp()).withTimeout(1).andThen(climber.moveToEngaged()));
+        joystick.x().onTrue(climber.disengageServo().andThen(candle.magicDown()).withTimeout(1).andThen(climber.moveClimberDown()));
         joystick.x().onFalse(climber.dontMoveClimberDown());
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically

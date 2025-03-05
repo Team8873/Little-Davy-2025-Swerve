@@ -106,9 +106,9 @@ public class Constants {
 
 
         //Identification
-        public static final int motorForClimberID = 14;
+        public static final int motorForClimberCANID = 14;
         public static final int servoID = 0;
-        public static final int encoderForClimberDIOPort = 2;
+        public static final int encoderForClimberDIOPort = 0;
     }
 }
      
