@@ -188,6 +188,10 @@ public class Arm extends SubsystemBase{
   public double getArmPos(){
     return armPosition;
   }
+
+  public double getArmTarget() {
+    return armPid.getSetpoint();
+  }
   public double getwristPos(){
     return wristPosition;
   }
