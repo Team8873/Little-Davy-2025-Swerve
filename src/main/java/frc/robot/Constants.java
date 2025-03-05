@@ -86,7 +86,7 @@ public class Constants {
 
         public static final double travelArm = 0.451;
         public static final double humanElevatorPos = 0.45;
-        public static final double humanIntakeArmPos = 0.615;
+        public static final double humanIntakeArmPos = 0.6;
         public static final double directHumanArmPos = 0.5;
         public static final double wristTolerance = 2;
         public static final double armStartPos = 0.35;
