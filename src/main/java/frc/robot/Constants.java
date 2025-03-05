@@ -89,6 +89,7 @@ public class Constants {
         public static final double humanIntakeArmPos = 0.615;
         public static final double directHumanArmPos = 0.5;
         public static final double wristTolerance = 2;
+        public static final double armStartPos = 0.35;
 
     }
     public static class ClimberConstants {
