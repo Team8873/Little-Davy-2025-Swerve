@@ -47,7 +47,7 @@ public class RobotContainer {
                                                                                                   // angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 2% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -129,17 +129,17 @@ public class RobotContainer {
 
                 drivetrain.applyRequest(() -> {
                     double DriveBoost = 0.5 + (joystick.getRightTriggerAxis() * 0.5);
-                    double LeftJoystickXScale = Math.copySign(-joystick.getLeftY() * -joystick.getLeftY(),
-                            -joystick.getLeftY());
-                    double LeftJoystickYScale = Math.copySign(-joystick.getLeftX() * -joystick.getLeftX(),
-                            -joystick.getLeftX());
-                    double RightJoystickXScale = Math.copySign(-joystick.getRightX() * -joystick.getRightX(),
-                            -joystick.getRightX());
-                    return drive.withVelocityX((LeftJoystickXScale * MaxSpeed) * (DriveBoost)) // Drive forward with
+                //     double LeftJoystickXScale = Math.copySign(-joystick.getLeftY() * -joystick.getLeftY(),
+                //             -joystick.getLeftY());
+                //     double LeftJoystickYScale = Math.copySign(-joystick.getLeftX() * -joystick.getLeftX(),
+                //             -joystick.getLeftX());
+                //     double RightJoystickXScale = Math.copySign(-joystick.getRightX() * -joystick.getRightX(),
+                //             -joystick.getRightX());
+                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (DriveBoost)) // Drive forward with
                                                                                                // negative Y (forward)
-                            .withVelocityY((LeftJoystickYScale * MaxSpeed) * (DriveBoost)) // Drive left with negative X
+                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (DriveBoost)) // Drive left with negative X
                                                                                            // (left)
-                            .withRotationalRate((RightJoystickXScale * MaxAngularRate) * (DriveBoost)); // Drive
+                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (DriveBoost)); // Drive
                                                                                                         // counterclockwise
                                                                                                         // with negative
                                                                                                         // X (left)
