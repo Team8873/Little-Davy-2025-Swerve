@@ -45,9 +45,12 @@ public class ElevatorPresetCommand extends Command {
     public void execute() {
         canMoveElevator = m_arm.getArmPos() < 0.45;
         canMoveArm = true;
-        canMoveArm &= m_arm.getArmTarget() > 0.45 && MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
-        canMoveArm &= m_arm.getArmTarget() < 0.24 && m_elevator.getElevatorPos() > 1;
-
+        if (m_arm.getArmTarget() > 0.45) {
+            canMoveArm &= MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
+        }
+        if (m_arm.getArmTarget() < 0.24) {
+            canMoveArm &= m_elevator.getElevatorPos() > 1;
+        }
         if (canMoveElevator) {
             m_elevator.targetElevatorPosition(elevatorPos);
         }
