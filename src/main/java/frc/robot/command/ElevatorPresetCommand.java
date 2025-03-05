@@ -35,9 +35,11 @@ public class ElevatorPresetCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_elevator.resetPidError();
-        m_arm.resetPidError();
+        // m_elevator.resetPidError();
+        // m_arm.resetPidError();
         checkPresetLvl();
+        armPos = PresetConstants.lvl1to3ArmPos;
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -103,6 +105,7 @@ public class ElevatorPresetCommand extends Command {
             }
         } else {
             wristPos = PresetConstants.wristFlatPos;
+            armPos = PresetConstants.lvl1to3ArmPos;
             switch (m_button_pressed) {
 
                 case 'b':
