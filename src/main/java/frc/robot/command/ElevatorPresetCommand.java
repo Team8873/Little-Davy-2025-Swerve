@@ -135,10 +135,11 @@ public class ElevatorPresetCommand extends Command {
                     elevatorPos = PresetConstants.goundElevator;
                     armPos = PresetConstants.travelArm;
                     break;
-                // case 'h':
-                // elevatorPos = PresetConstants.humanElevatorPos;
-                // armPos = PresetConstants.directHumanArmPos;
-                // break;
+                case 'h':
+                    elevatorPos = PresetConstants.humanElevatorPos;
+                    armPos = PresetConstants.directHumanArmPos;
+                    wristPos = PresetConstants.wristSidePos;
+                    break;
             }
         }
     }
