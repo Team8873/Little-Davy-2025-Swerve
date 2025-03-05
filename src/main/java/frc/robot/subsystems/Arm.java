@@ -29,7 +29,6 @@ import java.util.function.BooleanSupplier;
 
 public class Arm extends SubsystemBase{
 
-    private double armSpeed = 0;
     private double wristSpeed = 0;
 
     //creates the Motor objects using sparkMax
@@ -109,7 +108,6 @@ public class Arm extends SubsystemBase{
       armPid.disableContinuousInput();
       armPid.setSetpoint(armTargetPos);
       tab.addDouble("Arm Target Real", () -> armPid.getSetpoint());
-      tab.addDouble("Arm Speed Real", () -> armSpeed);
 
     }
 /**
@@ -141,7 +139,7 @@ public class Arm extends SubsystemBase{
  * sets arm speed based on armPid loop
  */
   public void setArmSpeed(){
-      armSpeed = armPid.calculate(armPosition) + m_feedforward.calculate(armPosition, armVelocity);
+      double armSpeed = armPid.calculate(armPosition) + m_feedforward.calculate(armPosition, armVelocity);
       armMotor.set(armSpeed);
   }
 /**
@@ -151,19 +149,13 @@ public class Arm extends SubsystemBase{
     wristSpeed = wristPid.calculate(wristPosition);
     wristMotor.set(wristSpeed);
 }
-/**
- * @return Runs speed = 0 once
- */
-  public Command stopArm() {
-    return this.runOnce(
-        () -> {
-            armSpeed = 0;
-            wristSpeed = 0;
-        });
-  }
+
   public void resetPidError(){
     armPid.reset();
 }
+ public void stopArm(){
+    setArmTarget(armPosition);
+ }
 
  /**
   * sets Target position for both arm and wrist

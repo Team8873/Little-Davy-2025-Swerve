@@ -46,12 +46,15 @@ public class ElevatorPresetCommand extends Command {
         m_elevator.updateElevatorPID();
 
         if (timer < 25) {
+            m_arm.stopArm();
             timer++;
             return;
         }
-        if (!MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1) && m_arm.getArmTarget() > 0.5){
+        if (!MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1) && m_arm.getArmTarget() > 0.45) {
+            m_arm.stopArm();
             return;
         }
+
         m_arm.setArmSpeed();
     }
 
@@ -119,9 +122,9 @@ public class ElevatorPresetCommand extends Command {
                     armPos = PresetConstants.travelArm;
                     break;
                 // case 'h':
-                //     elevatorPos = PresetConstants.humanElevatorPos;
-                //     armPos = PresetConstants.directHumanArmPos;
-                //     break;
+                // elevatorPos = PresetConstants.humanElevatorPos;
+                // armPos = PresetConstants.directHumanArmPos;
+                // break;
             }
         }
     }
