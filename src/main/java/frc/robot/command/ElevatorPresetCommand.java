@@ -49,7 +49,7 @@ public class ElevatorPresetCommand extends Command {
             timer++;
             return;
         }
-        if (MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1) && m_arm.getArmTarget() > 0.5){
+        if (!MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1) && m_arm.getArmTarget() > 0.5){
             return;
         }
         m_arm.setArmSpeed();
