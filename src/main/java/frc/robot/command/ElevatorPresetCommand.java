@@ -6,6 +6,7 @@ package frc.robot.command;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PresetConstants;
@@ -48,7 +49,9 @@ public class ElevatorPresetCommand extends Command {
             timer++;
             return;
         }
-
+        if (MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1) && m_arm.getArmTarget() > 0.5){
+            return;
+        }
         m_arm.setArmSpeed();
     }
 
