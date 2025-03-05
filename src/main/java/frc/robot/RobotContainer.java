@@ -128,18 +128,22 @@ public class RobotContainer {
                 // Drivetrain will execute this command periodically
 
                 drivetrain.applyRequest(() -> {
-                    double DriveBoost = 0.5 + (joystick.getRightTriggerAxis() * 0.5);
+                //    double DriveBoost = 0.5 + (joystick.getRightTriggerAxis() * 0.5);
+                    double start = 0.2;
+                    double end = 1.0;
+                    double t = joystick.getRightTriggerAxis();
+                    double lerp = start * (1.0 - t) + end * t;
                 //     double LeftJoystickXScale = Math.copySign(-joystick.getLeftY() * -joystick.getLeftY(),
                 //             -joystick.getLeftY());
                 //     double LeftJoystickYScale = Math.copySign(-joystick.getLeftX() * -joystick.getLeftX(),
                 //             -joystick.getLeftX());
                 //     double RightJoystickXScale = Math.copySign(-joystick.getRightX() * -joystick.getRightX(),
                 //             -joystick.getRightX());
-                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (DriveBoost)) // Drive forward with
+                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (lerp)) // Drive forward with
                                                                                                // negative Y (forward)
-                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (DriveBoost)) // Drive left with negative X
+                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (lerp)) // Drive left with negative X
                                                                                            // (left)
-                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (DriveBoost)); // Drive
+                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (lerp)); // Drive
                                                                                                         // counterclockwise
                                                                                                         // with negative
                                                                                                         // X (left)
