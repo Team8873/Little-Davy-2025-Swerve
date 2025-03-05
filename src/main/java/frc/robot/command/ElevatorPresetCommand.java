@@ -43,19 +43,22 @@ public class ElevatorPresetCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_elevator.updateElevatorPID();
+        boolean canMoveElevator = m_arm.getArmPos() < 0.45;
+        boolean canMoveArm = true;
+        canMoveArm &= m_arm.getArmTarget() > 0.45 && MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
+        canMoveArm &= m_arm.getArmTarget() < 0.24 && m_elevator.getElevatorPos() > 1;
 
-        if (timer < 25) {
-            m_arm.stopArm();
-            timer++;
-            return;
+        if (canMoveElevator) {
+            m_elevator.updateElevatorPID();
+        } else {
+            m_elevator.stopElevator();
         }
-        if (!MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1) && m_arm.getArmTarget() > 0.45) {
+        if (canMoveArm) {
+            m_arm.setArmSpeed();
+        } else {
             m_arm.stopArm();
-            return;
         }
 
-        m_arm.setArmSpeed();
     }
 
     // Called once the command ends or is interrupted.

@@ -188,6 +188,10 @@ public class Elevator extends SubsystemBase {
         elevatorPid.setGoal(new State(target, 0.0));
         elevatorTarget = target;
     }
+    public void stopElevator(){
+        leadMotorRight.set(0);
+        motorLeft.set(0);
+     }
 
     public double getElevatorPos() {
         return elevatorPosition;

@@ -154,7 +154,7 @@ public class Arm extends SubsystemBase{
     armPid.reset();
 }
  public void stopArm(){
-    setArmTarget(armPosition);
+    armMotor.set(0);
  }
 
  /**
