@@ -86,10 +86,12 @@ public class Constants {
 
         public static final double travelArm = 0.451;
         public static final double humanElevatorPos = 1;
-        public static final double humanIntakeArmPos = 0.57;
+        public static final double humanIntakeArmPos = 0.61; // when arm goes through elevator
         public static final double directHumanArmPos = 0.4;
         public static final double wristTolerance = 2;
         public static final double armStartPos = 0.35;
+        public static final double elevatorAlgaeGroundPos = 1.39;
+        public static final double armAlgaeGroundPos = 0.27; 
 
     }
     public static class ClimberConstants {
