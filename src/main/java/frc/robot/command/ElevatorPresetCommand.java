@@ -140,6 +140,10 @@ public class ElevatorPresetCommand extends Command {
                     armPos = PresetConstants.directHumanArmPos;
                     wristPos = PresetConstants.wristSidePos;
                     break;
+                case 's':
+                    elevatorPos = PresetConstants.goundElevator;
+                    armPos = PresetConstants.armStartPos;
+                    break;
             }
         }
     }

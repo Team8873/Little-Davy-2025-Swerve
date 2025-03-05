@@ -17,7 +17,7 @@ public class Constants {
         public static final double gearRatio = .05;
         public static final double maxElevatorInput = 50;
         public static final double maxVelocity = 2.5;
-        public static final double maxAcceleration = 2;
+        public static final double maxAcceleration = 2.5;
         public static final double kS = 0;
         public static final double kG = 0.246;
         public static final double kV = 60;
@@ -46,8 +46,8 @@ public class Constants {
         public static final double wristGearRatio = 16;
         public static final double armGearRatio = 0;
         public static final int encoderId = 0;
-        public static final double maxVelocity = 1.5;
-        public static final double maxAcceleration = .5;
+        // public static final double maxVelocity = 1.5;
+        // public static final double maxAcceleration = .5;
         public static final double kS = 0.025;
         public static final double kG = 0.06;
         public static final double kV = 0;
@@ -86,7 +86,7 @@ public class Constants {
 
         public static final double travelArm = 0.451;
         public static final double humanElevatorPos = 1;
-        public static final double humanIntakeArmPos = 0.565;
+        public static final double humanIntakeArmPos = 0.57;
         public static final double directHumanArmPos = 0.4;
         public static final double wristTolerance = 2;
         public static final double armStartPos = 0.35;

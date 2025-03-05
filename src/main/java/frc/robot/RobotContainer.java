@@ -101,6 +101,7 @@ public class RobotContainer {
         operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5));
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5));
+        //operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's', false).withTimeout(5));
 
         // operator.leftBumper().negate().and(operator.y().onTrue(new
         // ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
