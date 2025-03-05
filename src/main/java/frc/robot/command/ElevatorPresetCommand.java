@@ -55,6 +55,7 @@ public class ElevatorPresetCommand extends Command {
         }
         if (canMoveArm) {
             m_arm.setArmSpeed();
+            m_arm.setWristSpeed();
         } else {
             m_arm.stopArm();
         }
