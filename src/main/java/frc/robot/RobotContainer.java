@@ -101,7 +101,8 @@ public class RobotContainer {
         operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5));
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5));
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5));
-        //operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's', false).withTimeout(5));
+        // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
+        // false).withTimeout(5));
 
         // operator.leftBumper().negate().and(operator.y().onTrue(new
         // ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
@@ -129,25 +130,28 @@ public class RobotContainer {
                 // Drivetrain will execute this command periodically
 
                 drivetrain.applyRequest(() -> {
-                //    double DriveBoost = 0.5 + (joystick.getRightTriggerAxis() * 0.5);
+                    // double DriveBoost = 0.5 + (joystick.getRightTriggerAxis() * 0.5);
                     double start = 0.2;
-                    double end = 1.0;
+                    double end = elevator.getElevatorPos() > 1.5 ? .5 : 1 ;
                     double t = joystick.getRightTriggerAxis();
                     double lerp = start * (1.0 - t) + end * t;
-                //     double LeftJoystickXScale = Math.copySign(-joystick.getLeftY() * -joystick.getLeftY(),
-                //             -joystick.getLeftY());
-                //     double LeftJoystickYScale = Math.copySign(-joystick.getLeftX() * -joystick.getLeftX(),
-                //             -joystick.getLeftX());
-                //     double RightJoystickXScale = Math.copySign(-joystick.getRightX() * -joystick.getRightX(),
-                //             -joystick.getRightX());
+                    // double LeftJoystickXScale = Math.copySign(-joystick.getLeftY() *
+                    // -joystick.getLeftY(),
+                    // -joystick.getLeftY());
+                    // double LeftJoystickYScale = Math.copySign(-joystick.getLeftX() *
+                    // -joystick.getLeftX(),
+                    // -joystick.getLeftX());
+                    // double RightJoystickXScale = Math.copySign(-joystick.getRightX() *
+                    // -joystick.getRightX(),
+                    // -joystick.getRightX());
                     return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (lerp)) // Drive forward with
-                                                                                               // negative Y (forward)
+                                                                                           // negative Y (forward)
                             .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (lerp)) // Drive left with negative X
-                                                                                           // (left)
+                                                                                       // (left)
                             .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (lerp)); // Drive
-                                                                                                        // counterclockwise
-                                                                                                        // with negative
-                                                                                                        // X (left)
+                                                                                                    // counterclockwise
+                                                                                                    // with negative
+                                                                                                    // X (left)
                 }));
 
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
