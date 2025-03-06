@@ -49,8 +49,8 @@ public class ElevatorPresetCommand extends Command {
                 m_arm.setArmTarget(PresetConstants.armStartPos);
             }
         }
-        if (armPos < 0.24) {
-            canMoveArm &= m_elevator.getElevatorPos() > .94;
+        if (armPos < 0.16) {
+            canMoveArm &= m_elevator.getElevatorPos() > .65;
             if (!canMoveArm) {
                 m_arm.setArmTarget(PresetConstants.armStartPos);
             }
@@ -90,10 +90,11 @@ public class ElevatorPresetCommand extends Command {
     private void checkPresetLvl() {
         if (m_wristSide) {
             wristPos = PresetConstants.wristSidePos;
-            armPos = PresetConstants.lvl1to3ArmPos;
+            armPos = PresetConstants.lvl2to3ArmPos;
             switch (m_button_pressed) {
                 case 'a':
                     elevatorPos = PresetConstants.lvl1Elevator;
+                    armPos = PresetConstants.lvl1ArmPos;
                     break;
                 case 'b':
                     elevatorPos = PresetConstants.lvl2Elevator;
@@ -110,10 +111,14 @@ public class ElevatorPresetCommand extends Command {
                     armPos = PresetConstants.groundArmPos;
                     wristPos = PresetConstants.wristSidePosNeg;
                     break;
+                case 'q':
+                    elevatorPos = PresetConstants.elevatorAlgaeGroundPos;
+                    armPos = PresetConstants.armAlgaeGroundPos;
+                    break;
             }
         } else {
             wristPos = PresetConstants.wristFlatPos;
-            armPos = PresetConstants.lvl1to3ArmPos;
+            armPos = PresetConstants.lvl2to3ArmPos;
             switch (m_button_pressed) {
 
                 case 'b':
