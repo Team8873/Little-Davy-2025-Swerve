@@ -105,6 +105,7 @@ public class ElevatorPresetCommand extends Command {
                 case 'h':
                     elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.humanIntakeArmPos;
+                    wristPos = PresetConstants.wristFlatPos;
                     break;
                 case 'g':
                     elevatorPos = PresetConstants.goundElevatorPos;
