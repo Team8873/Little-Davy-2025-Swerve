@@ -64,7 +64,7 @@ import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 
 public class CANdleSystem extends SubsystemBase {
-    private final int LEDS_PER_ANIMATION = 68;
+    private final int LEDS_PER_ANIMATION = 300;
     private final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
     private CommandXboxController joystick;
     private int m_candleChannel = 0;
@@ -98,7 +98,7 @@ public class CANdleSystem extends SubsystemBase {
         configAll.statusLedOffWhenActive = true;
         configAll.disableWhenLOS = false;
         configAll.stripType = LEDStripType.GRB;
-        configAll.brightnessScalar = 0.1;
+        configAll.brightnessScalar = Double.MAX_VALUE;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
         m_candle.configAllSettings(configAll, 100);
     }
@@ -331,8 +331,13 @@ public class CANdleSystem extends SubsystemBase {
         return this.runOnce(
                 () -> {
         clearAllAnims();
+
                     incrementAnimation();
                     //changeAnimation(AnimationTypes.Rainbow); 
+        clearAllAnims();
+
+                    setColors();
+                    m_candle.setLEDs(128,0,255,0,0,300);
                 });
     }
     
