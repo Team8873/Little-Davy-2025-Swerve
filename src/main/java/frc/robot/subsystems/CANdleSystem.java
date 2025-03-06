@@ -242,7 +242,7 @@ public class CANdleSystem extends SubsystemBase {
                 break;
             case Fire:
                 m_candleChannel = 1;
-                m_toAnimate = new FireAnimation(0.5, 0.7, LEDS_PER_ANIMATION, 0.8, 0.5, m_animDirection, 0);
+                m_toAnimate = new FireAnimation(1, 0.7, LEDS_PER_ANIMATION, 0.8, 0.5, m_animDirection, 0);
                 break;
             case Larson:
                 m_candleChannel = 2;
@@ -251,7 +251,7 @@ public class CANdleSystem extends SubsystemBase {
                 break;
             case Rainbow:
                 m_candleChannel = 3;
-                m_toAnimate = new RainbowAnimation(1, 0.7, LEDS_PER_ANIMATION, m_animDirection,
+                m_toAnimate = new RainbowAnimation(1, 1, LEDS_PER_ANIMATION, m_animDirection,
                         0);
                 break;
             case RgbFade:
@@ -331,8 +331,8 @@ public class CANdleSystem extends SubsystemBase {
         return this.runOnce(
                 () -> {
         clearAllAnims();
-
-                    changeAnimation(AnimationTypes.Fire); 
+                    incrementAnimation();
+                    //changeAnimation(AnimationTypes.Rainbow); 
                 });
     }
     
