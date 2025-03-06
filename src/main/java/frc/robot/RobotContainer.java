@@ -39,6 +39,7 @@ import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
 import frc.robot.command.ActiveHumanIntakeCommand;
 import frc.robot.command.DockHumanIntakeCommand;
+import frc.robot.subsystems.Climber;
 
 public class RobotContainer {
     public static final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
@@ -67,6 +68,7 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final LimeLightFace limeLightFace = new LimeLightFace();
     public final CANdleSystem caNdleSystem = new CANdleSystem(joystick);
+    public final Climber epicClimber = new Climber();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -130,6 +132,10 @@ public class RobotContainer {
         // 'g', false));
 
         // climber stuff:
+        joystick.y().onTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.moveToEngaged()));
+        joystick.x().onTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.moveClimberDown()));
+        joystick.x().onFalse(epicClimber.dontMoveClimberDown());
+
 
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically

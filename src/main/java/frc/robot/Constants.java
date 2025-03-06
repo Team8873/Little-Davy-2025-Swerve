@@ -1,14 +1,15 @@
 package frc.robot;
 
-
 public class Constants {
     public static class CANdleConstants {
         public static final int CANdleID = 7;
     }
-    public static class ToFConstants{
+
+    public static class ToFConstants {
         public static final int SensorId = 18;
     }
-    public static class ElevatorConstants{
+
+    public static class ElevatorConstants {
         public static final int elevatorLCanId = 17;
         public static final int elevatorRCanId = 19;
         public static final double kP = 0.375;
@@ -23,7 +24,8 @@ public class Constants {
         public static final double kV = 60;
 
     }
-    public static class IntakeConstants{
+
+    public static class IntakeConstants {
         public static final int intakeCanId = 15;
         public static final int humanIntakeCanId = 18;
         public static final double humankP = 0.1;
@@ -34,6 +36,7 @@ public class Constants {
         public static final double velocitykD = 0.0;
 
     }
+
     public static class ArmConstants {
         public static final int armCanId = 13;
         public static final int wristCanId = 14;
@@ -51,38 +54,36 @@ public class Constants {
         public static final double kS = 0.025;
         public static final double kG = 0.06;
         public static final double kV = 0;
-        
-        
+
     }
+
     public static class PresetConstants {
-        //default flat wrist pos
+        // default flat wrist pos
         public static final double lvl1ArmPos = 0.13;
         public static final double lvl2to3ArmPos = 0.21;
-        public static final double lvl4ArmPos = 0.45; 
+        public static final double lvl4ArmPos = 0.45;
         public static final double wristFlatPos = 0;
         public static final double lvl1Elevator = 2.55;
         public static final double lvl2Elevator = 2.8;
         public static final double lvl3Elevator = 4;
         public static final double lvl4Elevator = 4.25;
 
-        //side wrist pos
+        // side wrist pos
         public static final double wristSidePos = 4.05;
 
-        //public static final double lvl1ElevatorSide = 0;
+        // public static final double lvl1ElevatorSide = 0;
 
-        //dock pos
+        // dock pos
         public static final double wristDockPos = 0;
         public static final double armDockPos = 0;
         public static final double humanIntakeDockPos = 0;
 
-        //active intake pos
-        public static final double humanIntakeActivePos = 0; 
+        // active intake pos
+        public static final double humanIntakeActivePos = 0;
 
-        //ground intake 
+        // ground intake
         public static final double goundElevatorPos = .71;
         public static final double groundArmPos = 0.15;
-
-
 
         public static final double wristSidePosNeg = -wristSidePos;
         public static final double wristFlatPosNeg = -8;
@@ -94,47 +95,43 @@ public class Constants {
         public static final double wristTolerance = 2;
         public static final double armStartPos = 0.35;
         public static final double elevatorAlgaeGroundPos = 0.75;
-        public static final double armAlgaeGroundPos = 0.24; 
-        public static final double armKickPos = 0.29; //Remove algae from reef pos
-        public static final double elevatorKickPos = 1.76; //Remove algae from reef pos
+        public static final double armAlgaeGroundPos = 0.24;
+        public static final double armKickPos = 0.29; // Remove algae from reef pos
+        public static final double elevatorKickPos = 1.76; // Remove algae from reef pos
         public static final double startElevator = 0;
-        
+
     }
+
     public static class ClimberConstants {
-        //gearbox stuff
-        //every deg is about 42/360 which is 0.1167
-        //Ticks per deg converts from deg to ticks
-        //public static final double ticksPerDegClimber = 42/360;
+        // gearbox stuff
+        // every deg is about 42/360 which is 0.1167
+        // Ticks per deg converts from deg to ticks
+        // public static final double ticksPerDegClimber = 42/360;
 
-
-        //a 100:1 gearbox
+        // a 100:1 gearbox
         public static final double motorRatioClimberMultiplier = 100;
 
-
-        //it takes approxamitely a little over 3 spool rotations to go from engaged-> resting
-        //a little less than 2 to go from climbed -> engaged
+        // it takes approxamitely a little over 3 spool rotations to go from engaged->
+        // resting
+        // a little less than 2 to go from climbed -> engaged
         public static final double spoolRotationsRestingToEngaged = 3.2;
         public static final double spoolRotationsEngagedToClimbed = 1.9;
-        //360 deg is one spool rotations      
-   
-        //defined positions, getPosition measures in rotations
-        //360 deg is 1 spool rotation so multiply 360 by that many spool rotations
+        // 360 deg is one spool rotations
+
+        // defined positions, getPosition measures in rotations
+        // 360 deg is 1 spool rotation so multiply 360 by that many spool rotations
         public static final double restingPosition = 0;
         public static final double engagedPosition = 0.25;
         public static final double climbedPositon = 0.125;
 
-
-        //PID constants:
-        public static final double ClimberkP = 0.1;
+        // PID constants:
+        public static final double ClimberkP = 0.4;
         public static final double ClimberkI = 0;
         public static final double ClimberkD = 0;
 
-
-
-
-        //Identification
-        public static final int motorForClimberID = 16;
+        // Identification
+        public static final int motorForClimberCANID = 16;
         public static final int servoID = 0;
-        public static final int encoderForClimberDIOPort = 0;
+        public static final int encoderForClimberDIOPort = 1;
     }
 }
