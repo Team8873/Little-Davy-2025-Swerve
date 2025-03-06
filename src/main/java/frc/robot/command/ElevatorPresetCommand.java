@@ -102,8 +102,12 @@ public class ElevatorPresetCommand extends Command {
                     elevatorPos = PresetConstants.lvl3Elevator;
                     break;
                 case 'h':
-                    elevatorPos = PresetConstants.goundElevator;
+                    elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.humanIntakeArmPos;
+                case 'g':
+                    elevatorPos = PresetConstants.goundElevatorPos;
+                    armPos = PresetConstants.groundArmPos;
+                    break;
             }
         } else {
             wristPos = PresetConstants.wristFlatPos;
@@ -123,13 +127,12 @@ public class ElevatorPresetCommand extends Command {
                     armPos = PresetConstants.lvl4ArmPos;
                     break;
 
-                case 'g':
-                    elevatorPos = PresetConstants.goundElevator;
-                    armPos = PresetConstants.groundArm;
-                    wristPos = PresetConstants.wristSidePos;
-                    break;
+                // case 'g':
+                //     elevatorPos = PresetConstants.startElevator;
+                //     armPos = PresetConstants.groundArm;
+                //     break;
                 case 't':
-                    elevatorPos = PresetConstants.goundElevator;
+                    elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.travelArm;
                     break;
                 case 'h':
@@ -138,7 +141,7 @@ public class ElevatorPresetCommand extends Command {
                     wristPos = PresetConstants.wristSidePos;
                     break;
                 case 's':
-                    elevatorPos = PresetConstants.goundElevator;
+                    elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.armStartPos;
                     break;
             }

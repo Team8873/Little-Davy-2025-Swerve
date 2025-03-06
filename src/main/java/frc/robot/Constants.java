@@ -78,21 +78,26 @@ public class Constants {
         public static final double humanIntakeActivePos = 0; 
 
         //ground intake 
-        public static final double goundElevator = 0;
-        public static final double groundArm = 0.251;
+        public static final double goundElevatorPos = 1;
+        public static final double groundArmPos = 0.14;
+
+
 
         public static final double wristSidePosNeg = -wristSidePos;
         public static final double wristFlatPosNeg = -8;
 
         public static final double travelArm = 0.451;
         public static final double humanElevatorPos = 1;
-        public static final double humanIntakeArmPos = 0.61; // when arm goes through elevator
+        public static final double humanIntakeArmPos = 0.59; // when arm goes through elevator
         public static final double directHumanArmPos = 0.4;
         public static final double wristTolerance = 2;
         public static final double armStartPos = 0.35;
         public static final double elevatorAlgaeGroundPos = 1.39;
         public static final double armAlgaeGroundPos = 0.27; 
-
+        public static final double armKickPos = 0.29; //Remove algae from reef pos
+        public static final double elevatorKickPos = 1.76; //Remove algae from reef pos
+        public static final double startElevator = 0;
+        
     }
     public static class ClimberConstants {
         //gearbox stuff
