@@ -50,7 +50,7 @@ public class ElevatorPresetCommand extends Command {
             }
         }
         if (armPos < 0.24) {
-            canMoveArm &= m_elevator.getElevatorPos() > 1.5;
+            canMoveArm &= m_elevator.getElevatorPos() > .94;
             if (!canMoveArm) {
                 m_arm.setArmTarget(PresetConstants.armStartPos);
             }
@@ -104,9 +104,11 @@ public class ElevatorPresetCommand extends Command {
                 case 'h':
                     elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.humanIntakeArmPos;
+                    break;
                 case 'g':
                     elevatorPos = PresetConstants.goundElevatorPos;
                     armPos = PresetConstants.groundArmPos;
+                    wristPos = PresetConstants.wristSidePosNeg;
                     break;
             }
         } else {
