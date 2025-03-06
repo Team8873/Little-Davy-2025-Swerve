@@ -49,8 +49,8 @@ public class ElevatorPresetCommand extends Command {
                 m_arm.setArmTarget(PresetConstants.armStartPos);
             }
         }
-        if (armPos < 0.16) {
-            canMoveArm &= m_elevator.getElevatorPos() > .65;
+        if (armPos < 0.21) {
+            canMoveArm &= m_elevator.getElevatorPos() > .63;
             if (!canMoveArm) {
                 m_arm.setArmTarget(PresetConstants.armStartPos);
             }

@@ -57,11 +57,11 @@ public class Constants {
     public static class PresetConstants {
         //default flat wrist pos
         public static final double lvl1ArmPos = 0.13;
-        public static final double lvl2to3ArmPos = 0.2;
+        public static final double lvl2to3ArmPos = 0.21;
         public static final double lvl4ArmPos = 0.45; 
         public static final double wristFlatPos = 0;
         public static final double lvl1Elevator = 2.55;
-        public static final double lvl2Elevator = 2.75;
+        public static final double lvl2Elevator = 2.8;
         public static final double lvl3Elevator = 4;
         public static final double lvl4Elevator = 4.25;
 
