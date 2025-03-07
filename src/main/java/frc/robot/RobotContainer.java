@@ -6,10 +6,14 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.concurrent.CancellationException;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
 import com.playingwithfusion.TimeOfFlight;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -39,6 +43,7 @@ import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
 import frc.robot.command.ActiveHumanIntakeCommand;
 import frc.robot.command.DockHumanIntakeCommand;
+import frc.robot.command.PresetAutoCommand;
 import frc.robot.subsystems.Climber;
 
 public class RobotContainer {
@@ -79,6 +84,10 @@ public class RobotContainer {
         configureBindings();
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
+        NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
+        NamedCommands.registerCommand("Score lvl4", new PresetAutoCommand(elevator, arm, intake, 0));
+        NamedCommands.registerCommand("Hug", new PresetAutoCommand(elevator, arm, intake, 1));
+
     }
 
     private void configureBindings() {
@@ -98,15 +107,19 @@ public class RobotContainer {
         arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
+        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
+                .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
         operator.x().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)); //lvl3
-        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4
+        //operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5)); //lvl4humancoralintake
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5)); //humanintakecoral
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
-        operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
+        //operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
+        operator.leftBumper().onTrue(caNdleSystem.ledUp());
+        operator.rightBumper().onTrue(caNdleSystem.ledDown());
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));

@@ -102,12 +102,9 @@ public class Intake extends SubsystemBase{
    * sets speed to -1
    * @return references latest object(intake) and runs the motor
    */
-  public Command intakeEject(){
-    speed = -1;
-    return this.runOnce(
-        () -> { 
-            setSpeed();
-        });
+  public void intakeEject(){
+    speed = 1;
+    setSpeed();
   }
   public Command moveIntake(CommandXboxController operator){
     return this.run(
