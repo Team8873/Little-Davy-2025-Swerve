@@ -72,6 +72,7 @@ public class RobotContainer {
     public final LimeLightFace limeLightFace = new LimeLightFace();
     public final CANdleSystem caNdleSystem = new CANdleSystem(joystick);
     public final Climber epicClimber = new Climber();
+    public final LimelightHelpers limelightHelp = new LimelightHelpers();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -182,7 +183,8 @@ public class RobotContainer {
         joystick.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
-        joystick.rightStick().whileTrue(lockOnCommand());
+        joystick.rightStick().whileTrue(Travel());
+        joystick.leftStick().whileTrue(lockOnCommand());
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
         joystick.pov(270).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
@@ -201,14 +203,17 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
     }
+    public Command lockOnCommand() {
+        
 
-    public SequentialCommandGroup lockOnCommand() {
-        return new SequentialCommandGroup(
-                drivetrain.applyRequest(() -> drive.withRotationalRate(limeLightFace.limelight_aim_proportional()))
-                        .withTimeout(.5)
-                        .andThen(
-                                drivetrain.applyRequest(() -> forwardStraight
-                                        .withVelocityX(limeLightFace.limelight_range_proportional() * 0.005))));
+        return drivetrain
+                .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose() -  drivetrain.getState().Pose.getRotation().getRadians()) * 0.01)
+                );
+    }
+    public Command Travel() {
+        return drivetrain
+                .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005)
+                .withVelocityY(limeLightFace.limelight_aim_proportional()*0.005));
     }
 
     public SequentialCommandGroup strafeRightCommand() {

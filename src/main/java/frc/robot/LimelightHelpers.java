@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.io.IOException;
+import java.lang.annotation.Target;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1643,5 +1644,38 @@ public class LimelightHelpers {
         }
 
         return results;
+    }
+    public double getRobotPose() {
+        int aprilTagID = (int) getFiducialID("limelight");
+        double radianPose = 0;
+        switch (aprilTagID) {
+            case 18,14,15,7,5,4:
+                radianPose = Math.PI;
+                break;
+            case 21,10:
+                radianPose = 0;
+                break;
+            case 16,3:
+                radianPose = Math.PI/2;
+                break;
+                case 12,2:
+                radianPose = Math.PI/4;
+                break;
+                case 13,1:
+                radianPose = -Math.PI/4;
+                break;
+                case 20,11:
+                radianPose = Math.PI/6;
+                break;case 22,9:
+                radianPose = -Math.PI/6;
+                break;
+                case 19,6:
+                radianPose = (5*Math.PI)/6;
+                break;case 17,8:
+                radianPose = -(5*Math.PI)/6;
+                break;
+        }
+        return radianPose;
+        
     }
 }
