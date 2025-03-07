@@ -1,17 +1,9 @@
 package frc.robot.command;
-
-import com.ctre.phoenix.led.CANdle;
-import com.ctre.phoenix.led.StrobeAnimation;
-
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.LimelightHelpers;
-import frc.robot.command.CANdleConfigCommands;
-import frc.robot.command.CANdlePrintCommands;
 import frc.robot.subsystems.CANdleSystem;
-import frc.robot.subsystems.CANdleSystem.AnimationTypes;
 
 
 public class CANdleAnimationCommands extends Command {
