@@ -74,6 +74,8 @@ public class CANdleSystem extends SubsystemBase {
     private boolean m_setAnim = false;
 
     private Animation m_toAnimate = null;
+    private Animation m_toAnimate2 = null;
+
 
     public enum AnimationTypes {
         ColorFlow,
@@ -348,7 +350,7 @@ public class CANdleSystem extends SubsystemBase {
         clearAllAnims();
 
                     changeAnimation(AnimationTypes.ColorFlow);
-                    m_toAnimate = new ColorFlowAnimation(255, 0,0,100, 0.7, LEDS_PER_ANIMATION, Direction.Forward,
+                    m_toAnimate2 = new ColorFlowAnimation(255, 0,0,100, 0.7, LEDS_PER_ANIMATION, Direction.Forward,
                         83);
                 });
     }
