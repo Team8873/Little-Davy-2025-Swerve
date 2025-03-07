@@ -85,10 +85,18 @@ public class RobotContainer {
         CameraServer.startAutomaticCapture();
         // NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
-        //NamedCommands.registerCommand("Score", new PresetAutoCommand(elevator, arm, intake, 0));
         new EventTrigger("Elevator lvl4")
         .onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)
-        .andThen(intake.intakeEject().alongWith(arm.kcikArm())).withTimeout(1.5));
+        .andThen((arm.kcikArm())));
+        // new EventTrigger("Elevator lvl3")
+        // .onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)
+        // .andThen((intake.intakeEject())));
+        // new EventTrigger("Elevator lvl2")
+        // .onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)
+        // .andThen((intake.intakeEject())));
+        // new EventTrigger("Elevator lvl1")
+        // .onTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)
+        // .andThen((intake.intakeEject())));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
@@ -119,9 +127,9 @@ public class RobotContainer {
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5)); //lvl4humancoralintake
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5)); //humanintakecoral
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
-        //operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
-        operator.leftBumper().onTrue(caNdleSystem.ledUp());
-        operator.rightBumper().onTrue(caNdleSystem.ledDown());
+        operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
+        // operator.leftBumper().onTrue(caNdleSystem.ledUp());
+        // operator.rightBumper().onTrue(caNdleSystem.ledDown());
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));
