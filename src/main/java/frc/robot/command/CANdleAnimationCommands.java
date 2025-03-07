@@ -1,39 +1,44 @@
 package frc.robot.command;
 
+import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.LimelightHelpers;
 import frc.robot.command.CANdleConfigCommands;
 import frc.robot.command.CANdlePrintCommands;
 import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.CANdleSystem.AnimationTypes;
 
+
 public class CANdleAnimationCommands extends Command {
     public double distanceFromAprilTag = 0;
     public boolean isItCloseEnough = false;
-    public int aprilTagID = 0;
+    public int m_aprilTagID = 0;
     public boolean aprilTagDetected = false;
     public CANdleSystem m_CaNdleSystem;
-
-    public CANdleAnimationCommands(CANdleSystem CANDLE) {
+    public int LEDS_PER_ANIMATION = 300;
+    // What to put into robot container
+    // new CANdleAnimationCOmmands(caNdlesystem, limelightHelpers.getAprilTagID);
+    public CANdleAnimationCommands(CANdleSystem CANDLE, int aprilTagID) {
         m_CaNdleSystem = CANDLE;
+        m_aprilTagID = aprilTagID;
+        addRequirements(m_CaNdleSystem);
     }
 
     @Override
     // Called when the command is initially scheduled.
     public void initialize() {
-        // getAprilTagID();
         aprilAnimation();
     }
 
     @Override
     public void execute() {
+        m_CaNdleSystem.setSpeedOfStrobeAnimations(distanceFromAprilTag);  //adjust animation speed based on distance from april tag. when closer to april tag flash slower
     //getAprilTag Distance
-    //adjust animation speed based on distance from april tag
     }
 
     // Called once the command ends or is interrupted.
@@ -41,7 +46,7 @@ public class CANdleAnimationCommands extends Command {
     public void end(boolean interrupted) {
     }
 
-    // Returns true when the command should end.
+    // Returns true when the command should end and then calls on end to end the command
     @Override
     public boolean isFinished() {
         if (distanceFromAprilTag < 2) {
@@ -49,17 +54,22 @@ public class CANdleAnimationCommands extends Command {
         }
         return isItCloseEnough;
     }
-
+//1 is pink 2 is green 3 is white
     private void aprilAnimation() {
-        switch (aprilTagID) {
-            case 1:
-                m_CaNdleSystem.clearAllAnims();
-                m_CaNdleSystem.changeAnimation(AnimationTypes.Strobe);
-                break;
-            case 2:
+        m_CaNdleSystem.clearAllAnims();
+        m_CaNdleSystem.setColors();
+        switch (m_aprilTagID) {
+            case 1,2,12,13:
+            
+            m_CaNdleSystem.runStrobeAnimations(2);
 
                 break;
-            case 3:
+            case 3,4,5,14,15,16:
+            m_CaNdleSystem.runStrobeAnimations(3);
+
+                break;
+            case 6,7,8,9,10,11,17,18,19,20,21,22:
+            m_CaNdleSystem.runStrobeAnimations(1);
 
                 break;
             default:
@@ -69,4 +79,7 @@ public class CANdleAnimationCommands extends Command {
         }
 
     }
+    
+
+    
 }
