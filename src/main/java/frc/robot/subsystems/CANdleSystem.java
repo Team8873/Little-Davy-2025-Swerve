@@ -54,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
+import frc.robot.command.CANdleAnimationCommands;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -377,10 +378,15 @@ public class CANdleSystem extends SubsystemBase {
             8); //2 whichColorStrobe
     StrobeAnimation whiteStrobeAnimation = new StrobeAnimation(0, 0, 0, 255, 0.01, LEDS_PER_ANIMATION,
             8); //3 whichColorStrobe
+            StrobeAnimation redStrobeAnimation = new StrobeAnimation(0, 255, 0, 0, 0.01, LEDS_PER_ANIMATION,
+            8); //0 whichColorStrobe
 
         //define whichColorStrobe wherever you call runStrobeAnimations
     public void runStrobeAnimations(int whichColorStrobe) {
         switch (whichColorStrobe) {
+            case 0:
+            m_toAnimate = redStrobeAnimation;
+                break;
             case 1:
             m_toAnimate = pinkStrobeAnimation;
                 break;
@@ -396,7 +402,7 @@ public class CANdleSystem extends SubsystemBase {
         }
     }
     public void setSpeedOfStrobeAnimations(double lightSpeedBasedOnDistance){
-        speed = lightSpeedBasedOnDistance;
+        speed = lightSpeedBasedOnDistance+0.1;
     }
 
 }
