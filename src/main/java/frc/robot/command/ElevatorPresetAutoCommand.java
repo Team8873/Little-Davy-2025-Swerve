@@ -23,8 +23,9 @@ public class ElevatorPresetAutoCommand extends Command {
     private boolean canMoveElevator;
     private boolean canMoveArm;
     private boolean ranIntake;
+    private boolean lvl4Auto;
 
-    public ElevatorPresetAutoCommand(Elevator elevator, Arm arm,Intake intake, char button, boolean wristSide) {
+    public ElevatorPresetAutoCommand(Elevator elevator, Arm arm, Intake intake, char button, boolean wristSide) {
         m_intake = intake;
         m_elevator = elevator; // saves a local reference to the elevator subsystem
         m_arm = arm; // saves a local reference to the arm subsystem
@@ -48,6 +49,10 @@ public class ElevatorPresetAutoCommand extends Command {
         canMoveElevator = m_arm.getArmPos() < 0.45;
         canMoveArm = true;
         ranIntake = false;
+        lvl4Auto = false;
+        lvl4Auto &= m_elevator.getElevatorPos() > 4;
+        lvl4Auto &= m_arm.getArmPos() > .42;
+
         if (armPos > 0.45) {
             canMoveArm &= MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
             if (!canMoveArm) {
@@ -73,11 +78,20 @@ public class ElevatorPresetAutoCommand extends Command {
 
         m_arm.setArmSpeed();
         m_arm.setWristSpeed();
-        if(m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm
-        && canMoveElevator){
+
+        if (m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm
+                && canMoveElevator && lvl4Auto) {
+            m_arm.setArmTarget(PresetConstants.armKickPos);
+        } else if (m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm
+                && canMoveElevator && !lvl4Auto) {
             m_intake.intakeEject();
             ranIntake = true;
         }
+
+        // if (m_arm.getArmTarget() == PresetConstants.armKickPos && m_arm.getArmPos() < .32) {
+        //     m_intake.intakeEject();
+        //     ranIntake = true;
+        // }
 
     }
 
@@ -146,9 +160,9 @@ public class ElevatorPresetAutoCommand extends Command {
                     break;
 
                 // case 'g':
-                //     elevatorPos = PresetConstants.startElevator;
-                //     armPos = PresetConstants.groundArm;
-                //     break;
+                // elevatorPos = PresetConstants.startElevator;
+                // armPos = PresetConstants.groundArm;
+                // break;
                 case 't':
                     elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.travelArm;
