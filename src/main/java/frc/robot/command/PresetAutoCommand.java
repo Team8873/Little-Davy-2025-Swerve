@@ -15,15 +15,23 @@ public class PresetAutoCommand extends Command {
     private final Elevator m_elevator;
     private final Arm m_arm;
     private final Intake m_intake;
+    private double wristPos;
     private double armPos;
-    private int presetID;
+    private double elevatorPos;
+    private char m_button_pressed;
+    private boolean m_wristSide;
+    private boolean canMoveElevator;
     private boolean canMoveArm;
+    private int presetID;
+    private boolean ran;
 
-    public PresetAutoCommand(Elevator elevator, Arm arm, Intake intake, int preset) {
+
+    public PresetAutoCommand(Elevator elevator, Arm arm, Intake intake, int preset, char button) {
         m_intake = intake;
         m_elevator = elevator; // saves a local reference to the elevator subsystem
         m_arm = arm; // saves a local reference to the arm subsystem
         // Use addRequirements() here to declare subsystem dependencies.
+        m_button_pressed = button;
         presetID = preset;
         addRequirements(elevator, arm, intake);
     }
@@ -31,15 +39,17 @@ public class PresetAutoCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        presetSelector();
+        checkPresetLvl();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        canMoveElevator = m_arm.getArmPos() < 0.49;
+
         canMoveArm = true;
 
-        if (armPos > 0.45) {
+        if (armPos > 0.49) {
             canMoveArm &= MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
             if (!canMoveArm) {
                 m_arm.setArmTarget(PresetConstants.armStartPos);
@@ -52,13 +62,22 @@ public class PresetAutoCommand extends Command {
             }
 
         }
+        if (canMoveElevator) {
+            m_elevator.targetElevatorPosition(elevatorPos);
+        }
+
+        m_elevator.updateElevatorPID();
 
         if (canMoveArm) {
             m_arm.setArmTarget(armPos);
         }
         m_arm.setArmSpeed();
 
-        if (m_arm.getArmPos() < .3) {
+        if(m_arm.getArmPos() > .43 && m_elevator.elevatorAtTarget.getAsBoolean()){
+            presetSelector();
+        }
+
+        if (m_arm.getArmPos() < .3 && ran && m_elevator.getElevatorPos() > 4) {
             m_intake.intakeEject();
         }
     }
@@ -71,18 +90,91 @@ public class PresetAutoCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm;
+        return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm && ran && canMoveElevator;
     }
 
     private void presetSelector() {
+        
         switch (presetID) {
             case 0:
                 armPos = .24;
+                ran = true;
                 break;
             case 1:
                 armPos = PresetConstants.humanIntakeArmPos;
                 break;
+
         }
     }
+    private void checkPresetLvl() {
+        if (m_wristSide) {
+            wristPos = PresetConstants.wristSidePos;
+            armPos = PresetConstants.lvl2to3ArmPos;
+            switch (m_button_pressed) {
+                case 'a':
+                    elevatorPos = PresetConstants.lvl1Elevator;
+                    armPos = PresetConstants.lvl1ArmPos;
+                    break;
+                case 'b':
+                    elevatorPos = PresetConstants.lvl2Elevator;
+                    break;
+                case 'x':
+                    elevatorPos = PresetConstants.lvl3Elevator;
+                    break;
+                case 'h':
+                    elevatorPos = PresetConstants.startElevator;
+                    armPos = PresetConstants.humanIntakeArmPos;
+                    wristPos = PresetConstants.wristFlatPos;
+                    break;
+                case 'g':
+                    elevatorPos = PresetConstants.goundElevatorPos;
+                    armPos = PresetConstants.groundArmPos;
+                    wristPos = PresetConstants.wristSidePosNeg;
+                    break;
+                case 'q':
+                    elevatorPos = PresetConstants.elevatorAlgaeGroundPos;
+                    armPos = PresetConstants.armAlgaeGroundPos;
+                    break;
+            }
+        } else {
+            wristPos = PresetConstants.wristFlatPos;
+            armPos = PresetConstants.lvl2to3ArmPos;
+            switch (m_button_pressed) {
 
+                case 'b':
+                    elevatorPos = PresetConstants.lvl2Elevator;
+                    break;
+
+                case 'x':
+                    elevatorPos = PresetConstants.lvl3Elevator;
+                    break;
+
+                case 'y':
+                    elevatorPos = PresetConstants.lvl4Elevator;
+                    armPos = PresetConstants.lvl4ArmPos;
+                    break;
+
+                // case 'g':
+                //     elevatorPos = PresetConstants.startElevator;
+                //     armPos = PresetConstants.groundArm;
+                //     break;
+                case 't':
+                    elevatorPos = PresetConstants.startElevator;
+                    armPos = PresetConstants.travelArm;
+                    break;
+                case 'h':
+                    elevatorPos = PresetConstants.humanElevatorPos;
+                    armPos = PresetConstants.directHumanArmPos;
+                    wristPos = PresetConstants.wristSidePos;
+                    break;
+                case 's':
+                    elevatorPos = PresetConstants.startElevator;
+                    armPos = PresetConstants.armStartPos;
+                    break;
+            }
+        }
+    }
 }
+
+
+

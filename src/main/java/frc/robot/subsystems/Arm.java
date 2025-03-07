@@ -116,6 +116,13 @@ public class Arm extends SubsystemBase{
                 readFromController(operator); 
             });
     }
+    public Command kcikArm(){
+      return this.run(
+       () -> {
+             setArmTarget(.29);
+             setArmSpeed();
+       });
+}
 /**
  * Sets the target position of the arm and wrist then call set speed
  * @param operator the joystick port

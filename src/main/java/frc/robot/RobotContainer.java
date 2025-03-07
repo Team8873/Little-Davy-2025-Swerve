@@ -83,9 +83,12 @@ public class RobotContainer {
         configureBindings();
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
-        NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
-        NamedCommands.registerCommand("Hug", new PresetAutoCommand(elevator, arm, intake, 1));
-        new EventTrigger("Elevator lvl4").onTrue(Autolvl4());
+        // NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
+        NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
+        //NamedCommands.registerCommand("Score", new PresetAutoCommand(elevator, arm, intake, 0));
+        new EventTrigger("Elevator lvl4")
+        .onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)
+        .andThen(intake.intakeEject().alongWith(arm.kcikArm())).withTimeout(1.5));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
@@ -106,8 +109,8 @@ public class RobotContainer {
         arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
-        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
-                .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
+        // operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
+        //         .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
@@ -231,13 +234,13 @@ public class RobotContainer {
                                 .withVelocityY(limeLightFace.limelight_left_strafe_proportional() * 0.01))
                         .withTimeout(.5));
     }
-    public SequentialCommandGroup Autolvl4() {
-        return new SequentialCommandGroup(
-                new ElevatorPresetCommand(elevator,arm,'y',false)
-                        .withTimeout(.5)
-                        .andThen(new PresetAutoCommand(elevator, arm, intake, 0)
-                                ));
-    }
+//     public SequentialCommandGroup Autolvl4() {
+//         return
+//                 new ElevatorPresetCommand(elevator,arm,'y',false)
+//                         .andThen(new PresetAutoCommand(elevator, arm, intake, 0)
+//                                 );
+//     }
+    
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */

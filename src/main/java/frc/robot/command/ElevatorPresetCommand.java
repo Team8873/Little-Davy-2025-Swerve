@@ -41,9 +41,9 @@ public class ElevatorPresetCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        canMoveElevator = m_arm.getArmPos() < 0.45;
+        canMoveElevator = m_arm.getArmPos() < 0.49;
         canMoveArm = true;
-        if (armPos > 0.45) {
+        if (armPos > 0.49) {
             canMoveArm &= MathUtil.isNear(0, m_elevator.getElevatorPos(), 0.1);
             if (!canMoveArm) {
                 m_arm.setArmTarget(PresetConstants.armStartPos);

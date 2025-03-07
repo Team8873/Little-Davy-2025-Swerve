@@ -13,17 +13,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ArmDockCommand extends Command {
   //private final Intake m_intake;
   private final Arm m_arm;
-  private final TimeOfFlightSensor m_tOF;
 
   /**
    * Creates a new Command.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmDockCommand(Arm arm, TimeOfFlightSensor tOFsensor) {
+  public ArmDockCommand(Arm arm) {
     //m_intake = intake;
     m_arm = arm;
-    m_tOF = tOFsensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
     getInterruptionBehavior();
@@ -32,14 +30,14 @@ public class ArmDockCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arm.setArmMechTarget(PresetConstants.wristDockPos,PresetConstants.armDockPos);
+    m_arm.setArmMechTarget(PresetConstants.wristDockPos,PresetConstants.humanIntakeArmPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.setWristSpeed();
-    while(m_arm.getWristSetpointStatus().getAsBoolean()){m_arm.setArmSpeed();}
+    
+    m_arm.setArmSpeed();
     //m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 
@@ -51,6 +49,6 @@ public class ArmDockCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_tOF.coralInRange.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean();
+    return m_arm.armMechAtTarget.getAsBoolean();
   }
 }
