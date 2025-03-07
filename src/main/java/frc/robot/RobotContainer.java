@@ -12,6 +12,8 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
 import com.playingwithfusion.TimeOfFlight;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,7 +43,7 @@ import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
 import frc.robot.command.ActiveHumanIntakeCommand;
 import frc.robot.command.DockHumanIntakeCommand;
-import frc.robot.command.ElevatorPresetAutoCommand;
+import frc.robot.command.PresetAutoCommand;
 import frc.robot.subsystems.Climber;
 
 public class RobotContainer {
@@ -82,6 +84,8 @@ public class RobotContainer {
         configureBindings();
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
+        NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
+        NamedCommands.registerCommand("Preset Auto", new PresetAutoCommand(elevator, arm, intake));
     }
 
     private void configureBindings() {
@@ -101,7 +105,8 @@ public class RobotContainer {
         arm.setDefaultCommand(arm.moveArm(operator));
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
-        operator.y().debounce(0.3).whileTrue(new ElevatorPresetAutoCommand(elevator, arm,intake, 'y', false).withTimeout(5)); //lvl4
+        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
+                .andThen(new PresetAutoCommand(elevator, arm, intake))); //lvl4
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
