@@ -28,7 +28,7 @@ public class PresetAutoCommand extends Command {
         m_arm = arm; // saves a local reference to the arm subsystem
         // Use addRequirements() here to declare subsystem dependencies.
         presetID = preset;
-        addRequirements(elevator, arm);
+        addRequirements(elevator, arm, intake);
     }
 
     // Called when the command is initially scheduled.
