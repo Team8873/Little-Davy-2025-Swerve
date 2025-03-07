@@ -218,7 +218,7 @@ public class RobotContainer {
         
 
         return drivetrain
-                .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose() -  drivetrain.getState().Pose.getRotation().getRadians()) * 0.01)
+                .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose() -  drivetrain.getState().Pose.getRotation().getRadians()*0.5))
                 );
     }
     public Command Travel() {
