@@ -18,23 +18,23 @@ public class PresetAutoCommand extends Command {
     private double wristPos;
     private double armPos;
     private double elevatorPos;
-    private char m_button_pressed;
+    private int presetID;
     private boolean m_wristSide;
     private boolean canMoveArm;
 
-    public PresetAutoCommand(Elevator elevator, Arm arm, Intake intake) {
+    public PresetAutoCommand(Elevator elevator, Arm arm, Intake intake, int preset) {
         m_intake = intake;
         m_elevator = elevator; // saves a local reference to the elevator subsystem
         m_arm = arm; // saves a local reference to the arm subsystem
         // Use addRequirements() here to declare subsystem dependencies.
+        presetID = preset;
         addRequirements(elevator, arm);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        armPos = .24;
-
+        presetSelector();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -61,7 +61,7 @@ public class PresetAutoCommand extends Command {
         }
         m_arm.setArmSpeed();
 
-        if (m_arm.getArmPos() < .3){
+        if (m_arm.getArmPos() < .3) {
             m_intake.intakeEject();
         }
     }
@@ -77,7 +77,15 @@ public class PresetAutoCommand extends Command {
         return m_elevator.elevatorAtTarget.getAsBoolean() && m_arm.armMechAtTarget.getAsBoolean() && canMoveArm;
     }
 
+    private void presetSelector() {
+        switch (presetID) {
+            case 0:
+                armPos = .24;
+                break;
+            case 1:
+                armPos = PresetConstants.humanIntakeArmPos;
+                break;
+        }
+    }
 
-                
-    
 }

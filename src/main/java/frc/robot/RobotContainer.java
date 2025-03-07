@@ -85,7 +85,9 @@ public class RobotContainer {
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
         NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
-        NamedCommands.registerCommand("Preset Auto", new PresetAutoCommand(elevator, arm, intake));
+        NamedCommands.registerCommand("Score lvl4", new PresetAutoCommand(elevator, arm, intake, 0));
+        NamedCommands.registerCommand("Hug", new PresetAutoCommand(elevator, arm, intake, 1));
+
     }
 
     private void configureBindings() {
@@ -106,7 +108,7 @@ public class RobotContainer {
         tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
         operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
-                .andThen(new PresetAutoCommand(elevator, arm, intake))); //lvl4
+                .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
