@@ -87,7 +87,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
         NamedCommands.registerCommand("Score lvl4", new PresetAutoCommand(elevator, arm, intake, 0));
         NamedCommands.registerCommand("Hug", new PresetAutoCommand(elevator, arm, intake, 1));
-
+        new EventTrigger("Elevator lvl4").onTrue(new ElevatorPresetCommand(elevator,arm,'y',false).withTimeout(4));
+        //.andThen((NamedCommands.getCommand("Score lvl4"))));
+        new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
     private void configureBindings() {
