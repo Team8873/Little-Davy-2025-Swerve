@@ -15,11 +15,8 @@ public class PresetAutoCommand extends Command {
     private final Elevator m_elevator;
     private final Arm m_arm;
     private final Intake m_intake;
-    private double wristPos;
     private double armPos;
-    private double elevatorPos;
     private int presetID;
-    private boolean m_wristSide;
     private boolean canMoveArm;
 
     public PresetAutoCommand(Elevator elevator, Arm arm, Intake intake, int preset) {

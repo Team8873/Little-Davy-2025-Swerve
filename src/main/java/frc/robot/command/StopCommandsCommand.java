@@ -8,7 +8,6 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TimeOfFlightSensor;
 /** An  command that uses an  subsystem. */
 public class StopCommandsCommand extends Command {
   private final Intake m_subsystem;
