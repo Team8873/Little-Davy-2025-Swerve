@@ -338,11 +338,18 @@ public class CANdleSystem extends SubsystemBase {
                 () -> {
         clearAllAnims();
 
+                    clearAllAnims();
+
                     //incrementAnimation();
                     //changeAnimation(AnimationTypes.Rainbow); 
         clearAllAnims();
                     setColors();
                     m_candle.setLEDs(0,255,119,100,8,300);
+                    // changeAnimation(AnimationTypes.Rainbow);
+                    clearAllAnims();
+
+                    setColors();
+                    m_candle.setLEDs(128, 0, 255, 0, 0, 300);
                 });
     }
     

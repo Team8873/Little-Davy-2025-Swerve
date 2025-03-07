@@ -131,14 +131,12 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                 });
     }
 
-    
-
     // Xbutton will move down to climbed
     public Command moveClimberDown() {
         return this.runOnce(
                 () -> {
                     motorForClimber.set(-0.07);
-                    //engageServo
+                    // engageServo
 
                 });
     }
