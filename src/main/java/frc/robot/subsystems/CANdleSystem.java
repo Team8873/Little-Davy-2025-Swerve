@@ -64,7 +64,7 @@ import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 
 public class CANdleSystem extends SubsystemBase {
-    private final int LEDS_PER_ANIMATION = 300;
+    private final int LEDS_PER_ANIMATION = 158;
     private final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
     private CommandXboxController joystick;
     private int m_candleChannel = 0;
@@ -97,7 +97,7 @@ public class CANdleSystem extends SubsystemBase {
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = true;
         configAll.disableWhenLOS = false;
-        configAll.stripType = LEDStripType.GRB;
+        configAll.stripType = LEDStripType.RGB;
         configAll.brightnessScalar = Double.MAX_VALUE;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
         m_candle.configAllSettings(configAll, 100);
@@ -237,7 +237,7 @@ public class CANdleSystem extends SubsystemBase {
             default:
             case ColorFlow:
                 m_candleChannel = 0;
-                m_toAnimate = new ColorFlowAnimation(128, 0, 255, 0, 0.7, LEDS_PER_ANIMATION, Direction.Forward,
+                m_toAnimate = new ColorFlowAnimation(0, 255,119,100, 0.7, LEDS_PER_ANIMATION, Direction.Forward,
                         0);
                 break;
             case Fire:
@@ -298,6 +298,8 @@ public class CANdleSystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        
+
         // This method will be called once per scheduler run
         if (m_toAnimate == null) {
             if (!m_setAnim) {
@@ -332,12 +334,11 @@ public class CANdleSystem extends SubsystemBase {
                 () -> {
         clearAllAnims();
 
-                    incrementAnimation();
+                    //incrementAnimation();
                     //changeAnimation(AnimationTypes.Rainbow); 
         clearAllAnims();
-
                     setColors();
-                    m_candle.setLEDs(128,0,255,0,0,300);
+                    m_candle.setLEDs(0,255,119,100,8,300);
                 });
     }
     
@@ -347,6 +348,8 @@ public class CANdleSystem extends SubsystemBase {
         clearAllAnims();
 
                     changeAnimation(AnimationTypes.ColorFlow);
+                    m_toAnimate = new ColorFlowAnimation(255, 0,0,100, 0.7, LEDS_PER_ANIMATION, Direction.Forward,
+                        83);
                 });
     }
 
