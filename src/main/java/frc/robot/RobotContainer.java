@@ -85,10 +85,8 @@ public class RobotContainer {
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
         NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
-        NamedCommands.registerCommand("Score lvl4", new PresetAutoCommand(elevator, arm, intake, 0));
         NamedCommands.registerCommand("Hug", new PresetAutoCommand(elevator, arm, intake, 1));
-        new EventTrigger("Elevator lvl4").onTrue(new ElevatorPresetCommand(elevator,arm,'y',false).withTimeout(4));
-        //.andThen((NamedCommands.getCommand("Score lvl4"))));
+        new EventTrigger("Elevator lvl4").onTrue(Autolvl4());
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
@@ -229,6 +227,13 @@ public class RobotContainer {
                         .applyRequest(() -> forwardStraight.withVelocityX(0)
                                 .withVelocityY(limeLightFace.limelight_left_strafe_proportional() * 0.01))
                         .withTimeout(.5));
+    }
+    public SequentialCommandGroup Autolvl4() {
+        return new SequentialCommandGroup(
+                new ElevatorPresetCommand(elevator,arm,'y',false)
+                        .withTimeout(.5)
+                        .andThen(new PresetAutoCommand(elevator, arm, intake, 0)
+                                ));
     }
 
     public Command getAutonomousCommand() {
