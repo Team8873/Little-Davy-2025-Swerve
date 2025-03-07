@@ -216,7 +216,7 @@ public class RobotContainer {
     public Command Travel() {
         return drivetrain
                 .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005)
-                .withVelocityY(limeLightFace.limelight_aim_proportional()*0.005));
+                .withVelocityY(limeLightFace.limelight_aim_proportional()*0.01));
     }
 
     public SequentialCommandGroup strafeRightCommand() {
