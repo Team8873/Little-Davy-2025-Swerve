@@ -1650,10 +1650,13 @@ public class LimelightHelpers {
         double radianPose = 0;
         switch (aprilTagID) {
             case 18,14,15,7,5,4:
-                radianPose = Math.PI;
+                //radianPose = Math.PI;
+                radianPose = 0;
                 break;
             case 21,10:
-                radianPose = 0;
+                            radianPose = Math.PI;
+
+                // radianPose = 0;
                 break;
             case 16,3:
                 radianPose = Math.PI/2;
