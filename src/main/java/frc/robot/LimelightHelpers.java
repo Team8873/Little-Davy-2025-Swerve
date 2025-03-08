@@ -1735,7 +1735,10 @@ public class LimelightHelpers {
             case 17, 8:
                 radianPose = -(5 * Math.PI) / 6;
                 break;
+
+            default:
                 radianPose = null;
+                break;
         }
         return radianPose;
 
