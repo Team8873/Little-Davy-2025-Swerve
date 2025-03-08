@@ -88,7 +88,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         new EventTrigger("Elevator lvl4")
         .onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)
-        .andThen((arm.kcikArm())));
+        .andThen((arm.kcikArm()).withTimeout(2).andThen(new ElevatorPresetCommand(elevator, arm, 't', false))));
         // new EventTrigger("Elevator lvl3")
         // .onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)
         // .andThen((intake.intakeEject())));
@@ -124,7 +124,7 @@ public class RobotContainer {
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
         operator.x().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)); //lvl3
-        //operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4
+        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5)); //lvl4humancoralintake
         //operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5)); //humanintakecoral
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 's', false).withTimeout(5)); //humanintakecoral
@@ -157,9 +157,11 @@ public class RobotContainer {
         // 'g', false));
 
         // climber stuff:
-        joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.moveToEngaged()));
-        joystick.x().whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.moveClimberDown()));
+        joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.letGoOfCage()));
+        joystick.x().whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage()));
         joystick.x().onFalse(epicClimber.dontMoveClimberDown());
+        joystick.y().onFalse(epicClimber.dontMoveClimberDown());
+
 
 
         drivetrain.setDefaultCommand(

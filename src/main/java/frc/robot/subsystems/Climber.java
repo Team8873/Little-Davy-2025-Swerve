@@ -88,7 +88,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     public Command disengageServo() {
         return this.run(
                 () -> {
-                    servoValue = 0.0;
+                    servoValue = 1.0;
                     climberServo.set(servoValue);
                 });
     }
@@ -120,7 +120,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     }
 
     // Y will shoot to 90 deg
-    public Command moveToEngaged() {
+    public Command letGoOfCage() {
         targetPosition(ClimberConstants.engagedPosition);
         return this.run(
                 () -> {
@@ -134,7 +134,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     }
 
     // Xbutton will move down to climbed
-    public Command moveClimberDown() {
+    public Command grabCage() {
         return this.runOnce(
                 () -> {
                     motorForClimber.set(-0.3);
