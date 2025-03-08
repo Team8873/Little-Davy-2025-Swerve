@@ -156,8 +156,8 @@ public class RobotContainer {
         // 'g', false));
 
         // climber stuff:
-        joystick.y().onTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.moveToEngaged()));
-        joystick.x().onTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.moveClimberDown()));
+        joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.moveToEngaged()));
+        joystick.x().whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.moveClimberDown()));
         joystick.x().onFalse(epicClimber.dontMoveClimberDown());
 
 

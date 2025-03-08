@@ -124,9 +124,11 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
         targetPosition(ClimberConstants.engagedPosition);
         return this.run(
                 () -> {
-                    speed = climberPid.calculate(climberMotorPosition);
+                    // speed = climberPid.calculate(climberMotorPosition);
                     // disengageServo
-                    setSpeed();
+                    // setSpeed();
+                    motorForClimber.set(0.3);
+
 
                 });
     }
@@ -135,7 +137,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     public Command moveClimberDown() {
         return this.runOnce(
                 () -> {
-                    motorForClimber.set(-0.07);
+                    motorForClimber.set(-0.3);
                     // engageServo
 
                 });
