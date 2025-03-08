@@ -91,13 +91,16 @@ public class RobotContainer {
         .andThen((arm.kcikArm()).withTimeout(2).andThen(new ElevatorPresetCommand(elevator, arm, 't', false))));
         // new EventTrigger("Elevator lvl3")
         // .onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)
-        // .andThen((intake.intakeEject())));
+        // .andThen((intake.intakeEject()).withTimeout(2)
+        // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))));
         // new EventTrigger("Elevator lvl2")
         // .onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)
-        // .andThen((intake.intakeEject())));
+        // .andThen((intake.intakeEject().withTimeout(2)
+        // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
         // new EventTrigger("Elevator lvl1")
         // .onTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)
-        // .andThen((intake.intakeEject())));
+        // .andThen((intake.intakeEject().withTimeout(2)
+        // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
