@@ -1704,6 +1704,7 @@ public class LimelightHelpers {
 
     public Double getRobotPose() {
         int aprilTagID = (int) getFiducialID("limelight");
+        int aprilTag = (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
         Double radianPose;
         switch (aprilTagID) {
             case 18, 14, 15, 7, 5, 4:
