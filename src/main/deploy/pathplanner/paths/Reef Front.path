@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.189517045454545,
-        "y": 6.971605113636364
+        "x": 7.083011968085106,
+        "y": 7.490658244680851
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.079829545454547,
-        "y": 5.06703125
+        "x": 6.973324468085107,
+        "y": 5.586084381044488
       },
       "isLocked": false,
       "linkedName": null
@@ -33,8 +33,14 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
-      "waypointRelativePos": 0.7919010123734522,
+      "name": "Hug",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Elevator lvl4",
+      "waypointRelativePos": 0.7482993197278894,
       "endWaypointRelativePos": null,
       "command": null
     }
