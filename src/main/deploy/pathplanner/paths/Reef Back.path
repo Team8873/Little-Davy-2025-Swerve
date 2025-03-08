@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.209460227272728,
-        "y": 6.93171875
+        "x": 7.071343085106767,
+        "y": 7.490658244679589
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2037215909090913,
-        "y": 7.5100710227272724
+        "x": 2.9638962765961274,
+        "y": 6.67383643616895
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.901732954545454,
-        "y": 4.010042613636363
+        "x": 2.8699058219178086,
+        "y": 4.197795376712328
       },
       "prevControl": {
-        "x": 2.592613636363636,
-        "y": 4.7977982954545455
+        "x": 2.5607865037359905,
+        "y": 4.98555105853051
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,18 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 5.4,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.25,
+      "maxWaypointRelativePos": 0.75,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
       "name": "Hug",
