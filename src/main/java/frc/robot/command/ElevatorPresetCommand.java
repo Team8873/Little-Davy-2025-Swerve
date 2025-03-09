@@ -89,7 +89,7 @@ public class ElevatorPresetCommand extends Command {
      */
     private void checkPresetLvl() {
         if (m_wristSide) {
-            wristPos = PresetConstants.wristSidePos;
+            wristPos = PresetConstants.wristSidePosNeg;
             armPos = PresetConstants.lvl2to3ArmPos;
             switch (m_button_pressed) {
                 case 'a':

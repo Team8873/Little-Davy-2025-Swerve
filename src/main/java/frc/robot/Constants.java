@@ -82,7 +82,7 @@ public class Constants {
         public static final double humanIntakeActivePos = 0;
 
         // ground intake
-        public static final double goundElevatorPos = .71;
+        public static final double goundElevatorPos = .81;
         public static final double groundArmPos = 0.15;
 
         public static final double wristSidePosNeg = -wristSidePos;

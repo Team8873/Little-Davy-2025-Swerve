@@ -38,6 +38,7 @@ public class ArmDockCommand extends Command {
   public void execute() {
     
     m_arm.setArmSpeed();
+    m_arm.setWristSpeed(); // fix wrist thing
     //m_intake.runIntake().onlyIf(m_arm.armMechAtTarget);
   }
 

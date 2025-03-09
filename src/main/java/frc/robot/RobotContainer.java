@@ -97,10 +97,10 @@ public class RobotContainer {
         // .onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)
         // .andThen((intake.intakeEject().withTimeout(2)
         // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
-        // new EventTrigger("Elevator lvl1")
-        // .onTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)
-        // .andThen((intake.intakeEject().withTimeout(2)
-        // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
+        new EventTrigger("Elevator lvl1")
+        .onTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)
+        .andThen((intake.intakeEject().withTimeout(2)
+        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
@@ -108,7 +108,6 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
 
-        intake.setDefaultCommand(intake.moveIntake(operator));
 
         // If sensor detects something close holds
         // tOFSensor.coralInRange.whileTrue(intake.holdIntake());//commented this out w/
@@ -118,8 +117,10 @@ public class RobotContainer {
         // IntakeEjectCommand(intake, tOFSensor).andThen(new
         // ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
 
+        intake.setDefaultCommand(intake.moveIntake(operator));
+
         arm.setDefaultCommand(arm.moveArm(operator));
-        tOFSensor.setDefaultCommand(tOFSensor.getDistance());
+        // tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
         // operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
         //         .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
@@ -157,12 +158,12 @@ public class RobotContainer {
         operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(3));
 
         // operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm,
-        // 'g', false));
+        // 'g', false)); 
 
         // climber stuff:
         joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.letGoOfCage()));
-        joystick.x().whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage()));
-        joystick.x().onFalse(epicClimber.dontMoveClimberDown());
+        joystick.a().whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage()));
+        joystick.a().onFalse(epicClimber.dontMoveClimberDown());
         joystick.y().onFalse(epicClimber.dontMoveClimberDown());
 
 
@@ -195,14 +196,15 @@ public class RobotContainer {
                                                                                                     // X (left)
                 }));
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(
                 () -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
         joystick.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
-        joystick.rightStick().whileTrue(Travel());
-        joystick.leftStick().whileTrue(lockOnCommand());
+        // joystick.rightStick().whileTrue(Travel());
+        // joystick.leftStick().whileTrue(lockOnCommand());'
+        
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
         joystick.pov(270).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)

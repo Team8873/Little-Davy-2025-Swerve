@@ -40,7 +40,7 @@ import edu.wpi.first.wpilibj.Servo;
 public class Climber extends SubsystemBase { // puts climber as a subsystem; inside is code for the climber
     // introduce stuff
     private final SparkMax motorForClimber = new SparkMax(ClimberConstants.motorForClimberCANID, MotorType.kBrushless);                                                                                                                  // motorForClimber
-    private final DutyCycleEncoder encoderForClimber = new DutyCycleEncoder(ClimberConstants.encoderForClimberDIOPort); 
+    // private final DutyCycleEncoder encoderForClimber = new DutyCycleEncoder(ClimberConstants.encoderForClimberDIOPort); 
     private final Servo climberServo = new Servo(ClimberConstants.servoID); // a servo called climberServo
 
     // its not at the setpoint when we turn it on
@@ -80,7 +80,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     public Command engageServo() {
         return this.run(
                 () -> {
-                    servoValue = 0.5;
+                    servoValue = 1.0;
                     climberServo.set(servoValue);
                 });
     }
@@ -88,7 +88,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     public Command disengageServo() {
         return this.run(
                 () -> {
-                    servoValue = 1.0;
+                    servoValue = 0.0;
                     climberServo.set(servoValue);
                 });
     }
@@ -127,7 +127,8 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                     // speed = climberPid.calculate(climberMotorPosition);
                     // disengageServo
                     // setSpeed();
-                    motorForClimber.set(0.3);
+                    motorForClimber.set(0.7
+                    );
 
 
                 });
@@ -137,7 +138,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     public Command grabCage() {
         return this.runOnce(
                 () -> {
-                    motorForClimber.set(-0.3);
+                    motorForClimber.set(-0.8);
                     // engageServo
 
                 });
@@ -160,12 +161,10 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     // Periodically gets motorPosition, voltage, and updates shuffleboard
     @Override
     public void periodic() {
-        climberMotorPosition = encoderForClimber.get();
-        getClimberSetpointStatus();
-        double climberVoltage = motorForClimber.getBusVoltage();
-        updateShuffleboardWidgetsClimber();
-        if (climberMotorPosition < 0.05) {
-            motorForClimber.set(0);
-        }
+        // climberMotorPosition = encoderForClimber.get();
+        // getClimberSetpointStatus();
+        // double climberVoltage = motorForClimber.getBusVoltage();
+        // updateShuffleboardWidgetsClimber();
+        
     }
 }
