@@ -1711,7 +1711,8 @@ public class LimelightHelpers {
          //= (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
         RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("limelight");
 
-        int aprilTagID = fiducials[0].getId();
+        int aprilTagID = -1;
+        aprilTagID = fiducials[0].id;
             
         double radianPose;
         switch (aprilTagID) {
