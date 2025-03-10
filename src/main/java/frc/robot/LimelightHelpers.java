@@ -486,6 +486,9 @@ public class LimelightHelpers {
             this.distToRobot = distToRobot;
             this.ambiguity = ambiguity;
         }
+        public int getId(){
+            return id;
+        }
     }
 
     /**
@@ -1702,10 +1705,15 @@ public class LimelightHelpers {
         return results;
     }
 
-    public Double getRobotPose() {
+
+    public double getRobotPose(double currentPose) {
         //int aprilTagID = (int) getFiducialID("limelight");
-        int aprilTagID = (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
-        Double radianPose;
+         //= (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
+        RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("limelight");
+
+        int aprilTagID = fiducials[0].getId();
+            
+        double radianPose;
         switch (aprilTagID) {
             case 18, 14, 15, 7, 5, 4:
                 radianPose = Math.PI;
@@ -1738,7 +1746,7 @@ public class LimelightHelpers {
                 break;
 
             default:
-                radianPose = null;
+                radianPose = currentPose;
                 break;
         }
         return radianPose;
