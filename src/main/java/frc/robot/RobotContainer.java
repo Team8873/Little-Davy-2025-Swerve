@@ -221,7 +221,7 @@ public class RobotContainer {
     public Command lockOnCommand() {
         double currentPose = drivetrain.getState().Pose.getRotation().getRadians();
         return drivetrain
-                .applyRequest(() -> drive.withRotationalRate((( currentPose -  limelightHelp.getRobotPose(currentPose))*0.5))
+                .applyRequest(() -> drive.withRotationalRate((( limelightHelp.getRobotPose(currentPose) -  currentPose)*0.5))
                 );
     }
     public Command Travel() {
