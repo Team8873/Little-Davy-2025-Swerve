@@ -138,7 +138,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     public Command grabCage() {
         return this.runOnce(
                 () -> {
-                    motorForClimber.set(-0.8);
+                    motorForClimber.set(-1);
                     // engageServo
 
                 });

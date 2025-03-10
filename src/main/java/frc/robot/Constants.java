@@ -43,8 +43,8 @@ public class Constants {
         public static final double armkP = 2;
         public static final double armkI = 0.025;
         public static final double armkD = 0.0;
-        public static final double wristkP = 0.05;
-        public static final double wristkI = 0.0;
+        public static final double wristkP = 0.1;
+        public static final double wristkI = 0.001;
         public static final double wristkD = 0.0;
         public static final double wristGearRatio = 16;
         public static final double armGearRatio = 0;
@@ -82,7 +82,7 @@ public class Constants {
         public static final double humanIntakeActivePos = 0;
 
         // ground intake
-        public static final double goundElevatorPos = .81;
+        public static final double goundElevatorPos = .78;
         public static final double groundArmPos = 0.15;
 
         public static final double wristSidePosNeg = -wristSidePos;

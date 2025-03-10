@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.975085616438356,
-        "y": 4.032512842465753
+        "x": 2.7346746575342467,
+        "y": 3.972410102739726
       },
       "prevControl": {
-        "x": 2.6659662982565377,
-        "y": 4.820268524283935
+        "x": 2.4255553393524285,
+        "y": 4.760165784557907
       },
       "nextControl": null,
       "isLocked": false,
@@ -53,12 +53,6 @@
           "name": "Hug"
         }
       }
-    },
-    {
-      "name": "Elevator lvl1",
-      "waypointRelativePos": 0.8690476190476173,
-      "endWaypointRelativePos": null,
-      "command": null
     }
   ],
   "globalConstraints": {

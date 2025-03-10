@@ -3,6 +3,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
@@ -99,9 +100,12 @@ public class Arm extends SubsystemBase{
             .withPosition(8, 1);
     public Arm(){
       armPid.setTolerance(.005);
+      wristPid.setTolerance(.005);
+
       armPid.disableContinuousInput();
       armPid.setSetpoint(armTargetPos);
       tab.addDouble("Arm Target Real", () -> armPid.getSetpoint());
+      tab.addDouble("Wrist Real", () -> wristMotor.getAppliedOutput());
 
     }
 /**
@@ -129,7 +133,7 @@ public class Arm extends SubsystemBase{
  */
     private void readFromController(CommandXboxController operator){
       armTargetPos += (-operator.getLeftY()/120);
-      wristTargetPos += (operator.getLeftX()/80);
+      wristTargetPos += (operator.getLeftX()/20);
         setArmMechTarget(wristTargetPos,armTargetPos); 
         setArmSpeed();
         setWristSpeed();
@@ -147,7 +151,7 @@ public class Arm extends SubsystemBase{
  * sets wrist speed based on armPid loop
  */
   public void setWristSpeed(){
-    wristSpeed = wristPid.calculate(wristPosition);
+    wristSpeed = MathUtil.clamp(wristPid.calculate(wristPosition), -0.2, 0.2);
     wristMotor.set(wristSpeed);
 }
 

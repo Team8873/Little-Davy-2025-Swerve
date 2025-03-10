@@ -20,10 +20,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CameraServerJNI;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 
@@ -99,8 +101,9 @@ public class RobotContainer {
         // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
         new EventTrigger("Elevator lvl1")
         .onTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)
+        .andThen(new WaitCommand(2)
         .andThen((intake.intakeEject().withTimeout(2)
-        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
+        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
     }
 
@@ -154,8 +157,8 @@ public class RobotContainer {
 
         // operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
         // operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
-        operator.button(9).onTrue(new FlipWristCommand(arm).withTimeout(5));
-        operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(3));
+        operator.button(9).onTrue(new FlipWristCommand(arm).withTimeout(1));
+        operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(1));
 
         // operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm,
         // 'g', false)); 
@@ -173,24 +176,16 @@ public class RobotContainer {
 
                 drivetrain.applyRequest(() -> {
                     // double DriveBoost = 0.5 + (joystick.getRightTriggerAxis() * 0.5);
-                    double start = 0.2;
-                    double end = elevator.getElevatorPos() > 1.5 ? .5 : 1 ;
-                    double t = joystick.getRightTriggerAxis();
-                    double lerp = start * (1.0 - t) + end * t;
-                    // double LeftJoystickXScale = Math.copySign(-joystick.getLeftY() *
-                    // -joystick.getLeftY(),
-                    // -joystick.getLeftY());
-                    // double LeftJoystickYScale = Math.copySign(-joystick.getLeftX() *
-                    // -joystick.getLeftX(),
-                    // -joystick.getLeftX());
-                    // double RightJoystickXScale = Math.copySign(-joystick.getRightX() *
-                    // -joystick.getRightX(),
-                    // -joystick.getRightX());
-                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (lerp)) // Drive forward with
+                    double startboost = 0.2;
+                    double endboost = elevator.getElevatorPos() > 1.5 ? .5 : 1 ;
+                    double joytrigR = joystick.getRightTriggerAxis();
+                    double lerpboost = startboost * (1.0 - joytrigR) + endboost * joytrigR;
+
+                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (lerpboost)) // Drive forward with
                                                                                            // negative Y (forward)
-                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (lerp)) // Drive left with negative X
+                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (lerpboost)) // Drive left with negative X
                                                                                        // (left)
-                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (lerp)); // Drive
+                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (lerpboost)); // Drive
                                                                                                     // counterclockwise
                                                                                                     // with negative
                                                                                                     // X (left)

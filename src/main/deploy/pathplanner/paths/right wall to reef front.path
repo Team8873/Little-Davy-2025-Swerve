@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.975085616438356,
-        "y": 3.8522046232876708
+        "x": 2.9600599315068497,
+        "y": 4.032512842465753
       },
       "prevControl": {
-        "x": 2.178724315068494,
-        "y": 2.1843535958904114
+        "x": 0.8865154109589048,
+        "y": 2.1843535958904106
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
     },
     {
       "name": "Elevator lvl1",
-      "waypointRelativePos": 0.8404761904761905,
+      "waypointRelativePos": 0.7595238095238098,
       "endWaypointRelativePos": null,
       "command": null
     }
