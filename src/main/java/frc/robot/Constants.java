@@ -93,7 +93,7 @@ public class Constants {
         public static final double humanIntakeArmPos = 0.59; // when arm goes through elevator
         public static final double directHumanArmPos = 0.4;
         public static final double wristTolerance = 2;
-        public static final double armStartPos = 0.35;
+        public static final double armStartPos = 0.45;
         public static final double elevatorAlgaeGroundPos = 0.75;
         public static final double armAlgaeGroundPos = 0.24;
         public static final double armKickPos = 0.29; // Remove algae from reef pos

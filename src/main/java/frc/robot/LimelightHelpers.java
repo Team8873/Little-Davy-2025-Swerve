@@ -33,6 +33,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.opencv.core.Mat;
+
 /**
  * LimelightHelpers provides static methods and classes for interfacing with
  * Limelight vision cameras in FRC.
@@ -1711,7 +1713,7 @@ public class LimelightHelpers {
          //= (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
         RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("limelight");
         if(fiducials.length < 1){
-            return currentPose;
+            return 0;
         }
         int aprilTagID = fiducials[0].id;
             
@@ -1719,11 +1721,11 @@ public class LimelightHelpers {
         switch (aprilTagID) {
             case 18, 14, 15, 7, 5, 4:
                 radianPose = Math.PI;
-                // radianPose = 0.0;
+                // radianPose = 2* Math.PI;
                 break;
             case 21, 10:
-                // radianPose = Math.PI;
-                radianPose = 0.0;
+                radianPose = Math.PI;
+                // radianPose = 2* Math.PI;
                 break;
             case 16, 3:
                 radianPose = Math.PI / 2;
@@ -1751,7 +1753,7 @@ public class LimelightHelpers {
                 radianPose = currentPose;
                 break;
         }
-        return radianPose;
+        return radianPose - currentPose;
 
     }
 }

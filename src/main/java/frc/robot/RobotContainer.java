@@ -198,7 +198,7 @@ public class RobotContainer {
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
         // joystick.rightStick().whileTrue(Travel());
-        joystick.leftStick().whileTrue(lockOnCommand());
+        // joystick.leftStick().whileTrue(lockOnCommand());
         
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
@@ -219,10 +219,9 @@ public class RobotContainer {
 
     }
     public Command lockOnCommand() {
-        double currentPose = drivetrain.getState().Pose.getRotation().getRadians();
+        double currentPose = drivetrain.getState().RawHeading.getRadians();
         return drivetrain
-                .applyRequest(() -> drive.withRotationalRate((( limelightHelp.getRobotPose(currentPose) -  currentPose)*0.5))
-                );
+                .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose(currentPose))));
     }
     public Command Travel() {
         return drivetrain
