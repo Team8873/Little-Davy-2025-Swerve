@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9,
-        "y": 3.784
+        "x": 1.8,
+        "y": 4.002461472602739
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.51619229718833,
-        "y": 3.784
+        "x": 2.8,
+        "y": 4.002461472602739
       },
       "isLocked": false,
-      "linkedName": "right front reef lvl4"
+      "linkedName": "center coral pickup"
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 3.784
+        "x": 2.8525,
+        "y": 4.135
       },
       "prevControl": {
-        "x": 2.808,
-        "y": 3.784
+        "x": 1.8525,
+        "y": 4.135
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,41 +30,30 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9398797595190381,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 1.0,
-        "maxAngularVelocity": 90.0,
-        "maxAngularAcceleration": 360.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
         "unlimited": false
       }
     }
   ],
-  "pointTowardsZones": [
-    {
-      "fieldPosition": {
-        "x": 4.0,
-        "y": 3.784
-      },
-      "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.5857142857142857,
-      "name": "Point Towards Zone"
-    }
-  ],
+  "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "standCoral",
-      "waypointRelativePos": 0.719047619047619,
+      "name": "Elevator lvl4",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -79,13 +68,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "right wall to front reef",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
