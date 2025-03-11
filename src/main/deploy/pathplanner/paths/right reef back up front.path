@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8525,
-        "y": 3.859
+        "x": 2.9,
+        "y": 3.784
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4686922971883303,
-        "y": 3.859
+        "x": 2.51619229718833,
+        "y": 3.784
       },
       "isLocked": false,
-      "linkedName": "front reef lvl4"
+      "linkedName": "right front reef lvl4"
     },
     {
       "anchor": {
         "x": 2.5,
-        "y": 3.859
+        "y": 3.784
       },
       "prevControl": {
         "x": 3.307837070583917,
-        "y": 3.8591536815068492
+        "y": 3.784153681506849
       },
       "nextControl": null,
       "isLocked": false,

@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "right wall to reef front"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.9
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right reef back up front"
           }
         }
       ]

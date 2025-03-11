@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.065,
-        "y": 4.138
+        "x": 2.8525,
+        "y": 3.859
       },
       "prevControl": {
-        "x": 1.7880565068493146,
-        "y": 7.172880993150686
+        "x": 1.5755565068493145,
+        "y": 6.893880993150686
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "front reef lvl4"
     }
   ],
   "rotationTargets": [],
