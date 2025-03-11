@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.09468085106383,
-        "y": 7.467320478723403
+        "x": 7.107148972602739,
+        "y": 7.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.987234042553191,
-        "y": 6.650498670212764
+        "x": 1.5326198630136991,
+        "y": 5.535081335616439
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7346746575342467,
-        "y": 3.972410102739726
+        "x": 3.065,
+        "y": 4.138
       },
       "prevControl": {
-        "x": 2.4255553393524285,
-        "y": 4.760165784557907
+        "x": 2.68119229718833,
+        "y": 4.138
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,15 +29,29 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.39999999999999997,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [
     {
       "fieldPosition": {
-        "x": 5.4,
-        "y": 4.0
+        "x": 4.0,
+        "y": 4.138
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.25,
+      "minWaypointRelativePos": 0.1023809523809526,
       "maxWaypointRelativePos": 0.75,
       "name": "Point Towards Zone"
     }
@@ -45,21 +59,27 @@
   "eventMarkers": [
     {
       "name": "Hug",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Elevator lvl4",
+      "waypointRelativePos": 0.4,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Hug"
+          "name": "Elevator lvl4"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3,
-    "maxAcceleration": 3,
-    "maxAngularVelocity": 540,
-    "maxAngularAcceleration": 720,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -73,5 +93,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
