@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center to reef back"
+            "pathName": "strait to reef back"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.2
+            "waitTime": 3.9
           }
         },
         {
