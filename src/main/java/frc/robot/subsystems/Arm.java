@@ -127,6 +127,13 @@ public class Arm extends SubsystemBase{
              setArmSpeed();
        });
 }
+public Command standArm(){
+  return this.run(
+   () -> {
+         setArmTarget(.27);
+         setArmSpeed();
+   });
+}
 /**
  * Sets the target position of the arm and wrist then call set speed
  * @param operator the joystick port

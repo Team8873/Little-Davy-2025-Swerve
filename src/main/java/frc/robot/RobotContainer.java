@@ -105,6 +105,7 @@ public class RobotContainer {
         .andThen((intake.intakeEject().withTimeout(2)
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
+        new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
     }
 
     private void configureBindings() {
