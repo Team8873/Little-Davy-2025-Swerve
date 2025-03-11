@@ -9,6 +9,18 @@
           "data": {
             "pathName": "left wall to reef front"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 8.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "back up front"
+          }
         }
       ]
     }
