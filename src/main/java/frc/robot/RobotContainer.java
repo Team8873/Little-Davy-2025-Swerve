@@ -183,12 +183,16 @@ public class RobotContainer {
                     double endboost = elevator.getElevatorPos() > 1.5 ? .5 : 1 ;
                     double joytrigR = joystick.getRightTriggerAxis();
                     double lerpboost = startboost * (1.0 - joytrigR) + endboost * joytrigR;
+                    double startcoral = 1;
+                    double endcoral = 2;
+                    double joytrigL = joystick.getRightTriggerAxis();
+                    double lerpcoral = startboost * (1.0 - joytrigR) + endboost * joytrigR;
 
-                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (lerpboost)) // Drive forward with
+                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * ((lerpboost)*(lerpcoral))) // Drive forward with
                                                                                            // negative Y (forward)
-                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (lerpboost)) // Drive left with negative X
+                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * ((lerpboost)*(lerpcoral))) // Drive left with negative X
                                                                                        // (left)
-                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (lerpboost)); // Drive
+                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * ((lerpboost)*(lerpcoral))); // Drive
                                                                                                     // counterclockwise
                                                                                                     // with negative
                                                                                                     // X (left)
