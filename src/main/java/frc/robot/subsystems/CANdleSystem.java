@@ -327,7 +327,7 @@ public class CANdleSystem extends SubsystemBase {
             case 2:
                 m_toAnimate = animationSwitch(toChange);
                 break;
-
+            
             default:
                 break;
         }
@@ -337,10 +337,6 @@ public class CANdleSystem extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
-    }
-
-    public void setSpeedOfStrobeAnimations(double lightSpeedBasedOnDistance) {
-        speed = lightSpeedBasedOnDistance + 0.1;
     }
 
     /**

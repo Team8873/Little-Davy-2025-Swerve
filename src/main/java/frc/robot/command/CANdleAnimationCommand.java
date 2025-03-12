@@ -20,7 +20,7 @@ public class CANdleAnimationCommand extends Command {
     // What to put into robot container
     // new CANdleAnimationCOmmands(caNdlesystem, limelightHelpers.getAprilTagID);
     public CANdleAnimationCommand(CANdleSystem CANDLE, String whereLED, AnimationTypes animation, Color ledColor) {
-
+        m_ledColor = ledColor;
         m_animation = animation;
         m_CandleSystem = CANDLE;
         locationLED = whereLED;
