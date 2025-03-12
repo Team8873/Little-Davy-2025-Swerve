@@ -145,7 +145,7 @@ public class RobotContainer {
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
         operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
         // operator.leftBumper().onTrue(caNdleSystem.ledUp());
-        operator.rightBumper().onTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
+        operator.rightBumper().whileTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));
