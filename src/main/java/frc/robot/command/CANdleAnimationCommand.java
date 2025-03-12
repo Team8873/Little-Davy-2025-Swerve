@@ -6,6 +6,7 @@ import com.ctre.phoenix.led.CANdle;
 import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.wpilibj.AnalogTriggerOutput.AnalogTriggerType;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.CANdleSystem.AnimationTypes;
 import frc.robot.subsystems.CANdleSystem.Color;
@@ -31,8 +32,6 @@ public class CANdleAnimationCommand extends Command {
     // Called when the command is initially scheduled.
     public void initialize() {
         animationID();
-        m_CandleSystem.numControl(id);
-        m_CandleSystem.changeAnimation(m_animation, m_ledColor);
     }
 
     // Called once the command ends or is interrupted.

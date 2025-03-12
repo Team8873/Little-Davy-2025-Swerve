@@ -111,7 +111,7 @@ public class RobotContainer {
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
-        new CANdleAnimationCommand(caNdleSystem, "all", AnimationTypes.ColorFlow, Color.Pink);
+        caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow);
     }
 
     private void configureBindings() {
@@ -145,7 +145,7 @@ public class RobotContainer {
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
         operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
         // operator.leftBumper().onTrue(caNdleSystem.ledUp());
-        operator.rightBumper().onTrue(new CANdleAnimationCommand(caNdleSystem, "crossbar", AnimationTypes.ColorFlow, Color.Pink));
+        operator.rightBumper().onTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));
