@@ -8,31 +8,31 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5326198630136991,
-        "y": 5.535081335616439
+        "x": 6.971917808219178,
+        "y": 5.715389554794521
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.065,
-        "y": 4.138
+        "x": 2.8525,
+        "y": 3.859
       },
       "prevControl": {
-        "x": 2.68119229718833,
-        "y": 4.138
+        "x": 1.5755565068493145,
+        "y": 6.893880993150686
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "front reef lvl4"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.39999999999999997,
+      "minWaypointRelativePos": 0.8119047619047619,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
@@ -51,8 +51,8 @@
         "y": 4.138
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.1023809523809526,
-      "maxWaypointRelativePos": 0.75,
+      "minWaypointRelativePos": 0.26904761904761904,
+      "maxWaypointRelativePos": 1.0,
       "name": "Point Towards Zone"
     }
   ],
@@ -65,7 +65,7 @@
     },
     {
       "name": "Elevator lvl4",
-      "waypointRelativePos": 0.4,
+      "waypointRelativePos": 0.75,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

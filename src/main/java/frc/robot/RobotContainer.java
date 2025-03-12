@@ -86,6 +86,8 @@ public class RobotContainer {
         configureBindings();
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
+        CameraServer.startAutomaticCapture();
+
         // NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         new EventTrigger("Elevator lvl4")
@@ -105,6 +107,7 @@ public class RobotContainer {
         .andThen((intake.intakeEject().withTimeout(2)
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
+        new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
     }
 
     private void configureBindings() {
@@ -198,7 +201,7 @@ public class RobotContainer {
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
         // joystick.rightStick().whileTrue(Travel());
-        //joystick.leftStick().whileTrue(lockOnCommand());
+        // joystick.leftStick().whileTrue(lockOnCommand(drivetrain.getState().RawHeading.getRadians()));
         
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
@@ -218,10 +221,9 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
     }
-    public Command lockOnCommand() {
-        double currentPose = drivetrain.getState().RawHeading.getRadians();
+    public Command lockOnCommand(double currentPose) {
         return drivetrain
-                .applyRequest(() -> drive.withRotationalRate((Math.PI-currentPose)));//limelightHelp.getRobotPose(currentPose))));
+                .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose(currentPose))));
     }
     public Command Travel() {
         return drivetrain
