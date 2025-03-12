@@ -86,6 +86,8 @@ public class RobotContainer {
         configureBindings();
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
+        CameraServer.startAutomaticCapture();
+
         // NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         new EventTrigger("Elevator lvl4")
@@ -199,7 +201,7 @@ public class RobotContainer {
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
         // joystick.rightStick().whileTrue(Travel());
-        // joystick.leftStick().whileTrue(lockOnCommand());
+        // joystick.leftStick().whileTrue(lockOnCommand(drivetrain.getState().RawHeading.getRadians()));
         
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
@@ -219,8 +221,7 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
     }
-    public Command lockOnCommand() {
-        double currentPose = drivetrain.getState().RawHeading.getRadians();
+    public Command lockOnCommand(double currentPose) {
         return drivetrain
                 .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose(currentPose))));
     }
