@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CameraServerJNI;
@@ -111,7 +112,7 @@ public class RobotContainer {
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
-        caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow);
+        RobotModeTriggers.disabled().whileTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
     }
 
     private void configureBindings() {

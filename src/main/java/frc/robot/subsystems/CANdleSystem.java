@@ -355,6 +355,11 @@ public class CANdleSystem extends SubsystemBase {
                 break;
         }
     }
+    private void redToGreen(){
+        int tempRed = red;
+        red = green;
+        green = tempRed;
+    }
 
     public Command ledAnimation(int whereLED, Color color, AnimationTypes animationType) {
         return this.runOnce(
@@ -362,18 +367,24 @@ public class CANdleSystem extends SubsystemBase {
                     int ledOffset;
                     int maxLed;
                     colorAnalyzer(color);
-
+                    clearAllAnims();
                     switch (whereLED) {
                         case 0:
-                            ledOffset = 40;
-                            maxLed = 105;
+                            ledOffset = 8;
+                            maxLed = 80;
                             m_toAnimate = setAnimation(ledOffset, maxLed, animationType);
+                            ledOffset += 80;
+                            maxLed += 27;
+                            redToGreen();
+                            m_candle.configBrightnessScalar(.5);
+                            m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType);
                             break;
                         default:
                             maxLed = 10;
                             ledOffset = 8;
                             break;
                     }
+                    
                     // m_candle.setLEDs(red, green, blue, white, ledOffset, maxLed);
 
                 });
@@ -384,8 +395,8 @@ public class CANdleSystem extends SubsystemBase {
         switch (toChange) {
             default:
             case ColorFlow:
-            animate = new ColorFlowAnimation(red, green, blue, white, 0.7, 75, Direction.Forward,
-                        8);
+            animate = new ColorFlowAnimation(red, green, blue, white, 0.7, maxLed, Direction.Forward,
+                        ledOffset);
                 break;
             case Fire:
             animate = new FireAnimation(1, 0.7, maxLed, 0.8, 0.5, m_animDirection, ledOffset);
