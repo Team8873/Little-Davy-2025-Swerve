@@ -44,7 +44,7 @@ public class CANdleAnimationCommand extends Command {
     // command
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 
     /**

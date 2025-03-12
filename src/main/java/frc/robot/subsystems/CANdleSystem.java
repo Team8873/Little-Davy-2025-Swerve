@@ -66,7 +66,7 @@ import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 public class CANdleSystem extends SubsystemBase {
-    private int LEDS_PER_ANIMATION = 1580;
+    private int LEDS_PER_ANIMATION = 200;
     private final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
     private CommandXboxController joystick;
     private int m_candleChannel = 0;
