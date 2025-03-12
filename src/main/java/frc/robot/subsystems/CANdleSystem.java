@@ -54,7 +54,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.command.CANdleAnimationCommands;
+import frc.robot.command.CANdleAnimationCommand;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -63,9 +63,10 @@ import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 public class CANdleSystem extends SubsystemBase {
-    private final int LEDS_PER_ANIMATION = 158;
+    private int LEDS_PER_ANIMATION = 1580;
     private final CANdle m_candle = new CANdle(Constants.CANdleConstants.CANdleID, "rio");
     private CommandXboxController joystick;
     private int m_candleChannel = 0;
@@ -75,8 +76,13 @@ public class CANdleSystem extends SubsystemBase {
     private boolean m_setAnim = false;
     private double speed;
 
+    private int ledOffset = 8;
+
     private Animation m_toAnimate = null;
     private Animation m_toAnimate2 = null;
+    private Animation m_toAnimate3 = null;
+    private Animation m_toAnimate4 = null;
+    private int m_id;
 
     public enum AnimationTypes {
         ColorFlow,
@@ -92,11 +98,22 @@ public class CANdleSystem extends SubsystemBase {
         Empty
     }
 
+    public enum Color {
+        Pink,
+        Green,
+        None
+    }
+
+    private int red = 0;
+    private int green = 0;
+    private int blue = 0;
+    private int white = 0;
+
     private AnimationTypes m_currentAnimation;
 
     public CANdleSystem(CommandXboxController joy) {
         this.joystick = joy;
-        changeAnimation(AnimationTypes.SetAll);
+        changeAnimation(AnimationTypes.SetAll, Color.None);
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = true;
         configAll.disableWhenLOS = false;
@@ -120,84 +137,8 @@ public class CANdleSystem extends SubsystemBase {
         return m_candle.getMaxSimultaneousAnimationCount();
     }
 
-    public void incrementAnimation() {
-        switch (m_currentAnimation) {
-            case ColorFlow:
-                changeAnimation(AnimationTypes.Fire);
-                break;
-            case Fire:
-                changeAnimation(AnimationTypes.Larson);
-                break;
-            case Larson:
-                changeAnimation(AnimationTypes.Rainbow);
-                break;
-            case Rainbow:
-                changeAnimation(AnimationTypes.RgbFade);
-                break;
-            case RgbFade:
-                changeAnimation(AnimationTypes.SingleFade);
-                break;
-            case SingleFade:
-                changeAnimation(AnimationTypes.Strobe);
-                break;
-            case Strobe:
-                changeAnimation(AnimationTypes.Twinkle);
-                break;
-            case Twinkle:
-                changeAnimation(AnimationTypes.TwinkleOff);
-                break;
-            case TwinkleOff:
-                changeAnimation(AnimationTypes.Empty);
-                break;
-            case Empty:
-                changeAnimation(AnimationTypes.ColorFlow);
-                break;
-            case SetAll:
-                changeAnimation(AnimationTypes.ColorFlow);
-                break;
-        }
-    }
-
-    public void decrementAnimation() {
-        switch (m_currentAnimation) {
-            case ColorFlow:
-                changeAnimation(AnimationTypes.Empty);
-                break;
-            case Fire:
-                changeAnimation(AnimationTypes.ColorFlow);
-                break;
-            case Larson:
-                changeAnimation(AnimationTypes.Fire);
-                break;
-            case Rainbow:
-                changeAnimation(AnimationTypes.Larson);
-                break;
-            case RgbFade:
-                changeAnimation(AnimationTypes.Rainbow);
-                break;
-            case SingleFade:
-                changeAnimation(AnimationTypes.RgbFade);
-                break;
-            case Strobe:
-                changeAnimation(AnimationTypes.SingleFade);
-                break;
-            case Twinkle:
-                changeAnimation(AnimationTypes.Strobe);
-                break;
-            case TwinkleOff:
-                changeAnimation(AnimationTypes.Twinkle);
-                break;
-            case Empty:
-                changeAnimation(AnimationTypes.TwinkleOff);
-                break;
-            case SetAll:
-                changeAnimation(AnimationTypes.ColorFlow);
-                break;
-        }
-    }
-
     public void setColors() {
-        changeAnimation(AnimationTypes.SetAll);
+        changeAnimation(AnimationTypes.SetAll, Color.None);
     }
 
     /* Wrappers so we can access the CANdle from the subsystem */
@@ -233,67 +174,64 @@ public class CANdleSystem extends SubsystemBase {
     public void configStatusLedBehavior(boolean offWhenActive) {
         m_candle.configStatusLedState(offWhenActive, 0);
     }
-
-    public void changeAnimation(AnimationTypes toChange) {
-        m_currentAnimation = toChange;
-
+    
+/**
+ * sets the animation of the leds to the desired animation
+ * @param toChange the desired animation
+ * @return the desired animation
+ */
+    public Animation animationSwitch(AnimationTypes toChange) {
+        Animation animate;
         switch (toChange) {
             default:
             case ColorFlow:
-                m_candleChannel = 0;
-                m_toAnimate = new ColorFlowAnimation(0, 255, 119, 100, 0.7, 75, Direction.Forward,
-                        8);
+                animate = new ColorFlowAnimation(red, green, blue, white, 0.7, LEDS_PER_ANIMATION,
+                        Direction.Forward,
+                        ledOffset);
                 break;
             case Fire:
-                m_candleChannel = 1;
-                m_toAnimate = new FireAnimation(1, 0.7, LEDS_PER_ANIMATION, 0.8, 0.5, m_animDirection, 0);
+                animate = new FireAnimation(1, 0.7, LEDS_PER_ANIMATION, 0.8, 0.5, m_animDirection, ledOffset);
                 break;
             case Larson:
-                m_candleChannel = 2;
-                m_toAnimate = new LarsonAnimation(0, 255, 119, 100, 0.1, 75, BounceMode.Front, 70,
-                        8);
+                animate = new LarsonAnimation(red, green, blue, white, 0.1, LEDS_PER_ANIMATION,
+                        BounceMode.Front, 70,
+                        ledOffset);
                 break;
             case Rainbow:
-                m_candleChannel = 3;
-                m_toAnimate = new RainbowAnimation(1, 1, LEDS_PER_ANIMATION, m_animDirection,
-                        8);
+                animate = new RainbowAnimation(1, 1, LEDS_PER_ANIMATION, m_animDirection,
+                        ledOffset);
                 break;
             case RgbFade:
-                m_candleChannel = 4;
-                m_toAnimate = new RgbFadeAnimation(0.7, 0.4, LEDS_PER_ANIMATION,
-                        8);
+                animate = new RgbFadeAnimation(0.7, 0.4, LEDS_PER_ANIMATION,
+                        ledOffset);
                 break;
             case SingleFade:
-                m_candleChannel = 5;
-                m_toAnimate = new SingleFadeAnimation(0, 255, 119, 100, 0.5, LEDS_PER_ANIMATION,
-                        8);
+                animate = new SingleFadeAnimation(red, green, blue, white, 0.5, LEDS_PER_ANIMATION,
+                        ledOffset);
                 break;
             case Strobe:
-                m_candleChannel = 6;
-                m_toAnimate = new StrobeAnimation(0, 255, 119, 100, 0.01, LEDS_PER_ANIMATION,
-                        8);
+                animate = new StrobeAnimation(red, green, blue, white, 0.01, LEDS_PER_ANIMATION,
+                        ledOffset);
                 break;
             case Twinkle:
-                m_candleChannel = 7;
-                m_toAnimate = new TwinkleAnimation(128, 0, 255, 0, 0.4, LEDS_PER_ANIMATION, TwinklePercent.Percent42,
-                        8);
+                animate = new TwinkleAnimation(red, green, blue, white, 0.4, LEDS_PER_ANIMATION,
+                        TwinklePercent.Percent42,
+                        ledOffset);
                 break;
             case TwinkleOff:
-                m_candleChannel = 8;
-                m_toAnimate = new TwinkleOffAnimation(70, 90, 175, 0, 0.2, LEDS_PER_ANIMATION,
-                        TwinkleOffPercent.Percent76, 8);
+                animate = new TwinkleOffAnimation(red, green, blue, white, 0.2, LEDS_PER_ANIMATION,
+                        TwinkleOffPercent.Percent76, ledOffset);
                 break;
             case Empty:
-                m_candleChannel = 9;
-                m_toAnimate = new RainbowAnimation(1, 0.7, LEDS_PER_ANIMATION, m_animDirection,
-                        8);
+                animate = new RainbowAnimation(1, 0.7, LEDS_PER_ANIMATION, m_animDirection,
+                        ledOffset);
                 break;
 
             case SetAll:
-                m_toAnimate = null;
+                animate = null;
                 break;
         }
-        System.out.println("Changed to " + m_currentAnimation.toString());
+        return animate;
     }
 
     public void clearAllAnims() {
@@ -319,9 +257,11 @@ public class CANdleSystem extends SubsystemBase {
             }
         } else {
             m_toAnimate.setSpeed(speed);
-            //m_toAnimate2.setSpeed(speed);
-            m_candle.animate(m_toAnimate, 1);
-            m_candle.animate(m_toAnimate2, 2);
+            m_candle.animate(m_toAnimate, 0);
+            m_candle.animate(m_toAnimate2, 1);
+            m_candle.animate(m_toAnimate3, 2);
+            m_candle.animate(m_toAnimate4, 3);
+
             m_setAnim = false;
         }
         m_candle.modulateVBatOutput(joystick.getRightY());
@@ -333,37 +273,65 @@ public class CANdleSystem extends SubsystemBase {
             }
         }
     }
-
-    public Command ledUp() {
-        return this.runOnce(
-                () -> {
-                    clearAllAnims();
-
-                    clearAllAnims();
-
-                    // incrementAnimation();
-                    // changeAnimation(AnimationTypes.Rainbow);
-                    clearAllAnims();
-                    setColors();
-                    m_candle.setLEDs(0, 255, 119, 100, 8, 300);
-                    // changeAnimation(AnimationTypes.Rainbow);
-                    clearAllAnims();
-
-                    setColors();
-                    m_candle.setLEDs(128, 0, 255, 0, 0, 300);
-                });
+    /**
+     * sets red to green and green to red
+     */
+    private void redToGreen(){
+        int tempRed = red;
+        red = green;
+        green = tempRed;
+    }
+    /**
+     * sets the color of the leds for animation
+     * @param color the desired color
+     */
+    private void colorAnalyzer(Color color){
+        switch (color) {
+            case Pink:
+                red = 0;
+                green = 255;
+                blue = 119;
+                white = 100;
+                break;
+            case Green:
+                red = 255;
+                green = 0;
+                blue = 0;
+                white = 0;
+                break;
+            case None:
+                break;
+        }
     }
 
-    public Command ledDown() {
-        return this.runOnce(
-                () -> {
-                    clearAllAnims();
+    /**
+     * sets the color of the animation and the animation itself
+     * @param toChange the animation to change to 
+     * @param color the color to change to
+     */
+    public void changeAnimation(AnimationTypes toChange, Color color) {
+        m_currentAnimation = toChange;
+       colorAnalyzer(color);
 
-                    changeAnimation(AnimationTypes.ColorFlow);
+        switch (m_id) {
+            case 0:
+                redToGreen();
+                m_toAnimate = animationSwitch(toChange);
+                redToGreen();
+                ledOffset += 40;
+                m_toAnimate4 = animationSwitch(toChange);
+                break;
+            case 1:
+                m_toAnimate = animationSwitch(toChange);
+                break;
+            case 2:
+                m_toAnimate = animationSwitch(toChange);
+                break;
 
-                    m_toAnimate2 = new ColorFlowAnimation(255, 0, 0, 100, 0.7, 75, Direction.Backward,
-                            83);
-                });
+            default:
+                break;
+        }
+        System.out.println("Changed to " + m_currentAnimation.toString());
     }
 
     @Override
@@ -371,38 +339,34 @@ public class CANdleSystem extends SubsystemBase {
         // This method will be called once per scheduler run during simulation
     }
 
-    // colors we are going to use
-    StrobeAnimation pinkStrobeAnimation = new StrobeAnimation(0, 255, 119, 100, 0.01, LEDS_PER_ANIMATION, 
-            8); //1 whichColorStrobe
-    StrobeAnimation greenStrobeAnimation = new StrobeAnimation(255, 0, 0, 0, 0.01, LEDS_PER_ANIMATION,
-            8); //2 whichColorStrobe
-    StrobeAnimation whiteStrobeAnimation = new StrobeAnimation(0, 0, 0, 255, 0.01, LEDS_PER_ANIMATION,
-            8); //3 whichColorStrobe
-            StrobeAnimation redStrobeAnimation = new StrobeAnimation(0, 255, 0, 0, 0.01, LEDS_PER_ANIMATION,
-            8); //0 whichColorStrobe
+    public void setSpeedOfStrobeAnimations(double lightSpeedBasedOnDistance) {
+        speed = lightSpeedBasedOnDistance + 0.1;
+    }
 
-        //define whichColorStrobe wherever you call runStrobeAnimations
-    public void runStrobeAnimations(int whichColorStrobe) {
-        switch (whichColorStrobe) {
+    /**
+     * tells candle how many leds to control
+     * @param id the location
+     */
+    public void numControl(int id) {
+        m_id = id;
+        switch (id) {
             case 0:
-            m_toAnimate = redStrobeAnimation;
+                LEDS_PER_ANIMATION = 50;
+                ledOffset = 48;
                 break;
             case 1:
-            m_toAnimate = pinkStrobeAnimation;
+                LEDS_PER_ANIMATION = 1580;
+                ledOffset = 8;
                 break;
             case 2:
-            m_toAnimate = greenStrobeAnimation;
-                break;
-            case 3:
-            m_toAnimate = whiteStrobeAnimation;
-                break;
-
-            default:
+                LEDS_PER_ANIMATION = 1580;
+                ledOffset = 8;
                 break;
         }
     }
-    public void setSpeedOfStrobeAnimations(double lightSpeedBasedOnDistance){
-        speed = lightSpeedBasedOnDistance+0.1;
+
+    public void clearAnimation(int animationID) {
+        m_candle.clearAnimation(animationID);
     }
 
 }

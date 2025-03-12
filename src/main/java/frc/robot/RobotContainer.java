@@ -34,6 +34,8 @@ import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.TimeOfFlightSensor;
+import frc.robot.subsystems.CANdleSystem.AnimationTypes;
+import frc.robot.subsystems.CANdleSystem.Color;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLightFace;
@@ -41,6 +43,7 @@ import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.FlipWrist90Command;
 import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
+import frc.robot.command.CANdleAnimationCommand;
 import frc.robot.command.ActiveHumanIntakeCommand;
 import frc.robot.command.DockHumanIntakeCommand;
 import frc.robot.command.PresetAutoCommand;
@@ -141,7 +144,7 @@ public class RobotContainer {
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
         operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
         // operator.leftBumper().onTrue(caNdleSystem.ledUp());
-        // operator.rightBumper().onTrue(caNdleSystem.ledDown());
+        operator.rightBumper().onTrue(new CANdleAnimationCommand(caNdleSystem, "crossbar", AnimationTypes.ColorFlow, Color.Pink));
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));
