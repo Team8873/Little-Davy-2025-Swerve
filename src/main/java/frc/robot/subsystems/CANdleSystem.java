@@ -307,7 +307,7 @@ public class CANdleSystem extends SubsystemBase {
     public void periodic() {
 
         // This method will be called once per scheduler run
-        if (m_toAnimate == null) {
+        if (m_toAnimate == null && m_toAnimate2  == null && m_toAnimate3 == null && m_toAnimate4 == null) {
             if (!m_setAnim) {
                 /* Only setLEDs once, because every set will transmit a frame */
                 m_candle.setLEDs(255, 255, 255, 0, 0, 1);
