@@ -189,8 +189,8 @@ public class RobotContainer {
                     double lerpboost = startboost * (1.0 - joytrigR) + endboost * joytrigR;
                     double startcoral = 1;
                     double endcoral = 2;
-                    double joytrigL = joystick.getRightTriggerAxis();
-                    double lerpcoral = startboost * (1.0 - joytrigR) + endboost * joytrigR;
+                    double joytrigL = joystick.getLeftTriggerAxis();
+                    double lerpcoral = startcoral * (1.0 - joytrigL) + endcoral * joytrigL;
 
                     return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * ((lerpboost)*(lerpcoral))) // Drive forward with
                                                                                            // negative Y (forward)
