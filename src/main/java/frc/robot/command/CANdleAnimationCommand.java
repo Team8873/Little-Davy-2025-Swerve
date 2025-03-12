@@ -51,12 +51,14 @@ public class CANdleAnimationCommand extends Command {
      * gives id to led locations
      */
     private void animationID(){
-        if(locationLED.equals("crossbar")){
+        if(locationLED.equalsIgnoreCase("crossbar")){
             id = 0;
-        }else if(locationLED.equals("elevatorL")){
+        }else if(locationLED.equalsIgnoreCase("elevatorL")){
             id = 1;
-        }else if(locationLED.equals("elevatorR")){
+        }else if(locationLED.equalsIgnoreCase("elevatorR")){
             id = 2;
+        }else if(locationLED.equalsIgnoreCase("all"));{
+            id = 10;
         }
 
     }

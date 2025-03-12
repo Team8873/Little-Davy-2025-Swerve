@@ -362,6 +362,10 @@ public class CANdleSystem extends SubsystemBase {
                 LEDS_PER_ANIMATION = 1580;
                 ledOffset = 8;
                 break;
+            case 10:
+            LEDS_PER_ANIMATION = 1580;
+            ledOffset = 8;
+            break;
         }
     }
 

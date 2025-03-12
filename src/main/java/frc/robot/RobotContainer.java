@@ -111,6 +111,7 @@ public class RobotContainer {
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
+        new CANdleAnimationCommand(caNdleSystem, "all", AnimationTypes.ColorFlow, Color.Pink);
     }
 
     private void configureBindings() {
