@@ -109,10 +109,12 @@ public class RobotContainer {
         // .andThen((intake.intakeEject().withTimeout(2)
         // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
         new EventTrigger("Elevator lvl1")
-        .onTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)
-        .andThen(new WaitCommand(2)
-        .andThen((intake.intakeEject().withTimeout(2)
-        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
+        .onTrue(new ElevatorPresetCommand(elevator, arm, 'o', true).withTimeout(3)
+        .andThen(new WaitCommand(1)
+        .andThen(intake.intakeEject().withTimeout(1)
+        .andThen(new ElevatorPresetCommand(elevator, arm, 'u', true)
+        .andThen(intake.stopIntake().withTimeout(.1)
+        )))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
         caNdleSystem.startAnimation();
@@ -213,7 +215,7 @@ public class RobotContainer {
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
         // joystick.rightStick().whileTrue(Travel());
-        // joystick.leftStick().whileTrue(lockOnCommand(drivetrain.getState().RawHeading.getRadians()));
+        joystick.leftStick().whileTrue(lockOnCommand(drivetrain.getState().RawHeading.getRadians()));
         
         joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));

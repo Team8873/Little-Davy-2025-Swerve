@@ -7,6 +7,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.TimestampedDoubleArray;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -44,7 +46,8 @@ import org.opencv.core.Mat;
 public class LimelightHelpers {
 
     private static final Map<String, DoubleArrayEntry> doubleArrayEntries = new ConcurrentHashMap<>();
-
+    private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
+    
     /**
      * Represents a Color/Retroreflective Target Result extracted from JSON Output
      */
@@ -1707,8 +1710,9 @@ public class LimelightHelpers {
         return results;
     }
 
-
+    private boolean notWid = true; 
     public double getRobotPose(double currentPose) {
+        
         //int aprilTagID = (int) getFiducialID("limelight");
          //= (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
         RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("limelight");
@@ -1753,6 +1757,10 @@ public class LimelightHelpers {
                 radianPose = currentPose;
                 break;
         }
+        if(notWid){
+            tab.addDouble("Returned Rotation Rate", ()-> radianPose - currentPose).withPosition(6, 1);
+            notWid = false;
+            }
         return radianPose - currentPose;
 
     }

@@ -3,6 +3,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -21,7 +22,7 @@ import static frc.robot.Constants.ArmConstants;
 
 import java.util.function.BooleanSupplier;
 
-
+@Logged
 public class Arm extends SubsystemBase{
 
     private double wristSpeed = 0;
@@ -127,6 +128,13 @@ public class Arm extends SubsystemBase{
              setArmSpeed();
        });
 }
+public Command upArm(){
+  return this.run(
+   () -> {
+         setArmTarget(.48);
+         setArmSpeed();
+   });
+}
 public Command standArm(){
   return this.run(
    () -> {
@@ -158,8 +166,8 @@ public Command standArm(){
  * sets wrist speed based on armPid loop
  */
   public void setWristSpeed(){
-    wristSpeed = MathUtil.clamp(wristPid.calculate(wristPosition), -0.2, 0.2);
-    wristMotor.set(wristSpeed);
+    wristSpeed = wristPid.calculate(wristPosition);
+    wristMotor.set(MathUtil.clamp(wristSpeed, -.2,.2));
 }
 
   public void resetPidError(){
