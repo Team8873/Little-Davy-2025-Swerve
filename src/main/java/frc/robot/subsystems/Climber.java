@@ -46,7 +46,6 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     // its not at the setpoint when we turn it on
     private BooleanSupplier climberAtSetpoint = () -> false;
 
-    private double speed = 0;
     private double climberMotorPosition = 0;
     private double target = 0;
     private double climberVoltage = 0;
@@ -108,10 +107,7 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
 
     // defines set speed as making the motor go to target (speed is how much motor
     // has to move)
-    private void setSpeed() {
-        motorForClimber.set(speed);
-    }
-
+   
     // get the set point and put it as the target. Return if its at the setpoint or
     // not.
     public BooleanSupplier getClimberSetpointStatus() {
@@ -135,10 +131,11 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     }
 
     // Xbutton will move down to climbed
-    public Command grabCage() {
-        return this.runOnce(
+    public Command grabCage(CommandXboxController joystick) {
+        return this.run(
                 () -> {
-                    motorForClimber.set(-1);
+                    double climberSpeed = joystick.getLeftTriggerAxis();
+                    motorForClimber.set(-climberSpeed);
                     // engageServo
 
                 });
@@ -155,7 +152,6 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
         positionEntry.setDouble(climberMotorPosition);
         targetEntry.setDouble(target);
         statusEntry.setDouble(servoValue);
-        speedEntry.setDouble(speed);
     }
 
     // Periodically gets motorPosition, voltage, and updates shuffleboard

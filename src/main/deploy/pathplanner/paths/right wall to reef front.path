@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.9,
-        "y": 3.784
+        "y": 4.153
       },
       "prevControl": {
-        "x": 1.623067202698445,
-        "y": 0.7491145065319516
+        "x": 1.6230672026984452,
+        "y": 1.1181145065319513
       },
       "nextControl": null,
       "isLocked": false,
@@ -88,7 +88,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "right wall to front reef",
+  "folder": "red right wall to front reef",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

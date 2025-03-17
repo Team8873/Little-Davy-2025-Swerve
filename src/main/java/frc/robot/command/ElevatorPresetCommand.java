@@ -133,6 +133,7 @@ public class ElevatorPresetCommand extends Command {
                 case 'y':
                     elevatorPos = PresetConstants.lvl4Elevator;
                     armPos = PresetConstants.lvl4ArmPos;
+                    wristPos = PresetConstants.wristFlatPosNeg;
                     break;
 
                 // case 'g':

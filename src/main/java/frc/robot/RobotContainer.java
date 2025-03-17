@@ -96,7 +96,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         new EventTrigger("Elevator lvl4")
         .onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)
-        .andThen((arm.kcikArm()).withTimeout(2).andThen(new ElevatorPresetCommand(elevator, arm, 't', false))));
+        .andThen(new FlipWristCommand(arm).withTimeout(1)
+        .andThen((arm.kcikArm()).withTimeout(3)
+        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
+        ))));
         // new EventTrigger("Elevator lvl3")
         // .onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)
         // .andThen((intake.intakeEject()).withTimeout(2)
@@ -112,7 +115,7 @@ public class RobotContainer {
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
-        RobotModeTriggers.disabled().whileTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
+        caNdleSystem.startAnimation();
     }
 
     private void configureBindings() {
@@ -173,8 +176,8 @@ public class RobotContainer {
 
         // climber stuff:
         joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.letGoOfCage()));
-        joystick.a().whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage()));
-        joystick.a().onFalse(epicClimber.dontMoveClimberDown());
+        joystick.leftTrigger(0.03).whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage(joystick)));
+        joystick.leftTrigger(0.1).onFalse(epicClimber.dontMoveClimberDown());
         joystick.y().onFalse(epicClimber.dontMoveClimberDown());
 
 
@@ -188,16 +191,16 @@ public class RobotContainer {
                     double endboost = elevator.getElevatorPos() > 1.5 ? .5 : 1 ;
                     double joytrigR = joystick.getRightTriggerAxis();
                     double lerpboost = startboost * (1.0 - joytrigR) + endboost * joytrigR;
-                    double startcoral = 1;
-                    double endcoral = 2;
-                    double joytrigL = joystick.getLeftTriggerAxis();
-                    double lerpcoral = startcoral * (1.0 - joytrigL) + endcoral * joytrigL;
+                //     double startcoral = 1;
+                //     double endcoral = 2;
+                //     double joytrigL = joystick.getLeftTriggerAxis();
+                //     double lerpcoral = startcoral * (1.0 - joytrigL) + endcoral * joytrigL;
 
-                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * ((lerpboost)*(lerpcoral))) // Drive forward with
+                    return drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) * (lerpboost)) // Drive forward with
                                                                                            // negative Y (forward)
-                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * ((lerpboost)*(lerpcoral))) // Drive left with negative X
+                            .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (lerpboost)) // Drive left with negative X
                                                                                        // (left)
-                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * ((lerpboost)*(lerpcoral))); // Drive
+                            .withRotationalRate((-joystick.getRightX() * MaxAngularRate) * (lerpboost)); // Drive
                                                                                                     // counterclockwise
                                                                                                     // with negative
                                                                                                     // X (left)

@@ -85,7 +85,6 @@ public class CANdleSystem extends SubsystemBase {
     private Animation m_toAnimate3 = null;
     private Animation m_toAnimate4 = null;
 
-
     private int red = 0;
     private int green = 0;
     private int blue = 0;
@@ -307,7 +306,7 @@ public class CANdleSystem extends SubsystemBase {
     public void periodic() {
 
         // This method will be called once per scheduler run
-        if (m_toAnimate == null && m_toAnimate2  == null && m_toAnimate3 == null && m_toAnimate4 == null) {
+        if (m_toAnimate == null && m_toAnimate2 == null && m_toAnimate3 == null && m_toAnimate4 == null) {
             if (!m_setAnim) {
                 /* Only setLEDs once, because every set will transmit a frame */
                 m_candle.setLEDs(255, 255, 255, 0, 0, 1);
@@ -355,7 +354,8 @@ public class CANdleSystem extends SubsystemBase {
                 break;
         }
     }
-    private void redToGreen(){
+
+    private void redToGreen() {
         int tempRed = red;
         red = green;
         green = tempRed;
@@ -384,63 +384,89 @@ public class CANdleSystem extends SubsystemBase {
                             ledOffset = 8;
                             break;
                     }
-                    
+
                     // m_candle.setLEDs(red, green, blue, white, ledOffset, maxLed);
 
                 });
     }
 
-    public Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange){
+    public void startAnimation() {
+        int ledOffset;
+        int maxLed;
+        colorAnalyzer(Color.Pink);
+        clearAllAnims();
+        int ledArea = 0;
+        switch (ledArea) {
+            case 0:
+                ledOffset = 8;
+                maxLed = 80;
+                m_toAnimate = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow);
+                ledOffset += 80;
+                maxLed += 27;
+
+                colorAnalyzer(Color.Green);
+                redToGreen();
+                m_candle.configBrightnessScalar(.5);
+                m_toAnimate2 = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow);
+                break;
+            default:
+                maxLed = 10;
+                ledOffset = 8;
+                break;
+        }
+    }
+
+    public Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange) {
         Animation animate;
         switch (toChange) {
             default:
             case ColorFlow:
-            animate = new ColorFlowAnimation(red, green, blue, white, 0.7, maxLed, Direction.Forward,
+                animate = new ColorFlowAnimation(red, green, blue, white, 0.7, maxLed, Direction.Forward,
                         ledOffset);
                 break;
             case Fire:
-            animate = new FireAnimation(1, 0.7, maxLed, 0.8, 0.5, m_animDirection, ledOffset);
+                animate = new FireAnimation(1, 0.7, maxLed, 0.8, 0.5, m_animDirection, ledOffset);
                 break;
             case Larson:
-            animate = new LarsonAnimation(red, green, blue, white, 0.1, maxLed, BounceMode.Front, 70,
+                animate = new LarsonAnimation(red, green, blue, white, 0.1, maxLed, BounceMode.Front, 70,
                         ledOffset);
                 break;
             case Rainbow:
-            animate = new RainbowAnimation(1, 1, maxLed, m_animDirection,
+                animate = new RainbowAnimation(1, 1, maxLed, m_animDirection,
                         ledOffset);
                 break;
             case RgbFade:
-            animate = new RgbFadeAnimation(0.7, 0.4, maxLed,
+                animate = new RgbFadeAnimation(0.7, 0.4, maxLed,
                         ledOffset);
                 break;
             case SingleFade:
-            animate = new SingleFadeAnimation(red, green, blue, white, 0.5, maxLed,
+                animate = new SingleFadeAnimation(red, green, blue, white, 0.5, maxLed,
                         ledOffset);
                 break;
             case Strobe:
-            animate = new StrobeAnimation(red, green, blue, white, 0.01, maxLed,
+                animate = new StrobeAnimation(red, green, blue, white, 0.01, maxLed,
                         ledOffset);
                 break;
             case Twinkle:
-            animate = new TwinkleAnimation(red, green, blue, white, 0.4, maxLed, TwinklePercent.Percent42,
+                animate = new TwinkleAnimation(red, green, blue, white, 0.4, maxLed, TwinklePercent.Percent42,
                         ledOffset);
                 break;
             case TwinkleOff:
-            animate = new TwinkleOffAnimation(red, green, blue, white, 0.2, maxLed,
+                animate = new TwinkleOffAnimation(red, green, blue, white, 0.2, maxLed,
                         TwinkleOffPercent.Percent76, ledOffset);
                 break;
             case Empty:
-            animate = new RainbowAnimation(1, 0.7, maxLed, m_animDirection,
+                animate = new RainbowAnimation(1, 0.7, maxLed, m_animDirection,
                         ledOffset);
                 break;
 
             case SetAll:
-            animate = null;
+                animate = null;
                 break;
-                
+
+        }
+        return animate;
     }
-    return animate;
-}
 
     public Command ledDown() {
         return this.runOnce(

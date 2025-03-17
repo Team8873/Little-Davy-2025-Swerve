@@ -3,7 +3,8 @@
   "robotLength": 0.965,
   "holonomicMode": true,
   "pathFolders": [
-    "right wall to front reef"
+    "left wall to reef front",
+    "red right wall to front reef"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
