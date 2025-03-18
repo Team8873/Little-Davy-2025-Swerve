@@ -367,9 +367,9 @@ public class CANdleSystem extends SubsystemBase {
                     int ledOffset;
                     int maxLed;
                     colorAnalyzer(color);
-                    clearAllAnims();
                     switch (whereLED) {
                         case 0:
+                            clearAllAnims();
                             ledOffset = 8;
                             maxLed = 80;
                             m_toAnimate = setAnimation(ledOffset, maxLed, animationType);
@@ -377,6 +377,13 @@ public class CANdleSystem extends SubsystemBase {
                             maxLed += 27;
                             redToGreen();
                             m_candle.configBrightnessScalar(.5);
+                            m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType);
+                            break;
+                        case 1:
+                            m_candle.clearAnimation(2);
+                            ledOffset = 88;
+                            maxLed = 127;
+                            redToGreen();
                             m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType);
                             break;
                         default:
@@ -416,7 +423,7 @@ public class CANdleSystem extends SubsystemBase {
         }
     }
 
-    public Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange) {
+    private Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange) {
         Animation animate;
         switch (toChange) {
             default:
@@ -444,7 +451,7 @@ public class CANdleSystem extends SubsystemBase {
                         ledOffset);
                 break;
             case Strobe:
-                animate = new StrobeAnimation(red, green, blue, white, 0.01, maxLed,
+                animate = new StrobeAnimation(red, green, blue, white, 0.1, maxLed,
                         ledOffset);
                 break;
             case Twinkle:
@@ -466,16 +473,6 @@ public class CANdleSystem extends SubsystemBase {
 
         }
         return animate;
-    }
-
-    public Command ledDown() {
-        return this.runOnce(
-                () -> {
-                    changeAnimation(AnimationTypes.ColorFlow);
-
-                    m_toAnimate2 = new ColorFlowAnimation(255, 0, 0, 100, 0.7, 75, Direction.Backward,
-                            83);
-                });
     }
 
     @Override
