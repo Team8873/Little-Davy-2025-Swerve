@@ -125,9 +125,7 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
 
 
-        // If sensor detects something close holds
-        // tOFSensor.coralInRange.whileTrue(intake.holdIntake());//commented this out w/
-        // the threshold change
+        // tOFSensor.coralInRange.whileTrue(intake.holdIntake());
 
         // operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new
         // IntakeEjectCommand(intake, tOFSensor).andThen(new
@@ -154,31 +152,13 @@ public class RobotContainer {
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 's', false).withTimeout(5)); //humanintakecoral
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
         operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
-        // operator.leftBumper().onTrue(caNdleSystem.ledUp());
         operator.rightBumper().whileTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));
 
-        // operator.leftBumper().negate().and(operator.y().onTrue(new
-        // ElevatorPresetCommand(elevator, intake, arm, 'y', false)));
-
-        // operator.leftBumper().and(operator.a().onTrue(new
-        // ElevatorPresetCommand(elevator, intake, arm, 'a', true)));
-        // operator.leftBumper().and(operator.b().onTrue(new
-        // ElevatorPresetCommand(elevator, intake, arm, 'b', true)));
-        // operator.leftBumper().and(operator.x().onTrue(new
-        // ElevatorPresetCommand(elevator, intake, arm, 'x', true)));
-
-        // operator.pov(0).onTrue(new StopCommandsCommand(elevator, intake, arm));
-
-        // operator.back().toggleOnTrue(new DockHumanIntakeCommand(intake));
-        // operator.back().toggleOnFalse(new ActiveHumanIntakeCommand(intake));
         operator.button(9).onTrue(new FlipWristCommand(arm).withTimeout(1));
         operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(1));
-
-        // operator.pov(180).onTrue(new ElevatorPresetCommand(elevator, intake, arm,
-        // 'g', false)); 
 
         // climber stuff:
         joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.letGoOfCage()));
@@ -221,14 +201,7 @@ public class RobotContainer {
         joystick.leftStick().whileTrue(Travel());
         joystick.rightStick().whileTrue(lockOnCommand());
         
-        joystick.rightBumper().whileTrue(
-                drivetrain.applyRequest(() -> {
-                return forwardStraight
-                .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
-                .withVelocityX(limeLightFace.limelight_range_proportional())
-                .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
-        }));
-
+        joystick.rightBumper().whileTrue(magicLimeRight());
         joystick.leftBumper().whileTrue(magicLimeLeft());
 
         // Run SysId routines when holding back/start and X/Y.
@@ -254,17 +227,19 @@ public class RobotContainer {
                 .withVelocityY(limeLightFace.limelight_aim_proportional()*0.01));
     }
     public Command magicLimeRight(){
-        return drivetrain.applyRequest(()-> {return forwardStraight
-        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
-        .withVelocityX(limeLightFace.limelight_range_proportional())
-        .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
+        return drivetrain.applyRequest(()-> {
+                return forwardStraight
+                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+                        .withVelocityX(limeLightFace.limelight_range_proportional())
+                        .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
         });
     }
     public Command magicLimeLeft(){
-        return drivetrain.applyRequest(()-> {return forwardStraight
-        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
-        .withVelocityX(limeLightFace.limelight_range_proportional())
-        .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
+        return drivetrain.applyRequest(()-> {
+                return forwardStraight
+                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+                        .withVelocityX(limeLightFace.limelight_range_proportional())
+                        .withVelocityY(limeLightFace.limelight_left_strafe_proportional(drivetrain.getState().Pose));
         });
     }
 //     public SequentialCommandGroup Autolvl4() {

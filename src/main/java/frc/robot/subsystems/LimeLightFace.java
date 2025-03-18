@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,13 +33,18 @@ public class LimeLightFace extends SubsystemBase {
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(6, 3)
       .getEntry();
+      private GenericEntry posewid = tab.add("distance From apriltag", 0)
+      .withWidget(BuiltInWidgets.kNumberBar)
+      .withPosition(7, 3)
+      .getEntry();
   private GenericEntry sped = tab.add("veloc", 0)
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(6, 4)
       .getEntry();
   private PIDController rotationPid = new PIDController(4, 0, 0);
-  private PIDController velocityPid = new PIDController(.05, 0, 0);
-  private PIDController forwardPid = new PIDController(.1, .025, 0);
+  private PIDController velocityPid = new PIDController(.04, 0, 0);
+  private PIDController forwardPid = new PIDController(.1, .01, 0);
+  private ComplexWidget pidwid = tab.add("speed pid",forwardPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
   private int m_id;
@@ -47,6 +53,7 @@ public class LimeLightFace extends SubsystemBase {
   public LimeLightFace() {
     rotationPid.setTolerance(0.005);
     forwardPid.setTolerance(.3);
+    rotationPid.enableContinuousInput(-Math.PI, Math.PI);
   }
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
   // //New from ctre github
@@ -87,6 +94,7 @@ public class LimeLightFace extends SubsystemBase {
     return targetingAngularVelocity;
   }
 
+
   // simple proportional ranging control with Limelight's "ty" value
   // this works best if your Limelight's mount height and target mount height are
   // different.
@@ -96,6 +104,10 @@ public class LimeLightFace extends SubsystemBase {
     double target = -6.1;
     double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
     double speed = forwardPid.calculate(targetingForwardSpeed, target);
+    posewid.setDouble(targetingForwardSpeed);
+    if(!hasAprilTagTarget){
+      return 0;
+    }
     return speed;
   }
 
@@ -136,11 +148,13 @@ public class LimeLightFace extends SubsystemBase {
   // while using Limelight, turn off field-relative driving.
   // fieldRelative = false;}
   // }
-  public double limelight_left_strafe_proportional() {
+  public double limelight_left_strafe_proportional(Pose2d Pose) {
+    System.out.println(Pose.getX());
+    System.out.println(Pose.getY());
     if (!hasAprilTagTarget) {
       return 0;
     }
-    double lefttargetTx = 14.7;
+    double lefttargetTx = 15.3;
 
     double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
     System.out.println(targetAngleStrafe);
@@ -155,7 +169,7 @@ public class LimeLightFace extends SubsystemBase {
     if (!hasAprilTagTarget) {
       return 0;
     }
-    double righttargetTx = -14.7;
+    double righttargetTx = -16.7;
 
     double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
     System.out.println(targetAngleStrafe);
@@ -167,15 +181,15 @@ public class LimeLightFace extends SubsystemBase {
 
 
   public double alignRobot(double currentPose) {
-    if (!hasAprilTagTarget) {
-      return 0;
+    if(LimelightHelpers.getTY("limelight") < -15){
+      return -limelight_aim_proportional()/2;
     }
     radwid.setInteger(m_id);
     poswid.setDouble(currentPose);
     double radianPose;
     switch (m_id) {
       case 18, 14, 15, 7, 5, 4:
-        radianPose = 0;
+        radianPose = Math.PI;
         // radianPose = 2* Math.PI;
         break;
       case 21, 10:
@@ -211,7 +225,9 @@ public class LimeLightFace extends SubsystemBase {
     double speed = rotationPid.calculate(currentPose, radianPose);
 
     wid.setDouble(speed);
-
+    // if (!hasAprilTagTarget) {
+    //   return 0;
+    // }
     return speed;
 
   }
