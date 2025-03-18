@@ -214,12 +214,12 @@ public class RobotContainer {
         joystick.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
         joystick.pov(180)
                 .whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
-        // joystick.rightStick().whileTrue(Travel());
-        joystick.leftStick().whileTrue(lockOnCommand(drivetrain.getState().RawHeading.getRadians()));
+        joystick.leftStick().whileTrue(Travel());
+        joystick.rightStick().whileTrue(lockOnCommand());
         
-        joystick.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
+        joystick.rightBumper().whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-joystick.getLeftY()/3)
                 .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
-        joystick.pov(270).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0)
+        joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-joystick.getLeftY()/3)
                 .withVelocityY(limeLightFace.limelight_left_strafe_proportional())));
 
         // Run SysId routines when holding back/start and X/Y.
@@ -230,35 +230,31 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.pov(90).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
     }
-    public Command lockOnCommand(double currentPose) {
+    public Command lockOnCommand() {
         return drivetrain
-                .applyRequest(() -> drive.withRotationalRate((limelightHelp.getRobotPose(currentPose))));
+                .applyRequest(() -> drive.withRotationalRate((limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))*2));
     }
     public Command Travel() {
         return drivetrain
-                .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional() * 0.005)
+                .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional())
                 .withVelocityY(limeLightFace.limelight_aim_proportional()*0.01));
     }
 
-    public SequentialCommandGroup strafeRightCommand() {
-        return new SequentialCommandGroup(
+    public Command strafeRightCommand() {
+        return (
                 drivetrain
-                        .applyRequest(() -> forwardStraight.withVelocityX(0)
-                                .withVelocityY(limeLightFace.limelight_right_strafe_proportional() * 0.01))
-                        .withTimeout(.5));
+                        .applyRequest(() -> forwardStraight.withVelocityY(limeLightFace.limelight_right_strafe_proportional() * 0.01)));
     }
 
-    public SequentialCommandGroup strafeLeftCommand() {
-        return new SequentialCommandGroup(
+    public Command strafeLeftCommand() {
+        return (
                 drivetrain
-                        .applyRequest(() -> forwardStraight.withVelocityX(0)
-                                .withVelocityY(limeLightFace.limelight_left_strafe_proportional() * 0.01))
-                        .withTimeout(.5));
+                        .applyRequest(() -> forwardStraight.withVelocityY(limeLightFace.limelight_left_strafe_proportional() * 0.01)));
     }
 //     public SequentialCommandGroup Autolvl4() {
 //         return

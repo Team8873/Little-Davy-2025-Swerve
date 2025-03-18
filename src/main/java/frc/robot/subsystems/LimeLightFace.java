@@ -2,14 +2,51 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers;
-
+import frc.robot.LimelightHelpers.RawFiducial;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static edu.wpi.first.units.Units.Rotation;
+
 import java.lang.Runtime;
 
 public class LimeLightFace extends SubsystemBase{
 
+    private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
+    private GenericEntry wid =
+      tab.add("Rotation rate", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(6,1)
+         .getEntry();
+    private GenericEntry radwid =
+      tab.add("april tag Id", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(6,2)
+         .getEntry();
+         private GenericEntry poswid =
+      tab.add("think pos", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(6,3)
+         .getEntry();
+         private GenericEntry sped =
+      tab.add("veloc", 0)
+         .withWidget(BuiltInWidgets.kNumberBar)
+         .withPosition(6,4)
+         .getEntry();
+    private PIDController rotationPid = new PIDController(4, 0, 0);
+    private PIDController velocityPid = new PIDController(.05, 0, 0);
+    private PIDController forwardPid = new PIDController(.1, .01, 0);
 
+    private RawFiducial[] fiducials;
+  public LimeLightFace(){
+    rotationPid.setTolerance(0.005);
+    forwardPid.setTolerance(.3);
+  }
 //   Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
 //  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
 //  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
@@ -51,11 +88,10 @@ public class LimeLightFace extends SubsystemBase{
   // if your limelight and target are mounted at the same or similar heights, use "ta" (area) for target ranging rather than "ty"
   public double limelight_range_proportional()
   {    
-    double kP = 10;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    //targetingForwardSpeed *= RobotContainer.MaxSpeed; //from drivetrain.kmaxspeed
-    //targetingForwardSpeed *= -1.0;
-    return targetingForwardSpeed;
+    double target = -6.1;
+    double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
+    double speed = forwardPid.calculate(targetingForwardSpeed, target);
+    return speed;
   }
 
   //private void drive(boolean fieldRelative) {
@@ -96,51 +132,93 @@ public class LimeLightFace extends SubsystemBase{
     //}
     public double limelight_left_strafe_proportional()
   {    
-    // kP (constant of proportionality)
-    // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
-    // if it is too high, the robot will oscillate around.
-    // if it is too low, the robot will never reach its target
-    // if the robot never turns in the correct direction, kP should be inverted.
-    double kP = 0.02;
-    double lefttargetTx = 10;
+  
+    if(fiducials.length < 1){
+      return 0;
+  }
+    double lefttargetTx = 14.7;
 
-    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
-    // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")+lefttargetTx*kP);
+    
+    double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
     System.out.println(targetAngleStrafe);
-
-    // convert to radians per second for our drive method
-    //targetAngleStrafe *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
-
-    //invert since tx is positive when the target is to the right of the crosshair
-    //targetingAngularVelocity *= -1.0;
-
-    return targetAngleStrafe;
+    double speed = velocityPid.calculate(targetAngleStrafe, lefttargetTx);
+    sped.setDouble(speed);
+    
+    return speed;
   }
   public double limelight_right_strafe_proportional()
   {    
-    // kP (constant of proportionality)
-    // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
-    // if it is too high, the robot will oscillate around.
-    // if it is too low, the robot will never reach its target
-    // if the robot never turns in the correct direction, kP should be inverted.
-    double kP = 0.02;
-    double righttargetTx = 10;
-
-    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
-    // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetAngleStrafe = (LimelightHelpers.getTX("limelight")-righttargetTx*kP);
-    System.out.println(targetAngleStrafe);
-
-    // convert to radians per second for our drive method
-    //targetAngleStrafe *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
-
-    //invert since tx is positive when the target is to the right of the crosshair
-    //targetingAngularVelocity *= -1.0;
-
-    return targetAngleStrafe;
+    
+    if(fiducials.length < 1){
+      return 0;
   }
+    double righttargetTx = -14.7;
+
+    double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
+    System.out.println(targetAngleStrafe);
+  double speed = velocityPid.calculate(targetAngleStrafe, righttargetTx);
+    sped.setDouble(speed);
+
+    return speed;
+  }
+private int m_id;
+  public double alignRobot(double currentPose){
+     if(fiducials.length < 1){
+      return 0;
+  }
+  m_id = fiducials[0].id;
+  int aprilTagID = m_id;
+      radwid.setInteger(aprilTagID);
+      poswid.setDouble(currentPose);
+  double radianPose;
+  switch (aprilTagID) {
+      case 18, 14, 15, 7, 5, 4:
+          radianPose = 0;
+          // radianPose = 2* Math.PI;
+          break;
+      case 21, 10:
+          radianPose = Math.PI;
+          // radianPose = 2* Math.PI;
+          break;
+      case 16, 3:
+          radianPose = Math.PI / 2;
+          break;
+      case 12, 2:
+          radianPose = Math.PI / 4;
+          break;
+      case 13, 1:
+          radianPose = -Math.PI / 4;
+          break;
+      case 20, 11:
+          radianPose = Math.PI / 6;
+          break;
+      case 22, 9:
+          radianPose = -Math.PI / 6;
+          break;
+      case 19, 6:
+          radianPose = (5 * Math.PI) / 6;
+          break;
+      case 17, 8:
+          radianPose = -(5 * Math.PI) / 6;
+          break;
+
+      default:
+          radianPose = currentPose;
+          break;
+  }
+  double speed = rotationPid.calculate(currentPose, radianPose);
   
+      wid.setDouble(speed);
+        
+      
+  return speed;
+
+
+  }
+  public void periodic(){
+   fiducials = LimelightHelpers.getRawFiducials("limelight");
+
+  }
   
     //m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
 }

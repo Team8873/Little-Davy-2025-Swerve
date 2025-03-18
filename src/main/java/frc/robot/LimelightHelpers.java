@@ -46,7 +46,6 @@ import org.opencv.core.Mat;
 public class LimelightHelpers {
 
     private static final Map<String, DoubleArrayEntry> doubleArrayEntries = new ConcurrentHashMap<>();
-    private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
     
     /**
      * Represents a Color/Retroreflective Target Result extracted from JSON Output
@@ -1710,58 +1709,4 @@ public class LimelightHelpers {
         return results;
     }
 
-    private boolean notWid = true; 
-    public double getRobotPose(double currentPose) {
-        
-        //int aprilTagID = (int) getFiducialID("limelight");
-         //= (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1.1);
-        RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("limelight");
-        if(fiducials.length < 1){
-            return 0;
-        }
-        int aprilTagID = fiducials[0].id;
-            
-        double radianPose;
-        switch (aprilTagID) {
-            case 18, 14, 15, 7, 5, 4:
-                radianPose = Math.PI;
-                // radianPose = 2* Math.PI;
-                break;
-            case 21, 10:
-                radianPose = Math.PI;
-                // radianPose = 2* Math.PI;
-                break;
-            case 16, 3:
-                radianPose = Math.PI / 2;
-                break;
-            case 12, 2:
-                radianPose = Math.PI / 4;
-                break;
-            case 13, 1:
-                radianPose = -Math.PI / 4;
-                break;
-            case 20, 11:
-                radianPose = Math.PI / 6;
-                break;
-            case 22, 9:
-                radianPose = -Math.PI / 6;
-                break;
-            case 19, 6:
-                radianPose = (5 * Math.PI) / 6;
-                break;
-            case 17, 8:
-                radianPose = -(5 * Math.PI) / 6;
-                break;
-
-            default:
-                radianPose = currentPose;
-                break;
-        }
-        if(notWid){
-            tab.addDouble("Returned Rotation Rate", ()-> radianPose - currentPose).withPosition(6, 1);
-            notWid = false;
-            }
-        return radianPose - currentPose;
-
-    }
 }
