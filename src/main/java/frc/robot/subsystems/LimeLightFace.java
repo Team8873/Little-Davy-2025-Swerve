@@ -4,6 +4,7 @@ import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -37,7 +38,7 @@ public class LimeLightFace extends SubsystemBase {
       .getEntry();
   private PIDController rotationPid = new PIDController(4, 0, 0);
   private PIDController velocityPid = new PIDController(.05, 0, 0);
-  private PIDController forwardPid = new PIDController(.1, .01, 0);
+  private PIDController forwardPid = new PIDController(.1, .025, 0);
 
   private RawFiducial[] fiducials;
   private int m_id;
@@ -136,7 +137,6 @@ public class LimeLightFace extends SubsystemBase {
   // fieldRelative = false;}
   // }
   public double limelight_left_strafe_proportional() {
-
     if (!hasAprilTagTarget) {
       return 0;
     }

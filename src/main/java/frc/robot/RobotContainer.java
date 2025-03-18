@@ -221,10 +221,15 @@ public class RobotContainer {
         joystick.leftStick().whileTrue(Travel());
         joystick.rightStick().whileTrue(lockOnCommand());
         
-        joystick.rightBumper().whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-joystick.getLeftY()/3)
-                .withVelocityY(limeLightFace.limelight_right_strafe_proportional())));
-        joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-joystick.getLeftY()/3)
-                .withVelocityY(limeLightFace.limelight_left_strafe_proportional())));
+        joystick.rightBumper().whileTrue(
+                drivetrain.applyRequest(() -> {
+                return forwardStraight
+                .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+                .withVelocityX(limeLightFace.limelight_range_proportional())
+                .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
+        }));
+
+        joystick.leftBumper().whileTrue(magicLimeLeft());
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -248,17 +253,19 @@ public class RobotContainer {
                 .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional())
                 .withVelocityY(limeLightFace.limelight_aim_proportional()*0.01));
     }
-
-    public Command strafeRightCommand() {
-        return (
-                drivetrain
-                        .applyRequest(() -> forwardStraight.withVelocityY(limeLightFace.limelight_right_strafe_proportional() * 0.01)));
+    public Command magicLimeRight(){
+        return drivetrain.applyRequest(()-> {return forwardStraight
+        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+        .withVelocityX(limeLightFace.limelight_range_proportional())
+        .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
+        });
     }
-
-    public Command strafeLeftCommand() {
-        return (
-                drivetrain
-                        .applyRequest(() -> forwardStraight.withVelocityY(limeLightFace.limelight_left_strafe_proportional() * 0.01)));
+    public Command magicLimeLeft(){
+        return drivetrain.applyRequest(()-> {return forwardStraight
+        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+        .withVelocityX(limeLightFace.limelight_range_proportional())
+        .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
+        });
     }
 //     public SequentialCommandGroup Autolvl4() {
 //         return
