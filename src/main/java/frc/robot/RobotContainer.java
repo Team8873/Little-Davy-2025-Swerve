@@ -117,6 +117,7 @@ public class RobotContainer {
         )))));
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
+        new EventTrigger("autoRight").whileTrue(magicLimeRight());
         caNdleSystem.startAnimation();
     }
 
@@ -141,7 +142,7 @@ public class RobotContainer {
 
         limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.Strobe));
         limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow));
-
+        limeLightFace.setDefaultCommand(limeLightFace.poseGuesser(drivetrain.getState().RawHeading.getDegrees()));
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
@@ -239,7 +240,7 @@ public class RobotContainer {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
-                        .withVelocityY(limeLightFace.limelight_left_strafe_proportional(drivetrain.getState().Pose));
+                        .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
         });
     }
 //     public SequentialCommandGroup Autolvl4() {

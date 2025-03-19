@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -33,7 +35,7 @@ public class LimeLightFace extends SubsystemBase {
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(6, 3)
       .getEntry();
-      private GenericEntry posewid = tab.add("distance From apriltag", 0)
+  private GenericEntry posewid = tab.add("distance From apriltag", 0)
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(7, 3)
       .getEntry();
@@ -43,119 +45,54 @@ public class LimeLightFace extends SubsystemBase {
       .getEntry();
   private PIDController rotationPid = new PIDController(4, 0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
-  private PIDController forwardPid = new PIDController(.1, .01, 0);
-  private ComplexWidget pidwid = tab.add("speed pid",forwardPid).withWidget(BuiltInWidgets.kPIDController);
+  private PIDController forwardPid = new PIDController(.1, 0, 0);
+  private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
+  private RawFiducial[] megaFiducials;
+
   private int m_id;
   private boolean hasAprilTagTarget = false;
+  private LimelightHelpers.PoseEstimate megaTag2;
+  
+
+
 
   public LimeLightFace() {
-    rotationPid.setTolerance(0.005);
-    forwardPid.setTolerance(.3);
+    rotationPid.setTolerance(0.01);
+    forwardPid.setTolerance(.1);
+    velocityPid.setTolerance(0.2);
     rotationPid.enableContinuousInput(-Math.PI, Math.PI);
   }
-  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  // //New from ctre github
-  // private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3); //
-  // private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
-  // private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3); //
-  // private final LimeLightFace m_swerve = new LimeLightFace(); //New from Ctre
-  // github set to robot container
 
-  // double getPeriod=0; -> trying to solve error in last line
-
-  // simple proportional turning control with Limelight.
-  // "proportional control" is a control algorithm in which the output is
-  // proportional to the error.
-  // in this case, we are going to return an angular velocity that is proportional
-  // to the
-  // "tx" value from the Limelight.
   public double limelight_aim_proportional() {
-    // kP (constant of proportionality)
-    // this is a hand-tuned number that determines the aggressiveness of our
-    // proportional control loop
-    // if it is too high, the robot will oscillate around.
-    // if it is too low, the robot will never reach its target
-    // if the robot never turns in the correct direction, kP should be inverted.
     double kP = 0.02;
-
-    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the
-    // rightmost edge of
-    // your limelight 3 feed, tx should return roughly 31 degrees.
     double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
-
-    // convert to radians per second for our drive method
-    targetingAngularVelocity *= RobotContainer.MaxAngularRate; // from drivetrain.kmaxangularspeed
-
-    // invert since tx is positive when the target is to the right of the crosshair
-    // targetingAngularVelocity *= -1.0;
-
+    targetingAngularVelocity *= RobotContainer.MaxAngularRate;
     return targetingAngularVelocity;
   }
 
-
-  // simple proportional ranging control with Limelight's "ty" value
-  // this works best if your Limelight's mount height and target mount height are
-  // different.
-  // if your limelight and target are mounted at the same or similar heights, use
-  // "ta" (area) for target ranging rather than "ty"
   public double limelight_range_proportional() {
     double target = -6.1;
     double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
     double speed = forwardPid.calculate(targetingForwardSpeed, target);
     posewid.setDouble(targetingForwardSpeed);
-    if(!hasAprilTagTarget){
+    if (!hasAprilTagTarget) {
       return 0;
     }
     return speed;
   }
 
-  // private void drive(boolean fieldRelative) {
-  // Get the x speed. We are inverting this because Xbox controllers return
-  // negative values when we push forward.
-  // var xSpeed =
-  // -m_xspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftY(), 0.02))
-  // * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
-
-  // Get the y speed or sideways/strafe speed. We are inverting this because
-  // we want a positive value when we pull to the left. Xbox controllers
-  // return positive values when you pull to the right by default.
-  // var ySpeed =
-  // -m_yspeedLimiter.calculate(MathUtil.applyDeadband(joystick.getLeftX(), 0.02))
-  // * RobotContainer.MaxSpeed; //from drivetrain.kmaxangularspeed
-
-  // Get the rate of angular rotation. We are inverting this because we want a
-  // positive value when we pull to the left (remember, CCW is positive in
-  // mathematics). Xbox controllers return positive values when you pull to
-  // the right by default.
-  // var rot =
-  // -m_rotLimiter.calculate(MathUtil.applyDeadband(joystick.getRightX(), 0.02))
-  // * RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
-
-  // while the A-button is pressed, overwrite some of the driving values with the
-  // output of our limelight methods
-  // joystick.rightBumper().whileTrue( joystickrightbumper = 1);
-
-  // if(joystick.getRightBumperButtonPressed())
-  // {
-  // final var rot_limelight = limelight_aim_proportional();
-  // rot = rot_limelight;
-
-  // final var forward_limelight = limelight_range_proportional();
-  // xSpeed = forward_limelight;
-
-  // while using Limelight, turn off field-relative driving.
-  // fieldRelative = false;}
-  // }
-  public double limelight_left_strafe_proportional(Pose2d Pose) {
-    System.out.println(Pose.getX());
-    System.out.println(Pose.getY());
-    if (!hasAprilTagTarget) {
+  public double limelight_left_strafe_proportional() {
+    if(!hasAprilTagTarget){
       return 0;
     }
-    double lefttargetTx = 15.3;
-
+    double lefttargetTx;
+    if (LimelightHelpers.getTY("limelight") < -15) {
+      lefttargetTx = 0;
+    } else {
+      lefttargetTx = 15.3;
+    }
     double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
     System.out.println(targetAngleStrafe);
     double speed = velocityPid.calculate(targetAngleStrafe, lefttargetTx);
@@ -165,12 +102,16 @@ public class LimeLightFace extends SubsystemBase {
   }
 
   public double limelight_right_strafe_proportional() {
-
-    if (!hasAprilTagTarget) {
+    if(!hasAprilTagTarget){
       return 0;
     }
-    double righttargetTx = -16.7;
-
+    
+    double righttargetTx;
+    if (LimelightHelpers.getTY("limelight") < -15) {
+      righttargetTx = 0;
+    } else {
+      righttargetTx = -16.7;
+    }
     double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
     System.out.println(targetAngleStrafe);
     double speed = velocityPid.calculate(targetAngleStrafe, righttargetTx);
@@ -178,23 +119,29 @@ public class LimeLightFace extends SubsystemBase {
 
     return speed;
   }
-
+  private boolean centered = false;
 
   public double alignRobot(double currentPose) {
-    if(LimelightHelpers.getTY("limelight") < -15){
-      return -limelight_aim_proportional()/2;
+    if (LimelightHelpers.getTY("limelight") < -15) {
+      return -limelight_aim_proportional() / 2;
     }
+    // if(MathUtil.isNear(0, LimelightHelpers.getTX("limelight"), 2)){
+    //   centered = true;
+    // }
+    // if(!centered){
+    //   return -limelight_aim_proportional()/2;
+    // }
     radwid.setInteger(m_id);
     poswid.setDouble(currentPose);
     double radianPose;
     switch (m_id) {
       case 18, 14, 15, 7, 5, 4:
         radianPose = Math.PI;
-        // radianPose = 2* Math.PI;
+        // radianPose = 0;
         break;
       case 21, 10:
+        radianPose = 0;
         radianPose = Math.PI;
-        // radianPose = 2* Math.PI;
         break;
       case 16, 3:
         radianPose = Math.PI / 2;
@@ -225,11 +172,15 @@ public class LimeLightFace extends SubsystemBase {
     double speed = rotationPid.calculate(currentPose, radianPose);
 
     wid.setDouble(speed);
-    // if (!hasAprilTagTarget) {
-    //   return 0;
-    // }
     return speed;
+  }
 
+  public Command poseGuesser(double currentPose) {
+    return this.run(
+        () -> {
+          LimelightHelpers.SetRobotOrientation("limelight", currentPose, 0, 0, 0, 0, 0);
+          
+        });
   }
 
   public final Trigger hasTarget = new Trigger(() -> hasAprilTagTarget);
@@ -238,12 +189,13 @@ public class LimeLightFace extends SubsystemBase {
     fiducials = LimelightHelpers.getRawFiducials("limelight");
     if (fiducials.length < 1) {
       hasAprilTagTarget = false;
+      centered = false;
     } else {
       hasAprilTagTarget = true;
       m_id = fiducials[0].id;
     }
+  
 
   }
 
-  // m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative, getPeriod());
 }

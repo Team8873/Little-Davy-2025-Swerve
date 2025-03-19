@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.9,
-        "y": 4.153
+        "x": 2.6294948630096515,
+        "y": 4.017487157537186
       },
       "prevControl": {
-        "x": 1.6230672026984452,
-        "y": 1.1181145065319513
+        "x": 0.07512842464944036,
+        "y": 2.454815924663415
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "right front reef lvl4"
+      "linkedName": "blue front reef lvl 4 end"
     }
   ],
   "rotationTargets": [],
@@ -65,13 +65,7 @@
     },
     {
       "name": "Elevator lvl4",
-      "waypointRelativePos": 0.75,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "autoRight",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.9142857142857143,
       "endWaypointRelativePos": null,
       "command": null
     }
