@@ -54,9 +54,8 @@ public class LimeLightFace extends SubsystemBase {
   private int m_id;
   private boolean hasAprilTagTarget = false;
   private LimelightHelpers.PoseEstimate megaTag2;
-  
-
-
+  private double tx;
+  private double ty;
 
   public LimeLightFace() {
     rotationPid.setTolerance(0.01);
@@ -67,7 +66,7 @@ public class LimeLightFace extends SubsystemBase {
 
   public double limelight_aim_proportional() {
     double kP = 0.02;
-    double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+    double targetingAngularVelocity = tx * kP;
     targetingAngularVelocity *= RobotContainer.MaxAngularRate;
     return targetingAngularVelocity;
   }
@@ -84,7 +83,7 @@ public class LimeLightFace extends SubsystemBase {
   }
 
   public double limelight_left_strafe_proportional() {
-    if(!hasAprilTagTarget){
+    if (!hasAprilTagTarget) {
       return 0;
     }
     double lefttargetTx;
@@ -93,7 +92,7 @@ public class LimeLightFace extends SubsystemBase {
     } else {
       lefttargetTx = 15.3;
     }
-    double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
+    double targetAngleStrafe = (tx);
     System.out.println(targetAngleStrafe);
     double speed = velocityPid.calculate(targetAngleStrafe, lefttargetTx);
     sped.setDouble(speed);
@@ -102,17 +101,17 @@ public class LimeLightFace extends SubsystemBase {
   }
 
   public double limelight_right_strafe_proportional() {
-    if(!hasAprilTagTarget){
+    if (!hasAprilTagTarget) {
       return 0;
     }
-    
+
     double righttargetTx;
     if (LimelightHelpers.getTY("limelight") < -15) {
       righttargetTx = 0;
     } else {
       righttargetTx = -16.7;
     }
-    double targetAngleStrafe = (LimelightHelpers.getTX("limelight"));
+    double targetAngleStrafe = (tx);
     System.out.println(targetAngleStrafe);
     double speed = velocityPid.calculate(targetAngleStrafe, righttargetTx);
     sped.setDouble(speed);
@@ -121,7 +120,7 @@ public class LimeLightFace extends SubsystemBase {
   }
 
   public double alignRobot(double currentPose) {
-    if (LimelightHelpers.getTY("limelight") < -15) {
+    if (ty < -15) {
       return -limelight_aim_proportional() / 2;
     }
     radwid.setInteger(m_id);
@@ -129,11 +128,11 @@ public class LimeLightFace extends SubsystemBase {
     double radianPose;
     switch (m_id) {
       case 18, 14, 15, 7, 5, 4:
-        radianPose = Math.PI;
-        // radianPose = 0;
+        // radianPose = Math.PI;
+        radianPose = 0;
         break;
       case 21, 10:
-        radianPose = 0;
+        // radianPose = 0;
         radianPose = Math.PI;
         break;
       case 16, 3:
@@ -172,21 +171,34 @@ public class LimeLightFace extends SubsystemBase {
     return this.run(
         () -> {
           LimelightHelpers.SetRobotOrientation("limelight", currentPose, 0, 0, 0, 0, 0);
-          
+
         });
   }
 
   public final Trigger hasTarget = new Trigger(() -> hasAprilTagTarget);
+  public double getTx(){
+    return tx;
+  }
 
+  public double getTy(){
+    return ty;
+  }
+  public double getOffset(){
+    double offset = Math.abs(tx) - 15 + Math.abs(ty + 6.1);
+    return Math.abs(offset);
+  }
   public void periodic() {
     fiducials = LimelightHelpers.getRawFiducials("limelight");
     if (fiducials.length < 1) {
       hasAprilTagTarget = false;
+      ty = 0;
+      tx = 0;
     } else {
       hasAprilTagTarget = true;
       m_id = fiducials[0].id;
+      ty = LimelightHelpers.getTY("limelight");
+      tx = LimelightHelpers.getTX("limelight");
     }
-  
 
   }
 

@@ -3,56 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8,
-        "y": 4.002461472602739
+        "x": 1.5776969178082192,
+        "y": 3.6718964041095887
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8,
-        "y": 4.002461472602739
+        "x": 1.9409160242124845,
+        "y": 3.5846318989222667
       },
       "isLocked": false,
-      "linkedName": "center coral pickup"
+      "linkedName": "pick up point"
     },
     {
       "anchor": {
-        "x": 2.8525,
-        "y": 4.135
+        "x": 2.2538527397260273,
+        "y": 3.972410102739726
       },
       "prevControl": {
-        "x": 1.8525,
-        "y": 4.135
+        "x": 1.6391906880004545,
+        "y": 3.712179185882472
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0
-    }
-  ],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "rotationTargets": [],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Elevator lvl4",
+      "name": "score Left",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null

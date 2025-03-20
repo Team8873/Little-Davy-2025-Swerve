@@ -450,7 +450,6 @@ public class CANdleSystem extends SubsystemBase {
             case SingleFade:
                 animate = new SingleFadeAnimation(red, green, blue, white, 1, maxLed,
                         ledOffset);
-                        speed = 3;
                 break;
             case Strobe:
                 animate = new StrobeAnimation(red, green, blue, white, 0.1, maxLed,

@@ -126,8 +126,9 @@ public class RobotContainer {
         // operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
         //         .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
 
-        limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.Strobe));
+        limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.SingleFade));
         limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow));
+        limeLightFace.hasTarget.whileTrue(caNdleSystem.speedChanger(limeLightFace.getOffset()));
         limeLightFace.setDefaultCommand(limeLightFace.poseGuesser(drivetrain.getState().RawHeading.getDegrees()));
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
@@ -257,22 +258,25 @@ public class RobotContainer {
         )))));
 
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
+        new EventTrigger("score Left").onTrue(scoreLeft4);
 
         new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
         .andThen(intake.runIntake().withTimeout(.1)
-        .andThen(new WaitCommand(2)
+        .andThen(new WaitCommand(3)
         .andThen(intake.stopIntake().withTimeout(.1)
-        .andThen(arm.upArm().withTimeout(.5)
-        .andThen(scoreLeft4))))));
+        .andThen(arm.upArm().withTimeout(.5))))));
+
+        new EventTrigger("go").onTrue(new WaitCommand(2)
+        .andThen(getPathToFollow("score again")));
 
         new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(2)
         .andThen(new WaitCommand(2.5)
-        .andThen(getPathToFollow())));
+        .andThen(getPathToFollow("pick up front"))));
 
     }
-    public Command getPathToFollow(){
+    public Command getPathToFollow(String pathName){
         try {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("pick up front");
+            PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
         PathConstraints constraints = new PathConstraints(2.0, 1.0,
         Units.degreesToRadians(360), Units.degreesToRadians(360));
         Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(path, constraints);
