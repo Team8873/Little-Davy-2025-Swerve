@@ -320,8 +320,8 @@ public class CANdleSystem extends SubsystemBase {
                 m_setAnim = true;
             }
         } else {
-            m_toAnimate.setSpeed(speed);
-            // m_toAnimate2.setSpeed(speed);
+            m_toAnimate.setSpeed(speed/3);
+            m_toAnimate2.setSpeed(speed);
             m_candle.animate(m_toAnimate, 1);
             m_candle.animate(m_toAnimate2, 2);
             m_setAnim = false;
@@ -384,6 +384,7 @@ public class CANdleSystem extends SubsystemBase {
                             ledOffset = 88;
                             maxLed = 127;
                             redToGreen();
+                            speed = 0.5;
                             m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType);
                             break;
                         default:
@@ -447,8 +448,9 @@ public class CANdleSystem extends SubsystemBase {
                         ledOffset);
                 break;
             case SingleFade:
-                animate = new SingleFadeAnimation(red, green, blue, white, 0.5, maxLed,
+                animate = new SingleFadeAnimation(red, green, blue, white, 1, maxLed,
                         ledOffset);
+                        speed = 3;
                 break;
             case Strobe:
                 animate = new StrobeAnimation(red, green, blue, white, 0.1, maxLed,

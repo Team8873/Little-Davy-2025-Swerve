@@ -119,18 +119,11 @@ public class LimeLightFace extends SubsystemBase {
 
     return speed;
   }
-  private boolean centered = false;
 
   public double alignRobot(double currentPose) {
     if (LimelightHelpers.getTY("limelight") < -15) {
       return -limelight_aim_proportional() / 2;
     }
-    // if(MathUtil.isNear(0, LimelightHelpers.getTX("limelight"), 2)){
-    //   centered = true;
-    // }
-    // if(!centered){
-    //   return -limelight_aim_proportional()/2;
-    // }
     radwid.setInteger(m_id);
     poswid.setDouble(currentPose);
     double radianPose;
@@ -189,7 +182,6 @@ public class LimeLightFace extends SubsystemBase {
     fiducials = LimelightHelpers.getRawFiducials("limelight");
     if (fiducials.length < 1) {
       hasAprilTagTarget = false;
-      centered = false;
     } else {
       hasAprilTagTarget = true;
       m_id = fiducials[0].id;
