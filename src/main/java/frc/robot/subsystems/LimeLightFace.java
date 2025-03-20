@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.LimelightHelpers;
+import org.photonvision.vision.target.TrackedTarget;
 
 public class LimeLightFace extends SubsystemBase{
 
