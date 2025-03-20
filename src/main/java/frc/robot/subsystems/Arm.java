@@ -124,14 +124,14 @@ public class Arm extends SubsystemBase{
     public Command kcikArm(){
       return this.run(
        () -> {
-             setArmTarget(.22);
+             setArmTarget(.15);
              setArmSpeed();
        });
 }
 public Command upArm(){
   return this.run(
    () -> {
-         setArmTarget(.48);
+         setArmTarget(.4);
          setArmSpeed();
    });
 }

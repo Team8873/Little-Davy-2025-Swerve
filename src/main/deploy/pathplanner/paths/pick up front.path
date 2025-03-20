@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 2.6294948630096515,
-        "y": 4.017487157537186
+        "y": 4.017
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.2456871601979818,
-        "y": 4.017487157537186
+        "y": 4.017
       },
       "isLocked": false,
       "linkedName": "blue front reef lvl 4 end"
     },
     {
       "anchor": {
-        "x": 1.9232876712328766,
-        "y": 4.152718321917808
+        "x": 1.5776969178082192,
+        "y": 3.6718964041095887
       },
       "prevControl": {
-        "x": 2.7312876712328764,
-        "y": 4.152718321917808
+        "x": 2.3856969178082186,
+        "y": 3.6718964041095887
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,8 +42,8 @@
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 1.0,
-        "maxAngularVelocity": 90.0,
-        "maxAngularAcceleration": 360.0,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
         "unlimited": false
       }
@@ -53,7 +53,7 @@
     {
       "fieldPosition": {
         "x": 4.0,
-        "y": 3.759
+        "y": 4.017
       },
       "rotationOffset": 0.0,
       "minWaypointRelativePos": 0.0,
@@ -61,7 +61,14 @@
       "name": "Point Towards Zone"
     }
   ],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "standCoral",
+      "waypointRelativePos": 0.8047619047619048,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

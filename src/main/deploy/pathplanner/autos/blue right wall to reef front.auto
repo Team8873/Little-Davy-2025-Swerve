@@ -9,18 +9,6 @@
           "data": {
             "pathName": "Copy of right wall to reef front"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of right reef back up front"
-          }
         }
       ]
     }

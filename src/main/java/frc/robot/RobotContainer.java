@@ -6,19 +6,32 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.events.EventTrigger;
+import com.pathplanner.lib.events.TriggerEvent;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FileVersionException;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -44,10 +57,6 @@ import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.FlipWrist90Command;
 import frc.robot.command.FlipWristCommand;
 import frc.robot.command.ArmDockCommand;
-import frc.robot.command.CANdleAnimationCommand;
-import frc.robot.command.ActiveHumanIntakeCommand;
-import frc.robot.command.DockHumanIntakeCommand;
-import frc.robot.command.PresetAutoCommand;
 import frc.robot.subsystems.Climber;
 
 public class RobotContainer {
@@ -84,41 +93,18 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
     
 
-    public RobotContainer() {
+    public RobotContainer(){
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
         elevator.setFollower();
         CameraServer.startAutomaticCapture();
         CameraServer.startAutomaticCapture();
-
-        // NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator,arm,'y',false));
-        NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
-        new EventTrigger("Elevator lvl4")
-        .onTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)
-        .andThen(new FlipWristCommand(arm).withTimeout(1)
-        .andThen((arm.kcikArm()).withTimeout(3)
-        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
-        ))));
-        // new EventTrigger("Elevator lvl3")
-        // .onTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)
-        // .andThen((intake.intakeEject()).withTimeout(2)
-        // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false))));
-        // new EventTrigger("Elevator lvl2")
-        // .onTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)
-        // .andThen((intake.intakeEject().withTimeout(2)
-        // .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)))));
-        new EventTrigger("Elevator lvl1")
-        .onTrue(new ElevatorPresetCommand(elevator, arm, 'o', true).withTimeout(3)
-        .andThen(new WaitCommand(1)
-        .andThen(intake.intakeEject().withTimeout(1)
-        .andThen(new ElevatorPresetCommand(elevator, arm, 'u', true)
-        .andThen(intake.stopIntake().withTimeout(.1)
-        )))));
-        new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
-        new EventTrigger("standCoral").onTrue(intake.runIntake().alongWith(arm.standArm()).withTimeout(3));
-        new EventTrigger("autoRight").whileTrue(magicLimeRight());
+        autoCommands();
         caNdleSystem.startAnimation();
+
+
+
     }
 
     private void configureBindings() {
@@ -249,6 +235,55 @@ public class RobotContainer {
 //                         .andThen(new PresetAutoCommand(elevator, arm, intake, 0)
 //                                 );
 //     }
+    private void autoCommands() {
+        
+        ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft()).withTimeout(2)
+        .alongWith(NamedCommands.getCommand("Elevator lvl4"));
+
+        NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
+        NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator, arm, 'y', true).withTimeout(5)
+        .andThen((arm.kcikArm()).withTimeout(1.5)
+        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
+        )));
+
+        new EventTrigger("Elevator lvl4").onTrue(NamedCommands.getCommand("Elevator lvl4"));
+
+        new EventTrigger("Elevator lvl1")
+        .onTrue(new ElevatorPresetCommand(elevator, arm, 'o', true).withTimeout(3)
+        .andThen(new WaitCommand(1)
+        .andThen(intake.intakeEject().withTimeout(1)
+        .andThen(new ElevatorPresetCommand(elevator, arm, 'u', true)
+        .andThen(intake.stopIntake().withTimeout(.1)
+        )))));
+
+        new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
+
+        new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
+        .andThen(intake.runIntake().withTimeout(.1)
+        .andThen(new WaitCommand(2)
+        .andThen(intake.stopIntake().withTimeout(.1)
+        .andThen(arm.upArm().withTimeout(.5)
+        .andThen(scoreLeft4))))));
+
+        new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(2)
+        .andThen(new WaitCommand(2.5)
+        .andThen(getPathToFollow())));
+
+    }
+    public Command getPathToFollow(){
+        try {
+            PathPlannerPath path = PathPlannerPath.fromPathFile("pick up front");
+        PathConstraints constraints = new PathConstraints(2.0, 1.0,
+        Units.degreesToRadians(360), Units.degreesToRadians(360));
+        Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(path, constraints);
+        return pathfindingCommand;
+        } 
+        catch (Exception e) {
+        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+        return Commands.none();
+        }
+
+    }
     
 
     public Command getAutonomousCommand() {

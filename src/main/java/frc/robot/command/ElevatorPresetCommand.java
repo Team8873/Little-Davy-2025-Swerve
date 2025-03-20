@@ -124,6 +124,11 @@ public class ElevatorPresetCommand extends Command {
                 elevatorPos = PresetConstants.lvl1Elevator;
                 armPos = PresetConstants.lvl1ArmAutoPos;
                 break;
+                case 'y':
+                    elevatorPos = PresetConstants.lvl4Elevator;
+                    armPos = PresetConstants.lvl4ArmPos;
+                    wristPos = PresetConstants.wristFlatPos;
+                    break;
             }
         } else {
             wristPos = PresetConstants.wristFlatPos;
