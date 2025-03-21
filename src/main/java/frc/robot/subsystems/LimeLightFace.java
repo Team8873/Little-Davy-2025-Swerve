@@ -5,22 +5,16 @@ import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import static edu.wpi.first.units.Units.Rotation;
 
-import java.lang.Runtime;
 
 public class LimeLightFace extends SubsystemBase {
 
@@ -55,10 +49,15 @@ public class LimeLightFace extends SubsystemBase {
     forwardPid.setTolerance(.1);
     velocityPid.setTolerance(0.2);
     rotationPid.enableContinuousInput(-Math.PI, Math.PI);
-    tab.addInteger("april tag Id", () -> m_id).withWidget(BuiltInWidgets.kNumberBar).withPosition(6, 2);
-    tab.addDouble("think pos", ()-> thinkPos).withWidget(BuiltInWidgets.kNumberBar).withPosition(6, 3);
+    tab.addInteger("april tag Id", () -> m_id).withPosition(6, 2);
+    tab.addDouble("think pos", () -> thinkPos).withWidget(BuiltInWidgets.kNumberBar).withPosition(6, 3);
   }
 
+  /**
+   * Auto face april tag
+   * 
+   * @return the speed
+   */
   public double limelight_aim_proportional() {
     double kP = 0.02;
     double targetingAngularVelocity = tx * kP;
@@ -68,12 +67,14 @@ public class LimeLightFace extends SubsystemBase {
 
   /**
    * Auto drive robot to lvl4 scoring pos
+   * 
    * @return the speed to get to the scoring pos
    */
   public double limelight_range_proportional() {
     double targetingForwardSpeed = ty;
     double target;
-    if (robotAngleFaceCorrect) {// if robot is not facing the general right way stay a certain distance away from reef 
+    if (robotAngleFaceCorrect) {// if robot is not facing the general right way stay a certain distance away
+                                // from reef
       target = -6.1;
     } else {
       target = -10;
@@ -89,16 +90,17 @@ public class LimeLightFace extends SubsystemBase {
   /**
    * Auto strafe based on tx of april tag
    * Mainly used for lvl4 scoring
+   * 
    * @param direction which reef pipe to score on -1 for right 1 for left
    * @return speed to get to the side pos for scoring
    */
   public double limelight_strafe_proportional(int direction) {
-    if (!hasAprilTagTarget) { //checks for april tag return speed 0 if not found
+    if (!hasAprilTagTarget) { // checks for april tag return speed 0 if not found
       return 0;
     }
     double targetTx;
 
-    if (robotAngleFaceCorrect) { //check if robot is facing the general right direction
+    if (robotAngleFaceCorrect) { // check if robot is facing the general right direction
       if (ty < -15) {
         targetTx = 0;
       } else {
@@ -125,15 +127,15 @@ public class LimeLightFace extends SubsystemBase {
 
   /**
    * Auto aligns robot with reef
+   * 
    * @param currentPose the current angle of the robot
    * @return the rotation needed to correct the angle of the robot
    */
   public double alignRobot(double currentPose) {
-    if (ty < -15 || !robotAngleFaceCorrect) { // robot is really far away or not facing the general right direction  
-      return -limelight_aim_proportional() / 2; // faces robot to april tag instead of reef 
+    if (ty < -15 || !robotAngleFaceCorrect) { // robot is really far away or not facing the general right direction
+      return -limelight_aim_proportional() / 2; // faces robot to april tag instead of reef
     }
     double speed = rotationPid.calculate(currentPose, getRadianPose(currentPose));
-
     wid.setDouble(speed);
     return speed;
   }
@@ -162,6 +164,7 @@ public class LimeLightFace extends SubsystemBase {
 
   /**
    * Gets where robot should be facing based on aprilTag id
+   * 
    * @param currentPose the current angle of robot in radians
    * @return the target angle of the robot
    */
@@ -206,8 +209,9 @@ public class LimeLightFace extends SubsystemBase {
   }
 
   public void periodic() {
-    fiducials = LimelightHelpers.getRawFiducials("limelight");
-    if (fiducials.length < 1) {
+
+    fiducials = LimelightHelpers.getRawFiducials("limelight"); // gets limelight raw output
+    if (fiducials.length < 1) { // if limelight no output default state
       hasAprilTagTarget = false;
       ty = 0;
       tx = 0;
