@@ -7,7 +7,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -27,14 +29,6 @@ public class LimeLightFace extends SubsystemBase {
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(6, 1)
       .getEntry();
-  private GenericEntry radwid = tab.add("april tag Id", 0)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withPosition(6, 2)
-      .getEntry();
-  private GenericEntry poswid = tab.add("think pos", 0)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withPosition(6, 3)
-      .getEntry();
   private GenericEntry posewid = tab.add("distance From apriltag", 0)
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(7, 3)
@@ -46,22 +40,23 @@ public class LimeLightFace extends SubsystemBase {
   private PIDController rotationPid = new PIDController(4, 0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
   private PIDController forwardPid = new PIDController(.1, 0, 0);
-  private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
-  private RawFiducial[] megaFiducials;
 
   private int m_id;
   private boolean hasAprilTagTarget = false;
-  private LimelightHelpers.PoseEstimate megaTag2;
   private double tx;
   private double ty;
+  private double thinkPos;
+  private boolean robotAngleFaceCorrect;
 
   public LimeLightFace() {
     rotationPid.setTolerance(0.01);
     forwardPid.setTolerance(.1);
     velocityPid.setTolerance(0.2);
     rotationPid.enableContinuousInput(-Math.PI, Math.PI);
+    tab.addInteger("april tag Id", () -> m_id).withWidget(BuiltInWidgets.kNumberBar).withPosition(6, 2);
+    tab.addDouble("think pos", ()-> thinkPos).withWidget(BuiltInWidgets.kNumberBar).withPosition(6, 3);
   }
 
   public double limelight_aim_proportional() {
@@ -71,9 +66,18 @@ public class LimeLightFace extends SubsystemBase {
     return targetingAngularVelocity;
   }
 
+  /**
+   * Auto drive robot to lvl4 scoring pos
+   * @return the speed to get to the scoring pos
+   */
   public double limelight_range_proportional() {
-    double target = -6.1;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
+    double targetingForwardSpeed = ty;
+    double target;
+    if (robotAngleFaceCorrect) {// if robot is not facing the general right way stay a certain distance away from reef 
+      target = -6.1;
+    } else {
+      target = -10;
+    }
     double speed = forwardPid.calculate(targetingForwardSpeed, target);
     posewid.setDouble(targetingForwardSpeed);
     if (!hasAprilTagTarget) {
@@ -82,49 +86,86 @@ public class LimeLightFace extends SubsystemBase {
     return speed;
   }
 
-  public double limelight_left_strafe_proportional() {
-    if (!hasAprilTagTarget) {
+  /**
+   * Auto strafe based on tx of april tag
+   * Mainly used for lvl4 scoring
+   * @param direction which reef pipe to score on -1 for right 1 for left
+   * @return speed to get to the side pos for scoring
+   */
+  public double limelight_strafe_proportional(int direction) {
+    if (!hasAprilTagTarget) { //checks for april tag return speed 0 if not found
       return 0;
     }
-    double lefttargetTx;
-    if (LimelightHelpers.getTY("limelight") < -15) {
-      lefttargetTx = 0;
-    } else {
-      lefttargetTx = 15.3;
-    }
-    double targetAngleStrafe = (tx);
-    System.out.println(targetAngleStrafe);
-    double speed = velocityPid.calculate(targetAngleStrafe, lefttargetTx);
-    sped.setDouble(speed);
+    double targetTx;
 
+    if (robotAngleFaceCorrect) { //check if robot is facing the general right direction
+      if (ty < -15) {
+        targetTx = 0;
+      } else {
+        switch (direction) {
+          case 1:
+            targetTx = 15.3;
+            break;
+          case -1:
+            targetTx = -16.7;
+            break;
+          default:
+            targetTx = 0;
+            break;
+        }
+      }
+    } else {
+      targetTx = thinkPos - Math.pow(getRadianPose(thinkPos), 2); // if not then strafe until it is
+    }
+    double targetAngleStrafe = tx;
+    double speed = velocityPid.calculate(targetAngleStrafe, targetTx);
+    sped.setDouble(speed);
     return speed;
   }
 
-  public double limelight_right_strafe_proportional() {
-    if (!hasAprilTagTarget) {
-      return 0;
-    }
-
-    double righttargetTx;
-    if (LimelightHelpers.getTY("limelight") < -15) {
-      righttargetTx = 0;
-    } else {
-      righttargetTx = -16.7;
-    }
-    double targetAngleStrafe = (tx);
-    System.out.println(targetAngleStrafe);
-    double speed = velocityPid.calculate(targetAngleStrafe, righttargetTx);
-    sped.setDouble(speed);
-
-    return speed;
-  }
-
+  /**
+   * Auto aligns robot with reef
+   * @param currentPose the current angle of the robot
+   * @return the rotation needed to correct the angle of the robot
+   */
   public double alignRobot(double currentPose) {
-    if (ty < -15) {
-      return -limelight_aim_proportional() / 2;
+    if (ty < -15 || !robotAngleFaceCorrect) { // robot is really far away or not facing the general right direction  
+      return -limelight_aim_proportional() / 2; // faces robot to april tag instead of reef 
     }
-    radwid.setInteger(m_id);
-    poswid.setDouble(currentPose);
+    double speed = rotationPid.calculate(currentPose, getRadianPose(currentPose));
+
+    wid.setDouble(speed);
+    return speed;
+  }
+
+  public Command poseGetter(double currentPose) {
+    return this.runOnce(
+        () -> {
+          thinkPos = currentPose;
+        });
+  }
+
+  public final Trigger hasTarget = new Trigger(() -> hasAprilTagTarget);
+
+  public double getTx() {
+    return tx;
+  }
+
+  public double getTy() {
+    return ty;
+  }
+
+  public double getOffset() {
+    double offset = Math.abs(tx) - 15 + Math.abs(ty + 6.1);
+    return Math.abs(offset);
+  }
+
+  /**
+   * Gets where robot should be facing based on aprilTag id
+   * @param currentPose the current angle of robot in radians
+   * @return the target angle of the robot
+   */
+  private double getRadianPose(double currentPose) {
     double radianPose;
     switch (m_id) {
       case 18, 14, 15, 7, 5, 4:
@@ -161,32 +202,9 @@ public class LimeLightFace extends SubsystemBase {
         radianPose = currentPose;
         break;
     }
-    double speed = rotationPid.calculate(currentPose, radianPose);
-
-    wid.setDouble(speed);
-    return speed;
+    return radianPose;
   }
 
-  public Command poseGuesser(double currentPose) {
-    return this.run(
-        () -> {
-          LimelightHelpers.SetRobotOrientation("limelight", currentPose, 0, 0, 0, 0, 0);
-
-        });
-  }
-
-  public final Trigger hasTarget = new Trigger(() -> hasAprilTagTarget);
-  public double getTx(){
-    return tx;
-  }
-
-  public double getTy(){
-    return ty;
-  }
-  public double getOffset(){
-    double offset = Math.abs(tx) - 15 + Math.abs(ty + 6.1);
-    return Math.abs(offset);
-  }
   public void periodic() {
     fiducials = LimelightHelpers.getRawFiducials("limelight");
     if (fiducials.length < 1) {
@@ -198,6 +216,7 @@ public class LimeLightFace extends SubsystemBase {
       m_id = fiducials[0].id;
       ty = LimelightHelpers.getTY("limelight");
       tx = LimelightHelpers.getTX("limelight");
+      robotAngleFaceCorrect = MathUtil.isNear(getRadianPose(thinkPos), thinkPos, Units.degreesToRadians(15));
     }
 
   }
