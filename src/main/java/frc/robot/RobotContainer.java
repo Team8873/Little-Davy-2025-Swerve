@@ -102,9 +102,6 @@ public class RobotContainer {
         CameraServer.startAutomaticCapture();
         autoCommands();
         caNdleSystem.startAnimation();
-
-
-
     }
 
     private void configureBindings() {
@@ -128,7 +125,7 @@ public class RobotContainer {
 
         limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.SingleFade));
         limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow));
-        limeLightFace.setDefaultCommand(limeLightFace.poseGuesser(drivetrain.getState().RawHeading.getDegrees()));
+        limeLightFace.setDefaultCommand(limeLightFace.poseGetter(drivetrain.getState().RawHeading.getDegrees()));
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
@@ -218,7 +215,7 @@ public class RobotContainer {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
-                        .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
+                        .withVelocityY(limeLightFace.limelight_strafe_proportional(-1));
         });
     }
     public Command magicLimeLeft(){
@@ -226,7 +223,7 @@ public class RobotContainer {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
-                        .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
+                        .withVelocityY(limeLightFace.limelight_strafe_proportional(1));
         });
     }
 //     public SequentialCommandGroup Autolvl4() {
