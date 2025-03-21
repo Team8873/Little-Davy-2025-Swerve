@@ -212,12 +212,7 @@ public class RobotContainer {
                         .withVelocityY(limeLightFace.limelight_strafe_proportional(1));
         });
     }
-//     public SequentialCommandGroup Autolvl4() {
-//         return
-//                 new ElevatorPresetCommand(elevator,arm,'y',false)
-//                         .andThen(new PresetAutoCommand(elevator, arm, intake, 0)
-//                                 );
-//     }
+
     private void autoCommands() {
         
         ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft()).withTimeout(2)
