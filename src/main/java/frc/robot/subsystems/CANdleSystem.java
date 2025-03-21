@@ -321,9 +321,12 @@ public class CANdleSystem extends SubsystemBase {
             }
         } else {
             m_toAnimate.setSpeed(speed/3);
-            m_toAnimate2.setSpeed(speed);
+            m_toAnimate3.setSpeed(speed/3);
+            m_toAnimate2.setSpeed(speed*3);
             m_candle.animate(m_toAnimate, 1);
             m_candle.animate(m_toAnimate2, 2);
+            m_candle.animate(m_toAnimate3, 3);
+
             m_setAnim = false;
         }
         m_candle.modulateVBatOutput(joystick.getRightY());
@@ -371,13 +374,14 @@ public class CANdleSystem extends SubsystemBase {
                         case 0:
                             clearAllAnims();
                             ledOffset = 8;
-                            maxLed = 80;
-                            m_toAnimate = setAnimation(ledOffset, maxLed, animationType);
-                            ledOffset += 80;
-                            maxLed += 27;
-                            redToGreen();
+                            maxLed = 40;
+                            m_toAnimate = setAnimation(ledOffset, maxLed, animationType, Direction.Forward);
+                            ledOffset += 40;
+                            m_toAnimate3 = setAnimation(ledOffset, maxLed, animationType, Direction.Backward);
+                            ledOffset += 40;
+                            maxLed += 67;
                             m_candle.configBrightnessScalar(.5);
-                            m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType);
+                            m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType, Direction.Forward);
                             break;
                         case 1:
                             m_candle.clearAnimation(2);
@@ -385,7 +389,7 @@ public class CANdleSystem extends SubsystemBase {
                             maxLed = 127;
                             redToGreen();
                             speed = 0.5;
-                            m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType);
+                            m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType, Direction.Forward);
                             break;
                         default:
                             maxLed = 10;
@@ -406,17 +410,19 @@ public class CANdleSystem extends SubsystemBase {
         int ledArea = 0;
         switch (ledArea) {
             case 0:
-                ledOffset = 8;
-                maxLed = 80;
-                m_toAnimate = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow);
-                ledOffset += 80;
-                maxLed += 27;
-
-                colorAnalyzer(Color.Green);
-                redToGreen();
-                m_candle.configBrightnessScalar(.5);
-                m_toAnimate2 = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow);
-                break;
+                clearAllAnims();
+                            ledOffset = 8;
+                            maxLed = 39;
+                            m_toAnimate = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow, Direction.Forward);
+                            ledOffset += 39;
+                            m_toAnimate3 = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow, Direction.Backward);
+                            ledOffset += 42;
+                            maxLed += 67;
+                            colorAnalyzer(Color.Green);
+                            redToGreen();
+                            m_candle.configBrightnessScalar(.5);
+                            m_toAnimate2 = setAnimation(ledOffset, maxLed, AnimationTypes.ColorFlow, Direction.Forward);
+                            break;
             default:
                 maxLed = 10;
                 ledOffset = 8;
@@ -424,12 +430,12 @@ public class CANdleSystem extends SubsystemBase {
         }
     }
 
-    private Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange) {
+    private Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange, Direction d) {
         Animation animate;
         switch (toChange) {
             default:
             case ColorFlow:
-                animate = new ColorFlowAnimation(red, green, blue, white, 0.7, maxLed, Direction.Forward,
+                animate = new ColorFlowAnimation(red, green, blue, white, 0.7, maxLed, d,
                         ledOffset);
                 break;
             case Fire:

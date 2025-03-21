@@ -128,7 +128,6 @@ public class RobotContainer {
 
         limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.SingleFade));
         limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow));
-        limeLightFace.hasTarget.whileTrue(caNdleSystem.speedChanger(limeLightFace.getOffset()));
         limeLightFace.setDefaultCommand(limeLightFace.poseGuesser(drivetrain.getState().RawHeading.getDegrees()));
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
