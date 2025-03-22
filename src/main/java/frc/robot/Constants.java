@@ -128,8 +128,8 @@ public class Constants {
         public static final int encoderForClimberDIOPort = 10;
     }
      public static class Vision {
-        public static final String kCameraName = "YOUR CAMERA NAME";
-        public static final String mCameraName = "YOUR CAMERA NAME";
+        public static final String kCameraName = "ModuleRight";
+        public static final String mCameraName = "ModuleLeft";
         // Cam mounted facing forward, half a meter forward of center, half a meter up from center,
         // pitched upward.
         private static final double kcamPitch = Units.degreesToRadians(30.0);

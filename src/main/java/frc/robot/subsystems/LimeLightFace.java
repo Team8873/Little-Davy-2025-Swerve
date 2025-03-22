@@ -56,7 +56,7 @@ public class LimeLightFace extends SubsystemBase{
     double kP = 0.02;
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetingAngularVelocity = (((PhotonHelp.TX()+PhotonHelp.TX())/2)*kP);//LimelightHelpers.getTX("limelight") * kP;
+    double targetingAngularVelocity = (PhotonHelp.TX()*kP);//LimelightHelpers.getTX("limelight") * kP;
 
     // convert to radians per second for our drive method
     targetingAngularVelocity *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
@@ -73,7 +73,7 @@ public class LimeLightFace extends SubsystemBase{
   public double limelight_range_proportional()
   {    
     double kP = 10;
-    double targetingForwardSpeed = ((PhotonHelp.TY()+PhotonHelp.TY())/2) * kP;
+    double targetingForwardSpeed = (PhotonHelp.TY()) * kP;
     //targetingForwardSpeed *= RobotContainer.MaxSpeed; //from drivetrain.kmaxspeed
     //targetingForwardSpeed *= -1.0;
     return targetingForwardSpeed;
