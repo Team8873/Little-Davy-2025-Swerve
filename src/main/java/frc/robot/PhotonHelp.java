@@ -30,12 +30,6 @@ static PhotonTrackedTarget Rtarget = resultR.get(0).getBestTarget();
 static double rightyaw = Rtarget.getYaw();
 static double rightpitch = Rtarget.getPitch();
 static double rightarea = Rtarget.getArea();
-public static double RightTX(){
-    return rightyaw;
-}
-public static double RightTY(){
-    return rightpitch;
-}
 
 public static PhotonCamera cameraL = new PhotonCamera(kCameraName);
     // Read in relevant data from the Camera
@@ -48,11 +42,13 @@ static PhotonTrackedTarget Ltarget = resultL.get(0).getBestTarget();
 static double leftyaw = Ltarget.getYaw();
 static double leftpitch = Ltarget.getPitch();
 static double leftarea = Ltarget.getArea();
-public static double LeftTX(){
-    return rightyaw;
+
+public static double TX(){
+    return ((rightyaw+leftyaw)/2);
 }
-public static double LeftTY(){
-    return leftpitch;
+
+public static double TY(){
+    return ((rightpitch+leftpitch)/2);
 }
     
 }

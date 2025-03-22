@@ -35,7 +35,6 @@ public class Constants {
     }
     public static class IntakeConstants{
         public static final int intakeCanId = 15;
-        public static final int humanIntakeCanId = 18;
         public static final double humankP = 0.1;
         public static final double humankI = 0.0;
         public static final double humankD = 0.0;

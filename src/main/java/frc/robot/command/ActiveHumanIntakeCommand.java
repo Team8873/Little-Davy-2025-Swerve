@@ -27,16 +27,9 @@ public class ActiveHumanIntakeCommand extends Command {
   }
 
   // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_intake.humanTargetPosition(PresetConstants.humanIntakeActivePos);
-  }
 
   // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    m_intake.moveHumanMotor();
-  }
+
 
   // Called once the command ends or is interrupted.
   @Override
@@ -44,8 +37,4 @@ public class ActiveHumanIntakeCommand extends Command {
   }
 
   // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return m_intake.humanIntakeAtPos.getAsBoolean();
-  }
 }

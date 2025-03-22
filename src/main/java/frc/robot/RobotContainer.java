@@ -31,7 +31,6 @@ import frc.robot.subsystems.TestMotor;
 import frc.robot.subsystems.TimeOfFlightSensor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLightFace;
 import frc.robot.command.ElevatorPresetCommand;
 import frc.robot.command.FlipWrist90Command;
@@ -61,7 +60,6 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Arm arm = new Arm();
-    public final Intake intake = new Intake();
     public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
@@ -83,7 +81,6 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
 
         
-        intake.setDefaultCommand(intake.moveIntake(operator));
 
         //If sensor detects something close holds
         //tOFSensor.coralInRange.whileTrue(intake.holdIntake());//commented this out w/ the threshold change
