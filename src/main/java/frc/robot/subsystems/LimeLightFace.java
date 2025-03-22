@@ -6,7 +6,6 @@ import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 import frc.robot.LimelightHelpers;
-import frc.robot.PhotonHelpLeft;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -30,8 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.LimelightHelpers;
-import frc.robot.PhotonHelpLeft;
-import frc.robot.PhotonHelpRight;
+import frc.robot.PhotonHelp;
 public class LimeLightFace extends SubsystemBase{
 
 //   Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
@@ -39,7 +37,6 @@ public class LimeLightFace extends SubsystemBase{
 //  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3); //
 //  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);    //
 //  private final LimeLightFace m_swerve = new LimeLightFace();                     //New from Ctre github set to robot container
-
 
 //   double getPeriod=0;  -> trying to solve error in last line
 
@@ -49,7 +46,8 @@ public class LimeLightFace extends SubsystemBase{
 //   in this case, we are going to return an angular velocity that is proportional to the 
 //   "tx" value from the Limelight.
   public double limelight_aim_proportional()
-  {    
+  {  
+    
     // kP (constant of proportionality)
     // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
     // if it is too high, the robot will oscillate around.
@@ -58,7 +56,7 @@ public class LimeLightFace extends SubsystemBase{
     double kP = 0.02;
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetingAngularVelocity = ((PhotonHelpLeft.leftyaw()+PhotonHelpRight.rightyaw())/2);//LimelightHelpers.getTX("limelight") * kP;
+    double targetingAngularVelocity = (((PhotonHelp.LeftTX()+PhotonHelp.RightTX())/2)*kP);//LimelightHelpers.getTX("limelight") * kP;
 
     // convert to radians per second for our drive method
     targetingAngularVelocity *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed
@@ -75,7 +73,7 @@ public class LimeLightFace extends SubsystemBase{
   public double limelight_range_proportional()
   {    
     double kP = 10;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
+    double targetingForwardSpeed = ((PhotonHelp.LeftTY()+PhotonHelp.RightTY())/2) * kP;
     //targetingForwardSpeed *= RobotContainer.MaxSpeed; //from drivetrain.kmaxspeed
     //targetingForwardSpeed *= -1.0;
     return targetingForwardSpeed;

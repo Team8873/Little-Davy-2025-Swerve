@@ -18,17 +18,41 @@ import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-public class PhotonHelpRight {
-   PhotonCamera camera = new PhotonCamera(kCameraName);
+public class PhotonHelp {
+static PhotonCamera cameraR = new PhotonCamera(kCameraName);
     // Read in relevant data from the Camera
-    boolean targetVisible = false;
-    List<PhotonPipelineResult> result = camera.getAllUnreadResults();
-    double targetYaw = 0.0;
-    double targetRange = 0.0;
-    boolean hasTargets = result.get(0).hasTargets();
-    PhotonTrackedTarget target = result.get(0).getBestTarget();
-    double rightyaw = target.getYaw();
-double rightpitch = target.getPitch();
-double rightarea = target.getArea();
+boolean RtargetVisible = false;
+static List<PhotonPipelineResult> resultR = cameraR.getAllUnreadResults();
+double RtargetYaw = 0.0;
+double RtargetRange = 0.0;
+static boolean RhasTargets = resultR.get(0).hasTargets();
+static PhotonTrackedTarget Rtarget = resultR.get(0).getBestTarget();
+static double rightyaw = Rtarget.getYaw();
+static double rightpitch = Rtarget.getPitch();
+static double rightarea = Rtarget.getArea();
+public static double RightTX(){
+    return rightyaw;
+}
+public static double RightTY(){
+    return rightpitch;
+}
+
+public static PhotonCamera cameraL = new PhotonCamera(kCameraName);
+    // Read in relevant data from the Camera
+boolean targetVisible = false;
+static List<PhotonPipelineResult> resultL = cameraL.getAllUnreadResults();
+double LtargetYaw = 0.0;
+double LtargetRange = 0.0;
+static boolean LhasTargets = resultL.get(0).hasTargets();
+static PhotonTrackedTarget Ltarget = resultL.get(0).getBestTarget();
+static double leftyaw = Ltarget.getYaw();
+static double leftpitch = Ltarget.getPitch();
+static double leftarea = Ltarget.getArea();
+public static double LeftTX(){
+    return rightyaw;
+}
+public static double LeftTY(){
+    return leftpitch;
+}
     
 }
