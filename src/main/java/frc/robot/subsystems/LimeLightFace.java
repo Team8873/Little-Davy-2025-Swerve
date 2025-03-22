@@ -6,6 +6,7 @@ import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 import frc.robot.LimelightHelpers;
+import frc.robot.PhotonHelpLeft;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -29,8 +30,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.LimelightHelpers;
-import org.photonvision.vision.target.TrackedTarget;
-
+import frc.robot.PhotonHelpLeft;
+import frc.robot.PhotonHelpRight;
 public class LimeLightFace extends SubsystemBase{
 
 //   Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.   //New from ctre github
@@ -55,10 +56,9 @@ public class LimeLightFace extends SubsystemBase{
     // if it is too low, the robot will never reach its target
     // if the robot never turns in the correct direction, kP should be inverted.
     double kP = 0.02;
-
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+    double targetingAngularVelocity = ((PhotonHelpLeft.leftyaw()+PhotonHelpRight.rightyaw())/2);//LimelightHelpers.getTX("limelight") * kP;
 
     // convert to radians per second for our drive method
     targetingAngularVelocity *= RobotContainer.MaxAngularRate; //from drivetrain.kmaxangularspeed

@@ -66,6 +66,8 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final Climber climber = new Climber();
     public final LimeLightFace limeLightFace  = new LimeLightFace();
+    public final PhotonHelpRight photonHelpRight = new PhotonHelpRight();
+    public final PhotonHelpLeft photonHelpLeft = new PhotonHelpLeft();
     //public final LimeLightFace limeLightFace = new LimeLightFace();
 
     /* Path follower */
