@@ -7,6 +7,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -128,33 +129,33 @@ public class LimeLightFace extends SubsystemBase {
     double radianPose;
     switch (m_id) {
       case 18, 14, 15, 7, 5, 4:
-        radianPose = Math.PI;
+        radianPose = Math.toRadians(180);
         // radianPose = 0;
         break;
       case 21, 10:
-        radianPose = 0;
+        radianPose = Math.toRadians(0);
         // radianPose = Math.PI;
         break;
       case 16, 3:
-        radianPose = -Math.PI / 2;
+        radianPose = Math.toRadians(-90);
         break;
       case 12, 2:
-        radianPose = -Math.PI / 4;
+        radianPose = Math.toRadians(-45);
         break;
       case 13, 1:
-        radianPose = Math.PI / 4;
+        radianPose = Math.toRadians(45);
         break;
       case 20, 11:
-        radianPose = -Math.PI / 6;
+        radianPose = Math.toRadians(-30);
         break;
       case 22, 9:
-        radianPose = Math.PI / 6;
+        radianPose = Math.toRadians(30);
         break;
       case 19, 6:
-        radianPose = -(5 * Math.PI) / 6;
+        radianPose = Math.toDegrees(-150);
         break;
       case 17, 8:
-        radianPose = (5 * Math.PI) / 6;
+        radianPose = Math.toDegrees(150);
         break;
 
       default:
