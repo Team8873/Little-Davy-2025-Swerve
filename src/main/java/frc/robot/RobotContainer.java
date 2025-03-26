@@ -111,7 +111,6 @@ public class RobotContainer {
 
         limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.SingleFade));
         limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow));
-        limeLightFace.setDefaultCommand(limeLightFace.poseGetter(drivetrain.getState().RawHeading.getDegrees()));
 
         operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
         operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
@@ -201,7 +200,7 @@ public class RobotContainer {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
-                        .withVelocityY(limeLightFace.limelight_strafe_proportional(-1));
+                        .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
         });
     }
     public Command magicLimeLeft(){
@@ -209,7 +208,7 @@ public class RobotContainer {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
-                        .withVelocityY(limeLightFace.limelight_strafe_proportional(1));
+                        .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
         });
     }
 
@@ -247,6 +246,10 @@ public class RobotContainer {
         .andThen(getPathToFollow("score again")));
 
         new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(2)
+        .andThen(new WaitCommand(2.5)
+        .andThen(getPathToFollow("pick up front"))));
+
+        new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(2)
         .andThen(new WaitCommand(2.5)
         .andThen(getPathToFollow("pick up front"))));
 
