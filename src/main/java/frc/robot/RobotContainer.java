@@ -117,7 +117,7 @@ public class RobotContainer {
         operator.x().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)); //lvl3
         operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5)); //lvl4humancoralintake
-        //operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5)); //humanintakecoral
+        operator.pov(0).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5)); //humanintakecoral
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 's', false).withTimeout(5)); //humanintakecoral
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
         operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
@@ -188,7 +188,7 @@ public class RobotContainer {
     }
     public Command lockOnCommand() {
         return drivetrain
-                .applyRequest(() -> drive.withRotationalRate((limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))*2));
+                .applyRequest(() -> drive.withRotationalRate((limeLightFace.alignRobot(drivetrain.getState().Pose.getRotation().getDegrees()))*2));
     }
     public Command Travel() {
         return drivetrain
@@ -198,7 +198,7 @@ public class RobotContainer {
     public Command magicLimeRight(){
         return drivetrain.applyRequest(()-> {
                 return forwardStraight
-                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
                         .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
         });
@@ -206,7 +206,7 @@ public class RobotContainer {
     public Command magicLimeLeft(){
         return drivetrain.applyRequest(()-> {
                 return forwardStraight
-                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getRadians()))
+                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
                         .withVelocityX(limeLightFace.limelight_range_proportional())
                         .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
         });
@@ -252,6 +252,10 @@ public class RobotContainer {
         new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(2)
         .andThen(new WaitCommand(2.5)
         .andThen(getPathToFollow("pick up front"))));
+
+        new EventTrigger("human").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(1)
+        .andThen(new ElevatorPresetCommand(elevator, arm, 'h', true)
+        .andThen(intake.runIntake())));
 
     }
     public Command getPathToFollow(String pathName){
