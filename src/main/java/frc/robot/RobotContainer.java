@@ -80,7 +80,7 @@ public class RobotContainer {
     
 
     public RobotContainer(){
-        autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        autoChooser = AutoBuilder.buildAutoChooser("blue left wall to reef front");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
         elevator.setFollower();

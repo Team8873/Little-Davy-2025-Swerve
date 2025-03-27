@@ -140,8 +140,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
-        tab.addDouble("Robot Pose Rad",()-> getState().Pose.getRotation().getRadians()).withPosition(5, 5);
-        tab.addDouble("Robot Raw Pose Rad",()-> getState().RawHeading.getRadians()).withPosition(5, 4);
+        tab.addDouble("Robot Pose Rad",()-> getState().Pose.getRotation().getDegrees()).withPosition(5, 5);
+        tab.addDouble("Robot Raw Pose Rad",()-> getState().RawHeading.getDegrees()).withPosition(5, 4);
 
     }
 

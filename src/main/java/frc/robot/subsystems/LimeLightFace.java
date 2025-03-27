@@ -44,10 +44,12 @@ public class LimeLightFace extends SubsystemBase {
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(6, 4)
       .getEntry();
-  private PIDController rotationPid = new PIDController(4, 0, 0);
+
+  private PIDController rotationPid = new PIDController(0.25, 0.0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
   private PIDController forwardPid = new PIDController(.1, 0, 0);
   private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
+  private ComplexWidget rpidwid = tab.add("rotation pid", rotationPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
   private RawFiducial[] megaFiducials;
@@ -62,7 +64,7 @@ public class LimeLightFace extends SubsystemBase {
     rotationPid.setTolerance(0.01);
     forwardPid.setTolerance(.1);
     velocityPid.setTolerance(0.2);
-    rotationPid.enableContinuousInput(-Math.PI, Math.PI);
+    rotationPid.enableContinuousInput(-180, 180);
   }
 
   public double limelight_aim_proportional() {
@@ -124,6 +126,7 @@ public class LimeLightFace extends SubsystemBase {
     if (ty < -15) {
       return -limelight_aim_proportional() / 2;
     }
+
     radwid.setInteger(m_id);
     poswid.setDouble(currentPose);
     double radianPose;
@@ -151,6 +154,7 @@ public class LimeLightFace extends SubsystemBase {
       case 22, 9:
         radianPose = -60;
         break;
+
       case 19, 6:
         radianPose = 120;
         break;
@@ -163,7 +167,6 @@ public class LimeLightFace extends SubsystemBase {
         break;
     }
     double speed = rotationPid.calculate(currentPose, radianPose);
-
     wid.setDouble(speed);
     return speed;
   }
