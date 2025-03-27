@@ -137,25 +137,25 @@ public class LimeLightFace extends SubsystemBase {
         // radianPose = Math.PI;
         break;
       case 16, 3:
-        radianPose = Math.toRadians(-90);
+        radianPose = Math.toRadians(90);
         break;
       case 12, 2:
-        radianPose = Math.toRadians(-45);
-        break;
-      case 13, 1:
         radianPose = Math.toRadians(45);
         break;
+      case 13, 1:
+        radianPose = Math.toRadians(-45);
+        break;
       case 20, 11:
-        radianPose = Math.toRadians(-30);
+        radianPose = Math.toRadians(60);
         break;
       case 22, 9:
-        radianPose = Math.toRadians(30);
+        radianPose = Math.toRadians(-60);
         break;
       case 19, 6:
-        radianPose = Math.toDegrees(-150);
+        radianPose = Math.toDegrees(120);
         break;
       case 17, 8:
-        radianPose = Math.toDegrees(150);
+        radianPose = Math.toDegrees(-120);
         break;
 
       default:
