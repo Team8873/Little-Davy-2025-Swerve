@@ -3,11 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -17,9 +13,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import static edu.wpi.first.units.Units.Rotation;
-
-import java.lang.Runtime;
 
 public class LimeLightFace extends SubsystemBase {
 
@@ -52,11 +45,9 @@ public class LimeLightFace extends SubsystemBase {
   private ComplexWidget rpidwid = tab.add("rotation pid", rotationPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
-  private RawFiducial[] megaFiducials;
 
   private int m_id;
   private boolean hasAprilTagTarget = false;
-  private LimelightHelpers.PoseEstimate megaTag2;
   private double tx;
   private double ty;
 

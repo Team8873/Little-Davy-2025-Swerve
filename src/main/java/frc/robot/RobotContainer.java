@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -74,6 +75,7 @@ public class RobotContainer {
     public final CANdleSystem caNdleSystem = new CANdleSystem(joystick);
     public final Climber epicClimber = new Climber();
     public final LimelightHelpers limelightHelp = new LimelightHelpers();
+    public final TimeOfFlightSensor tOF = new TimeOfFlightSensor();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -213,13 +215,19 @@ public class RobotContainer {
     }
 
     private void autoCommands() {
+        new EventTrigger("null").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
+        .alongWith());
+        
         
         ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft()).withTimeout(2)
+        .alongWith(NamedCommands.getCommand("Elevator lvl4"));
+        
+        ParallelCommandGroup scoreRight4 = new RepeatCommand(magicLimeRight()).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator, arm, 'y', true).withTimeout(5)
-        .andThen((arm.kcikArm()).withTimeout(1.5)
+        .andThen((arm.kcikArm().onlyIf(tOF.coralInRange)).withTimeout(1.5)
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
         )));
 
@@ -235,6 +243,8 @@ public class RobotContainer {
 
         new EventTrigger("Hug").onTrue(NamedCommands.getCommand("Hug"));
         new EventTrigger("score Left").onTrue(scoreLeft4);
+        new EventTrigger("score Right").onTrue(scoreRight4);
+
 
         new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
         .andThen(intake.runIntake().withTimeout(.1)

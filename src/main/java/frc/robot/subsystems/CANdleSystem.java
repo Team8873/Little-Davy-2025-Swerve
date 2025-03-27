@@ -386,7 +386,7 @@ public class CANdleSystem extends SubsystemBase {
                             ledOffset = 88;
                             maxLed = 127;
                             redToGreen();
-                            speed = 0.5;
+                            speed = 0.1;
                             m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType, Direction.Forward);
                             break;
                         default:
@@ -454,6 +454,8 @@ public class CANdleSystem extends SubsystemBase {
             case SingleFade:
                 animate = new SingleFadeAnimation(red, green, blue, white, 1, maxLed,
                         ledOffset);
+                        speed = 0.5;
+
                 break;
             case Strobe:
                 animate = new StrobeAnimation(red, green, blue, white, 0.1, maxLed,
