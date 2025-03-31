@@ -91,14 +91,14 @@ public class Arm extends SubsystemBase{
     private final PIDController wristPid = new PIDController(ArmConstants.wristkP, ArmConstants.wristkI, ArmConstants.wristkD);
     private final ArmFeedforward m_feedforward = new ArmFeedforward(ArmConstants.kS, ArmConstants.kG, ArmConstants.kV);
   
-    private ComplexWidget pidEntry =
-          tab.add("arm Pid", armPid)
-            .withWidget(BuiltInWidgets.kPIDController)
-            .withPosition(8, 1);
-            private ComplexWidget wpidEntry =
-          tab.add("wrist Pid", wristPid)
-            .withWidget(BuiltInWidgets.kPIDController)
-            .withPosition(8, 1);
+    // private ComplexWidget pidEntry =
+    //       tab.add("arm Pid", armPid)
+    //         .withWidget(BuiltInWidgets.kPIDController)
+    //         .withPosition(8, 1);
+    //         private ComplexWidget wpidEntry =
+    //       tab.add("wrist Pid", wristPid)
+    //         .withWidget(BuiltInWidgets.kPIDController)
+    //         .withPosition(8, 1);
     public Arm(){
       armPid.setTolerance(.005);
       wristPid.setTolerance(.005);

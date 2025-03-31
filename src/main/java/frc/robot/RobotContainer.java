@@ -137,8 +137,6 @@ public class RobotContainer {
         joystick.leftTrigger(0.1).onFalse(epicClimber.dontMoveClimberDown());
         joystick.y().onFalse(epicClimber.dontMoveClimberDown());
 
-
-
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
 
@@ -215,9 +213,8 @@ public class RobotContainer {
     }
 
     private void autoCommands() {
-        new EventTrigger("null").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
-        .alongWith());
-        
+        // new EventTrigger("null").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
+        // .alongWith());
         
         ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft()).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
@@ -282,7 +279,6 @@ public class RobotContainer {
         }
 
     }
-    
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */

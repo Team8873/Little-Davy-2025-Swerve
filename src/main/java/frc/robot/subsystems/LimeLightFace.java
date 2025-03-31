@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.epilogue.Logged;
 
 
+@Logged
 public class LimeLightFace extends SubsystemBase {
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
@@ -41,8 +43,8 @@ public class LimeLightFace extends SubsystemBase {
   private PIDController rotationPid = new PIDController(0.25, 0.0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
   private PIDController forwardPid = new PIDController(.1, 0, 0);
-  private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
-  private ComplexWidget rpidwid = tab.add("rotation pid", rotationPid).withWidget(BuiltInWidgets.kPIDController);
+  // private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
+  // private ComplexWidget rpidwid = tab.add("rotation pid", rotationPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
 

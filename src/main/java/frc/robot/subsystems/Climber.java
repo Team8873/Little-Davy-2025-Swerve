@@ -19,12 +19,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 //imports constants from Constants.java
 import frc.robot.Constants.ClimberConstants;
-
+import edu.wpi.first.epilogue.Logged;
 //pid import
 import edu.wpi.first.math.controller.PIDController;
 //servo import
 import edu.wpi.first.wpilibj.Servo;
 
+@Logged
 public class Climber extends SubsystemBase { // puts climber as a subsystem; inside is code for the climber
     // introduce stuff
     private final SparkMax motorForClimber = new SparkMax(ClimberConstants.motorForClimberCANID, MotorType.kBrushless);                                                                                                                  // motorForClimber

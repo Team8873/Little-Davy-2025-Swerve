@@ -7,6 +7,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.epilogue.Logged;
+
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -25,7 +27,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
-
+@Logged
 public class Elevator extends SubsystemBase {
 
     // creates Sparkmax object
@@ -80,9 +82,9 @@ public class Elevator extends SubsystemBase {
     // private final ElevatorFeedforward m_feedforward = new
     // ElevatorFeedforward(ElevatorConstants.kS, ElevatorConstants.kG,
     // ElevatorConstants.kV);
-    private ComplexWidget pidEntry = tab.add("Elevator Pid", elevatorPid)
-            .withWidget(BuiltInWidgets.kPIDController)
-            .withPosition(6, 1);
+    // private ComplexWidget pidEntry = tab.add("Elevator Pid", elevatorPid)
+    //         .withWidget(BuiltInWidgets.kPIDController)
+    //         .withPosition(6, 1);
 
     // defines variables to 0
     private double elevatorPosition = 0;

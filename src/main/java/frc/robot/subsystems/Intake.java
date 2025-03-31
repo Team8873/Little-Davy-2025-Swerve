@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.epilogue.Logged;
 
+
+@Logged
 public class Intake extends SubsystemBase {
   private double speed = 0;
 
