@@ -69,7 +69,6 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Arm arm = new Arm();
     public final Intake intake = new Intake();
-    public final TimeOfFlightSensor tOFSensor = new TimeOfFlightSensor();
     public final Elevator elevator = new Elevator();
     public final LimeLightFace limeLightFace = new LimeLightFace();
     public final CANdleSystem caNdleSystem = new CANdleSystem(joystick);

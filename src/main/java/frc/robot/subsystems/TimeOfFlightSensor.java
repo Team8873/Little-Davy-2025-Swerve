@@ -21,19 +21,10 @@ public class TimeOfFlightSensor extends SubsystemBase {
     private double distanceInInches = 0;
     private final double mmToInches = 25.4;
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
-    //creates the shuffleboard widget
-    private GenericEntry distanceEntry =
-      tab.add("distance", 0)
-         .withWidget(BuiltInWidgets.kDial)
-         .withPosition(1,1)
-         .getEntry();
-    
-    
-    private GenericEntry coralEntry =
-      tab.add("coralInRange", false)
-         .withWidget(BuiltInWidgets.kBooleanBox)
-         .withPosition(1,2)
-         .getEntry();
+    public TimeOfFlightSensor(){
+      tab.addDouble("Distance From Coral", () -> distanceInInches).withPosition(0, 3).withWidget(BuiltInWidgets.kDial);
+      tab.addBoolean("Coral In Range", () -> inDistance.getAsBoolean()).withPosition(1, 2).withWidget(BuiltInWidgets.kBooleanBox);
+    }
 
     /**
      * runs command
@@ -51,7 +42,6 @@ public class TimeOfFlightSensor extends SubsystemBase {
      */
     private void convertMmToInches(){
         distanceInInches = distanceInmm/mmToInches;
-        distanceEntry.setDouble(distanceInInches);  //updates shuffleboard
     }
 
     /**
@@ -62,7 +52,6 @@ public class TimeOfFlightSensor extends SubsystemBase {
         if(distanceInInches < 5){
             inDistance = () -> true;
         }else{inDistance = () -> false;}
-        coralEntry.setBoolean(inDistance.getAsBoolean());   //shuffleboard updater
         return inDistance;    
     }
 
