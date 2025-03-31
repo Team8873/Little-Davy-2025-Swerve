@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.epilogue.Logged;
 
-
 @Logged
 public class Intake extends SubsystemBase {
   private double speed = 0;
@@ -39,6 +38,10 @@ public class Intake extends SubsystemBase {
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(5, 2)
       .getEntry();
+
+  public Intake() {
+    tab.addDouble("Intake Current", () -> intakeMotor.getOutputCurrent()).withPosition(1, 1).withWidget(BuiltInWidgets.kNumberBar);
+  }
   // private ComplexWidget pidEntry =
   // tab.add("Intake Pid", velocityPid)
   // .withWidget(BuiltInWidgets.kPIDController)
@@ -50,7 +53,6 @@ public class Intake extends SubsystemBase {
    * @return the action to run
    */
   public Command runIntake() {
-
     return this.run(
         () -> {
           speed = -1;
