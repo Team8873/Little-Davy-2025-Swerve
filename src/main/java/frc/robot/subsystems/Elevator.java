@@ -45,30 +45,6 @@ public class Elevator extends SubsystemBase {
     // shuffleboard thing I don't know what shuffleboard is
     private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
 
-    private GenericEntry speedEntry = tab.add("Elevator Speed", 0)
-            .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(0, 1)
-            .getEntry();
-
-    private GenericEntry positionEntry = tab.add("Elevator position", 0)
-            .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(2, 0)
-            .getEntry();
-
-    private GenericEntry targetEntry = tab.add("Elevator busVolt", 0)
-            .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(2, 1)
-            .getEntry();
-
-    private GenericEntry elevatorSetpointWidget = tab.add("Elevator atSetpoint", false)
-            .withWidget(BuiltInWidgets.kBooleanBox)
-            .withPosition(3, 5)
-            .getEntry();
-
-    private GenericEntry elevatorPast = tab.add("Elevator Past", 0)
-            .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(4, 5)
-            .getEntry();
 
     // gets the encoders and creates a object to talk to the encoders
     // private RelativeEncoder elevatorEncoder = motorLeft.getEncoder();
@@ -94,6 +70,11 @@ public class Elevator extends SubsystemBase {
 
     public Elevator() {
         elevatorPid.disableContinuousInput();
+        tab.addDouble("Elevator Speed", ()-> speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(0, 1);
+        tab.addDouble("Elevator position", ()-> elevatorPosition).withWidget(BuiltInWidgets.kNumberBar).withPosition(2, 0);
+        tab.addDouble("Elevator Past", ()-> pastPosition).withWidget(BuiltInWidgets.kNumberBar).withPosition(4, 5);
+        tab.addBoolean("Elevator atSetpoint", ()-> elevatorAtSetpoint.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 5);
+        tab.addDouble("Elevator busVolt", ()-> leadMotorRight.getBusVoltage()).withWidget(BuiltInWidgets.kNumberBar).withPosition(2, 1);
     }
 
     // sets follower
@@ -220,17 +201,5 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         getEncoderData();
         getElevatorSetpointStatus();
-        updateShuffleboardWidgets();
-    }
-
-    /**
-     * updates the shuffleboard stuff
-     */
-    private void updateShuffleboardWidgets() {
-        positionEntry.setDouble(elevatorPosition);
-        speedEntry.setDouble(speed);
-        targetEntry.setDouble(leadMotorRight.getBusVoltage());
-        elevatorSetpointWidget.setBoolean(elevatorAtSetpoint.getAsBoolean());
-        elevatorPast.setDouble(pastPosition);
     }
 }

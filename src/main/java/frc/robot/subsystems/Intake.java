@@ -25,22 +25,12 @@ public class Intake extends SubsystemBase {
 
   // creates shuffleboard stuff
   private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
-  private GenericEntry speedEntry = tab.add("Intake Motor", 0)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withPosition(0, 2)
-      .getEntry();
-
-  private GenericEntry outputWid = tab.add("Intake Output", 0)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withPosition(4, 2)
-      .getEntry();
-  private GenericEntry velocityEntry = tab.add("Intake Velocity", 0)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withPosition(5, 2)
-      .getEntry();
 
   public Intake() {
     tab.addDouble("Intake Current", () -> intakeMotor.getOutputCurrent()).withPosition(1, 1).withWidget(BuiltInWidgets.kNumberBar);
+    tab.addDouble("Intake Output", ()-> intakeMotor.getAppliedOutput()).withWidget(BuiltInWidgets.kNumberBar).withPosition(4, 2);
+    tab.addDouble("Intake Motor Speed", ()-> speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(0, 2);
+    tab.addDouble("Intake RPM", ()-> velocityRPM).withWidget(BuiltInWidgets.kNumberBar).withPosition(5, 2);
   }
   // private ComplexWidget pidEntry =
   // tab.add("Intake Pid", velocityPid)
@@ -123,13 +113,5 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     getVelocity();
-    updateShuffleboard();
-  }
-
-  private void updateShuffleboard() {
-    speedEntry.setDouble(speed);
-    outputWid.setDouble(intakeMotor.getAppliedOutput());
-    velocityEntry.setDouble(velocityRPM);
-
   }
 }
