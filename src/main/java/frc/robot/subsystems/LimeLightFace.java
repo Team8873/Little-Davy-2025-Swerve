@@ -31,7 +31,7 @@ public class LimeLightFace extends SubsystemBase {
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(6, 3)
       .getEntry();
-  private GenericEntry posewid = tab.add("distance From apriltag", 0)
+  private GenericEntry posewid = tab.add("distance From april", 0)
       .withWidget(BuiltInWidgets.kNumberBar)
       .withPosition(7, 3)
       .getEntry();
@@ -69,7 +69,7 @@ public class LimeLightFace extends SubsystemBase {
 
   public double limelight_range_proportional() {
     double target = -6.1;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
+    double targetingForwardSpeed = LimelightHelpers.getTY("april");
     double speed = forwardPid.calculate(targetingForwardSpeed, target);
     posewid.setDouble(targetingForwardSpeed);
     if (!hasAprilTagTarget) {
@@ -83,7 +83,7 @@ public class LimeLightFace extends SubsystemBase {
       return 0;
     }
     double lefttargetTx;
-    if (LimelightHelpers.getTY("limelight") < -15) {
+    if (LimelightHelpers.getTY("april") < -15) {
       lefttargetTx = 0;
     } else {
       lefttargetTx = 15.3;
@@ -102,7 +102,7 @@ public class LimeLightFace extends SubsystemBase {
     }
 
     double righttargetTx;
-    if (LimelightHelpers.getTY("limelight") < -15) {
+    if (LimelightHelpers.getTY("april") < -15) {
       righttargetTx = 0;
     } else {
       righttargetTx = -16.7;
@@ -167,7 +167,7 @@ public class LimeLightFace extends SubsystemBase {
   public Command poseGuesser(double currentPose) {
     return this.run(
         () -> {
-          LimelightHelpers.SetRobotOrientation("limelight", currentPose, 0, 0, 0, 0, 0);
+          LimelightHelpers.SetRobotOrientation("april", currentPose, 0, 0, 0, 0, 0);
 
         });
   }
@@ -185,7 +185,7 @@ public class LimeLightFace extends SubsystemBase {
     return Math.abs(offset);
   }
   public void periodic() {
-    fiducials = LimelightHelpers.getRawFiducials("limelight");
+    fiducials = LimelightHelpers.getRawFiducials("april");
     if (fiducials.length < 1) {
       hasAprilTagTarget = false;
       ty = 0;
@@ -193,8 +193,8 @@ public class LimeLightFace extends SubsystemBase {
     } else {
       hasAprilTagTarget = true;
       m_id = fiducials[0].id;
-      ty = LimelightHelpers.getTY("limelight");
-      tx = LimelightHelpers.getTX("limelight");
+      ty = LimelightHelpers.getTY("april");
+      tx = LimelightHelpers.getTX("april");
     }
 
   }
