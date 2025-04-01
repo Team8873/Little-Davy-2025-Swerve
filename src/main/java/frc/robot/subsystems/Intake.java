@@ -53,7 +53,7 @@ public class Intake extends SubsystemBase {
    * @return the action to run
    */
   public Command runIntake() {
-    return this.run(
+    return this.runOnce(
         () -> {
           speed = -1;
           setSpeed();

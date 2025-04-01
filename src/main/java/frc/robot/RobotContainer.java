@@ -95,17 +95,9 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
 
-
-        // tOFSensor.coralInRange.whileTrue(intake.holdIntake());
-
-        // operator.rightTrigger(.2).and(tOFSensor.coralInRange).onTrue(new
-        // IntakeEjectCommand(intake, tOFSensor).andThen(new
-        // ElevatorPresetCommand(elevator, intake, arm, 'a', false)));
-
         intake.setDefaultCommand(intake.moveIntake(operator));
 
         arm.setDefaultCommand(arm.moveArm(operator));
-        // tOFSensor.setDefaultCommand(tOFSensor.getDistance());
         elevator.setDefaultCommand(elevator.moveElevator(operator));
         // operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
         //         .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
