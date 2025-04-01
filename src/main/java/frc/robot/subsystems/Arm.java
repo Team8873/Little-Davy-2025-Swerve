@@ -76,8 +76,7 @@ public class Arm extends SubsystemBase {
     armPid.disableContinuousInput();
     armPid.setSetpoint(armTargetPos);
 
-    tab.addDouble("Arm Target Real", () -> armPid.getSetpoint());
-    tab.addDouble("Wrist Real", () -> wristMotor.getAppliedOutput());
+    tab.addDouble("Wrist Target", () -> wristPid.getSetpoint()).withPosition(4, 3).withWidget(BuiltInWidgets.kNumberBar);
     tab.addDouble("arm Target", () -> armPid.getSetpoint()).withWidget(BuiltInWidgets.kNumberBar).withPosition(4, 4);
     tab.addBoolean("wrist atSetpoint", ()-> wristPid.atSetpoint()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 4);
     tab.addBoolean("arm atSetpoint",()-> armPid.atSetpoint()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 3);

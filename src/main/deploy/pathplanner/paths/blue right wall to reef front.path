@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.7647260273972605,
-        "y": 3.8371789383561645
+        "x": 2.9,
+        "y": 3.8221532534246574
       },
       "prevControl": {
-        "x": 0.21035958903704977,
-        "y": 2.2745077054823937
+        "x": 0.3456335616397892,
+        "y": 2.2594820205508865
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "blue front reef lvl 4 end"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -68,12 +68,6 @@
       "waypointRelativePos": 0.9142857142857143,
       "endWaypointRelativePos": null,
       "command": null
-    },
-    {
-      "name": "autoRight",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": null
     }
   ],
   "globalConstraints": {
@@ -89,7 +83,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "red right wall to front reef",
+  "folder": "blue right wall to reef front",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

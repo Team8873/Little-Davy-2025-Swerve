@@ -22,8 +22,7 @@ public class TimeOfFlightSensor extends SubsystemBase {
 
   public TimeOfFlightSensor() {
     tab.addDouble("Distance From Coral", () -> distanceInInches).withPosition(0, 3).withWidget(BuiltInWidgets.kDial);
-    tab.addBoolean("Coral In Range", () -> inDistance.getAsBoolean()).withPosition(1, 2)
-        .withWidget(BuiltInWidgets.kBooleanBox);
+    tab.addBoolean("Coral In Range", () -> inDistance.getAsBoolean()).withPosition(3, 3).withWidget(BuiltInWidgets.kBooleanBox);
   }
 
   /**

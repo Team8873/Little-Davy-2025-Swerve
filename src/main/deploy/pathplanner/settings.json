@@ -3,6 +3,7 @@
   "robotLength": 0.9144,
   "holonomicMode": true,
   "pathFolders": [
+    "blue right wall to reef front",
     "left wall to reef front",
     "red right wall to front reef"
   ],
