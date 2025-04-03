@@ -136,10 +136,10 @@ public class LimeLightFace extends SubsystemBase {
         radianPose = 90;
         break;
       case 12, 2:
-        radianPose = 45;
+        radianPose = 54;
         break;
       case 13, 1:
-        radianPose = -45;
+        radianPose = -54;
         break;
       case 20, 11:
         radianPose = 60;
