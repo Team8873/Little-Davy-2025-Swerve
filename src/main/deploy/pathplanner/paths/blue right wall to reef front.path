@@ -71,7 +71,7 @@
     },
     {
       "name": "autoLeft",
-      "waypointRelativePos": 0.9452380952380952,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }

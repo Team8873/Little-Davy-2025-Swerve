@@ -33,14 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Hug",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "Elevator lvl4",
-      "waypointRelativePos": 0.8142857142857143,
+      "waypointRelativePos": 0.09761904761904762,
       "endWaypointRelativePos": null,
       "command": null
     },
@@ -61,7 +55,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 63.03428556712989
+    "rotation": 59.99999999999999
   },
   "reversed": false,
   "folder": null,

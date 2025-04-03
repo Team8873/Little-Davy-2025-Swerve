@@ -211,14 +211,16 @@ public class RobotContainer {
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         ParallelCommandGroup getCoral = new ElevatorPresetCommand(elevator, arm, 'i', true).withTimeout(3)
-        .alongWith(new RepeatCommand(intake.runIntake().onlyWhile(()-> !tOF.coralInRange.getAsBoolean())).until(tOF.coralInRange));
+        .alongWith(new RepeatCommand(intake.runIntake()).withTimeout(2)//.until(tOF.coralInRange)
+        );
         
         ParallelCommandGroup scoreRight4 = new RepeatCommand(magicLimeRight()).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator, arm, 'y', true).withTimeout(3.5)//changed from 5 sec
-        .andThen((arm.kcikArm().onlyIf(tOF.coralInRange)).withTimeout(1)//changed from 1.5
+        .andThen((arm.kcikArm()//.onlyIf(tOF.coralInRange)
+        ).withTimeout(1)//changed from 1.5
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
         )));
 
@@ -237,12 +239,12 @@ public class RobotContainer {
         new EventTrigger("score Right").onTrue(scoreRight4);
 
         new EventTrigger("humanCoral").onTrue(getCoral
-        .andThen(intake.stopIntake().onlyIf(tOF.coralInRange)
+        .andThen(intake.stopIntake()//.onlyIf(tOF.coralInRange)
         .andThen(getPathToFollow("humanRight scoreright"))));
 
 
         new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
-        .andThen(new RepeatCommand(intake.runIntake().onlyWhile(()-> !tOF.coralInRange.getAsBoolean())).until(tOF.coralInRange)
+        .andThen(new RepeatCommand(intake.runIntake()).until(tOF.coralInRange)
         .andThen(intake.stopIntake().onlyIf(tOF.coralInRange)
         .andThen(arm.upArm().withTimeout(.5)))));
 
@@ -250,11 +252,11 @@ public class RobotContainer {
         .andThen(getPathToFollow("score again")));
 
         new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(.25)// changed from 2
-        .andThen(new WaitCommand(2.5) // changed from 2.5
+        .andThen(new WaitCommand(3.5)//.until(()-> !tOF.coralInRange.getAsBoolean()) // changed from 2.5
         .andThen(getPathToFollow("rightHuman"))));
 
         new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(.25)
-        .andThen(new WaitCommand(2.5)
+        .andThen(new WaitCommand(3.5)//.until(()-> !tOF.coralInRange.getAsBoolean())
         .andThen(getPathToFollow("rightHuman"))));
 
         new EventTrigger("human").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(1)
