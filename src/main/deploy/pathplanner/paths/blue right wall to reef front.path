@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.9,
-        "y": 3.822
+        "x": 3.5460616438356163,
+        "y": 2.7102525684931504
       },
       "prevControl": {
-        "x": 2.088570205479452,
-        "y": 1.6133775684931502
+        "x": 3.8014982876712327,
+        "y": 1.192658390410959
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
     {
       "fieldPosition": {
         "x": 4.0,
-        "y": 4.138
+        "y": 3.638
       },
       "rotationOffset": 0.0,
       "minWaypointRelativePos": 0.26904761904761904,
@@ -86,7 +86,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 59.99999999999999
   },
   "reversed": false,
   "folder": "blue right wall to reef front",
