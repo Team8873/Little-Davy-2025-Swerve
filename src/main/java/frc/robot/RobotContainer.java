@@ -209,13 +209,16 @@ public class RobotContainer {
         
         ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft()).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
+
+        ParallelCommandGroup getCoral = new ElevatorPresetCommand(elevator, arm, 'i', true).withTimeout(3)
+        .alongWith(intake.runIntake().onlyWhile(tOF.coralInRange));
         
         ParallelCommandGroup scoreRight4 = new RepeatCommand(magicLimeRight()).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
-        NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator, arm, 'y', true).withTimeout(5)
-        .andThen((arm.kcikArm().onlyIf(tOF.coralInRange)).withTimeout(1.5)
+        NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator, arm, 'y', true).withTimeout(4)//changed from 5 sec
+        .andThen((arm.kcikArm().onlyIf(tOF.coralInRange)).withTimeout(1)//changed from 1.5
         .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
         )));
 
@@ -233,6 +236,10 @@ public class RobotContainer {
         new EventTrigger("score Left").onTrue(scoreLeft4);
         new EventTrigger("score Right").onTrue(scoreRight4);
 
+        new EventTrigger("humanCoral").onTrue(getCoral
+        .andThen(Commands.none()//intake.stopIntake().onlyIf(tOF.coralInRange)
+        .andThen(getPathToFollow("humanRight scoreleft"))));
+
 
         new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
         .andThen(intake.runIntake().withTimeout(.1)
@@ -243,11 +250,11 @@ public class RobotContainer {
         new EventTrigger("go").onTrue(new WaitCommand(2)
         .andThen(getPathToFollow("score again")));
 
-        new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(2)
-        .andThen(new WaitCommand(2.5)
-        .andThen(getPathToFollow("pick up front"))));
+        new EventTrigger("autoRight").onTrue(Commands.none()//new RepeatCommand(magicLimeRight()).withTimeout(1)// changed from 2
+        .andThen(new WaitCommand(4.5) // changed from 2.5
+        .andThen(getPathToFollow("rightHuman"))));
 
-        new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(2)
+        new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(1)
         .andThen(new WaitCommand(2.5)
         .andThen(getPathToFollow("pick up front"))));
 
@@ -260,7 +267,7 @@ public class RobotContainer {
         try {
             PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
         PathConstraints constraints = new PathConstraints(2.0, 1.0,
-        Units.degreesToRadians(360), Units.degreesToRadians(360));
+        Units.degreesToRadians(360), Units.degreesToRadians(45));
         Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(path, constraints);
         return pathfindingCommand;
         } 

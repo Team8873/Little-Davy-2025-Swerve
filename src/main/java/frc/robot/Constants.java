@@ -73,6 +73,8 @@ public class Constants {
         public static final double lvl2To3ArmGroundPos = 0.48; 
         public static final double lvl1ArmAutoPos = 0.38;
 
+        public static final double humanAutonArm = 0.48;
+        public static final double humanAutonElevator = 0.35;
 
         // side wrist pos
         public static final double wristSidePos = 4.05;

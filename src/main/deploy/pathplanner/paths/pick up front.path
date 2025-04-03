@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7647260273972605,
-        "y": 3.8371789383561645
+        "x": 2.9,
+        "y": 3.822
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.321070068786272,
-        "y": 3.819195719563143
+        "x": 2.4563440413890114,
+        "y": 3.8040167812069785
       },
       "isLocked": false,
       "linkedName": "blue front reef lvl 4 end"

@@ -45,7 +45,7 @@ public class Intake extends SubsystemBase {
   public Command runIntake() {
     return this.runOnce(
         () -> {
-          speed = -1;
+          speed = -0.5;
           setSpeed();
         });
   }

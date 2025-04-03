@@ -1,0 +1,75 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.3440068493150683,
+        "y": 3.792101883561644
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.2688784246575344,
+        "y": 2.9957405821917806
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.697902397260274,
+        "y": 0.7719392123287673
+      },
+      "prevControl": {
+        "x": 2.464212328767122,
+        "y": 1.4030179794520552
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "rightHuman end"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.49047619047619045,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 90.0,
+        "maxAngularAcceleration": 45.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "humanCoral",
+      "waypointRelativePos": 0.8666666666666667,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -126.57303097851934
+  },
+  "reversed": false,
+  "folder": "right huamn intake score",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -88.02506598911805
+  },
+  "useDefaultConstraints": true
+}
