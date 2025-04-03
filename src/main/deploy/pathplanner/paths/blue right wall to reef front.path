@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.971929653352679,
-        "y": 2.3096113427462526
+        "x": 6.5797707591944254,
+        "y": 2.3956568125313993
       },
       "isLocked": true,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.7102525684931504
       },
       "prevControl": {
-        "x": 3.8014982876712327,
-        "y": 1.192658390410959
+        "x": 3.125342465753425,
+        "y": 2.154302226027397
       },
       "nextControl": null,
       "isLocked": false,
@@ -65,13 +65,13 @@
     },
     {
       "name": "Elevator lvl4",
-      "waypointRelativePos": 0.34285714285714286,
+      "waypointRelativePos": 0.1738095238095238,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
-      "name": "autoRight",
-      "waypointRelativePos": 1.0,
+      "name": "autoLeft",
+      "waypointRelativePos": 0.9452380952380952,
       "endWaypointRelativePos": null,
       "command": null
     }

@@ -211,7 +211,7 @@ public class RobotContainer {
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         ParallelCommandGroup getCoral = new ElevatorPresetCommand(elevator, arm, 'i', true).withTimeout(3)
-        .alongWith(intake.runIntake().onlyWhile(()-> !tOF.coralInRange.getAsBoolean()));
+        .alongWith(new RepeatCommand(intake.runIntake().onlyWhile(()-> !tOF.coralInRange.getAsBoolean())).until(tOF.coralInRange));
         
         ParallelCommandGroup scoreRight4 = new RepeatCommand(magicLimeRight()).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
@@ -242,20 +242,20 @@ public class RobotContainer {
 
 
         new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
-        .andThen(intake.runIntake().onlyWhile(()-> !tOF.coralInRange.getAsBoolean())
+        .andThen(new RepeatCommand(intake.runIntake().onlyWhile(()-> !tOF.coralInRange.getAsBoolean())).until(tOF.coralInRange)
         .andThen(intake.stopIntake().onlyIf(tOF.coralInRange)
         .andThen(arm.upArm().withTimeout(.5)))));
 
         new EventTrigger("go").onTrue(new WaitCommand(2)
         .andThen(getPathToFollow("score again")));
 
-        new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(1)// changed from 2
+        new EventTrigger("autoRight").onTrue(new RepeatCommand(magicLimeRight()).withTimeout(.25)// changed from 2
         .andThen(new WaitCommand(2.5) // changed from 2.5
         .andThen(getPathToFollow("rightHuman"))));
 
-        new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(1)
+        new EventTrigger("autoLeft").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(.25)
         .andThen(new WaitCommand(2.5)
-        .andThen(getPathToFollow("pick up front"))));
+        .andThen(getPathToFollow("rightHuman"))));
 
         new EventTrigger("human").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(1)
         .andThen(new ElevatorPresetCommand(elevator, arm, 'h', true)

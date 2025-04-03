@@ -48,7 +48,7 @@ public class TimeOfFlightSensor extends SubsystemBase {
    * @return booleansupplier
    */
   public BooleanSupplier checkInRange() {
-    if (distanceInInches < 6) {
+    if (distanceInInches < 8) {
       inDistance = () -> true;
     } else {
       inDistance = () -> false;
