@@ -72,9 +72,10 @@ public class Elevator extends SubsystemBase {
         elevatorPid.disableContinuousInput();
         tab.addDouble("Elevator Speed", ()-> speed).withWidget(BuiltInWidgets.kNumberBar).withPosition(0, 1);
         tab.addDouble("Elevator position", ()-> elevatorPosition).withWidget(BuiltInWidgets.kNumberBar).withPosition(2, 0);
-        tab.addDouble("Elevator Past", ()-> pastPosition).withWidget(BuiltInWidgets.kNumberBar).withPosition(4, 5);
-        tab.addBoolean("Elevator atSetpoint", ()-> elevatorAtSetpoint.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 5);
+        tab.addDouble("Elevator Past", ()-> pastPosition).withWidget(BuiltInWidgets.kNumberBar).withPosition(4, 1);
+        tab.addBoolean("Elevator atSetpoint", ()-> elevatorAtSetpoint.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
         tab.addDouble("Elevator busVolt", ()-> leadMotorRight.getBusVoltage()).withWidget(BuiltInWidgets.kNumberBar).withPosition(2, 1);
+        tab.addDouble("Elevator Target", ()-> elevatorPid.getGoal().position);
     }
 
     // sets follower

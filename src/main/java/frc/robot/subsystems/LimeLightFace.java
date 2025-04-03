@@ -40,7 +40,7 @@ public class LimeLightFace extends SubsystemBase {
       .withPosition(6, 4)
       .getEntry();
 
-  private PIDController rotationPid = new PIDController(0.25, 0.0, 0);
+  private PIDController rotationPid = new PIDController(0.25, 0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
   private PIDController forwardPid = new PIDController(.1, 0, 0);
   // private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
@@ -68,7 +68,7 @@ public class LimeLightFace extends SubsystemBase {
   }
 
   public double limelight_range_proportional() {
-    double target = -6.1;
+    double target = -.8;
     double targetingForwardSpeed = LimelightHelpers.getTY("limelight-april");
     double speed = forwardPid.calculate(targetingForwardSpeed, target);
     posewid.setDouble(targetingForwardSpeed);
@@ -136,10 +136,10 @@ public class LimeLightFace extends SubsystemBase {
         radianPose = 90;
         break;
       case 12, 2:
-        radianPose = 54;
+        radianPose = 45;
         break;
       case 13, 1:
-        radianPose = -54;
+        radianPose = -45;
         break;
       case 20, 11:
         radianPose = 60;
@@ -148,7 +148,7 @@ public class LimeLightFace extends SubsystemBase {
         radianPose = -60;
         break;
 
-      case 19, 6:
+      case 19,6:
         radianPose = 120;
         break;
       case 17, 8:

@@ -9,18 +9,6 @@
           "data": {
             "pathName": "strait to reef back"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.9
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "back up back"
-          }
         }
       ]
     }

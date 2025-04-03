@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -143,8 +144,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
-        tab.addDouble("Robot Pose Rad",()-> getState().Pose.getRotation().getDegrees()).withPosition(5, 5);
-        tab.addDouble("Robot Raw Pose Rad",()-> getState().RawHeading.getDegrees()).withPosition(5, 4);
+        tab.addDouble("Robot Pose Rad",()-> getState().Pose.getRotation().getDegrees()).withPosition(5, 1).withWidget(BuiltInWidgets.kNumberBar);
+        tab.addDouble("Robot Raw Pose Rad",()-> getState().RawHeading.getDegrees()).withPosition(5, 4).withWidget(BuiltInWidgets.kNumberBar);
 
     }
 
