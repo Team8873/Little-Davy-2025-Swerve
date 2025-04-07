@@ -26,9 +26,7 @@ public class TimeOfFlightSensor extends SubsystemBase {
   }
 
   /**
-   * runs command
-   * 
-   * @return Gets distance from tofsensor and converts it to inches
+   * Gets distance from tofsensor and converts it to inches
    */
   public void getDistance() {
     distanceInmm = sensor.getRange();
@@ -44,7 +42,6 @@ public class TimeOfFlightSensor extends SubsystemBase {
 
   /**
    * checks if object is close to sensor
-   * 
    * @return booleansupplier
    */
   public BooleanSupplier checkInRange() {
@@ -57,7 +54,7 @@ public class TimeOfFlightSensor extends SubsystemBase {
   }
 
   // creates a trigger for a condition
-  public final Trigger coralInRange = new Trigger(checkInRange()); // requires booleansupplier?
+  public final Trigger coralInRange = new Trigger(checkInRange()); 
 
   @Override
   public void periodic() {

@@ -337,6 +337,10 @@ public class CANdleSystem extends SubsystemBase {
         }
     }
 
+    /**
+     * Sets the values of the rgbw to match the color
+     * @param color the color you want
+     */
     private void colorAnalyzer(Color color) {
         switch (color) {
             case Pink:
@@ -356,12 +360,22 @@ public class CANdleSystem extends SubsystemBase {
         }
     }
 
+    /**
+     * Switches color for red and green for one of the led strips
+     */
     private void redToGreen() {
         int tempRed = red;
         red = green;
         green = tempRed;
     }
 
+    /**
+     * Set up the led animation
+     * @param whereLED Cases for where the leds are
+     * @param color The color of the animations
+     * @param animationType the animation to run
+     * @return the animation
+     */
     public Command ledAnimation(int whereLED, Color color, AnimationTypes animationType) {
         return this.runOnce(
                 () -> {
@@ -414,6 +428,9 @@ public class CANdleSystem extends SubsystemBase {
                 });
     }
 
+    /**
+     * Animation to play on startup
+     */
     public void startAnimation() {
         int ledOffset;
         int maxLed;
@@ -441,7 +458,14 @@ public class CANdleSystem extends SubsystemBase {
                 break;
         }
     }
-
+/**
+ * Processes the animation to play
+ * @param ledOffset the offset from the first led on the candle
+ * @param maxLed the number of leds to control
+ * @param toChange the animation to change to 
+ * @param d the direction of the leds
+ * @return the animation
+ */
     private Animation setAnimation(int ledOffset, int maxLed, AnimationTypes toChange, Direction d) {
         Animation animate;
         switch (toChange) {

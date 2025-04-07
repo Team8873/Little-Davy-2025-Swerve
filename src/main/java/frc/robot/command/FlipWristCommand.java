@@ -41,7 +41,7 @@ public class FlipWristCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_arm.setWristTarget(m_arm.getWristPosition());
+        m_arm.setWristTarget(m_arm.getWristTarget());
     }
 
     // Returns true when the command should end.
@@ -52,22 +52,22 @@ public class FlipWristCommand extends Command {
 
     private void checkWristPos() {
 
-        if (MathUtil.isNear(PresetConstants.wristSidePos, m_arm.getWristPosition(), 
+        if (MathUtil.isNear(PresetConstants.wristSidePos, m_arm.getWristTarget(), 
                 PresetConstants.wristTolerance)) {
             m_arm.setWristTarget(PresetConstants.wristSidePosNeg);
         }
 
-        else if (MathUtil.isNear(PresetConstants.wristFlatPos, m_arm.getWristPosition(),
+        else if (MathUtil.isNear(PresetConstants.wristFlatPos, m_arm.getWristTarget(),
                 PresetConstants.wristTolerance)) {
             m_arm.setWristTarget(PresetConstants.wristFlatPosNeg);
         }
 
-        else if (MathUtil.isNear(PresetConstants.wristSidePosNeg, m_arm.getWristPosition(),
+        else if (MathUtil.isNear(PresetConstants.wristSidePosNeg, m_arm.getWristTarget(),
                 PresetConstants.wristTolerance)) {
             m_arm.setWristTarget(PresetConstants.wristSidePos);
         }
 
-        else if (MathUtil.isNear(PresetConstants.wristFlatPosNeg, m_arm.getWristPosition(),
+        else if (MathUtil.isNear(PresetConstants.wristFlatPosNeg, m_arm.getWristTarget(),
                 PresetConstants.wristTolerance)) {
             m_arm.setWristTarget(PresetConstants.wristFlatPos);
         }

@@ -38,8 +38,7 @@ public class Intake extends SubsystemBase {
   // .withPosition(6,1);
 
   /**
-   * sets speed to 1
-   * 
+   * sets speed to -0.5
    * @return the action to run
    */
   public Command runIntake() {
@@ -52,21 +51,18 @@ public class Intake extends SubsystemBase {
 
   /**
    * sets speed to 0
-   * 
    * @return the action to run
    */
   public Command stopIntake() {
     return this.runOnce(
         () -> {
           speed = 0;
-
           setSpeed();
         });
   }
 
   /**
    * sets speed 0.15
-   * 
    * @return references lastest object(intake) and runs the motor
    */
   public Command holdIntake() {
@@ -78,8 +74,7 @@ public class Intake extends SubsystemBase {
   }
 
   /**
-   * sets speed to -1
-   * 
+   * sets speed to 1
    * @return references latest object(intake) and runs the motor
    */
   public Command intakeEject() {
@@ -87,9 +82,12 @@ public class Intake extends SubsystemBase {
       speed = 1;
       setSpeed();
     });
-
   }
-
+/**
+ * Moves intake based on controller input
+ * @param operator the controller to read from
+ * @return the action to run
+ */
   public Command moveIntake(CommandXboxController operator) {
     return this.run(
         () -> {

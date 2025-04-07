@@ -19,6 +19,9 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -78,55 +81,57 @@ public class RobotContainer {
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
-    
+    // private final SendableChooser<String> alignmentChooser;
+
+        private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
+
 
     public RobotContainer(){
         autoChooser = AutoBuilder.buildAutoChooser("blue left wall to reef front");
-        SmartDashboard.putData("Auto Mode", autoChooser);
-        configureBindings();
-        elevator.setFollower();
+        tab.add("Auto Mode", autoChooser).withPosition(5,0).withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser); //puts the autons to shuffleboard
+        configureBindings(); //creates the triggers
+        elevator.setFollower(); //sets follower motor for elevator
+        CameraServer.startAutomaticCapture(); //gets video data from cameras
         CameraServer.startAutomaticCapture();
-        CameraServer.startAutomaticCapture();
-        autoCommands();
-        caNdleSystem.startAnimation();
+        autoCommands(); //creates auto commands
+        caNdleSystem.startAnimation(); //starts up animations
     }
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
 
-        intake.setDefaultCommand(intake.moveIntake(operator));
+        intake.setDefaultCommand(intake.moveIntake(operator)); //controls intake with controller
 
-        arm.setDefaultCommand(arm.moveArm(operator));
-        elevator.setDefaultCommand(elevator.moveElevator(operator));
-        // operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(4)
-        //         .andThen(new PresetAutoCommand(elevator, arm, intake,0))); //lvl4
+        arm.setDefaultCommand(arm.moveArm(operator));//controls arm with controller
+        elevator.setDefaultCommand(elevator.moveElevator(operator)); // controls elevator with controller 
 
-        limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.SingleFade));
-        limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow));
+        limeLightFace.hasTarget.onTrue(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.SingleFade)); //crossbar flashes green when apriltag seen
+        limeLightFace.hasTarget.onFalse(caNdleSystem.ledAnimation(1, Color.Green, AnimationTypes.ColorFlow)); // reverts to normal when none
 
-        operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1
-        operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2
-        operator.x().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)); //lvl3
-        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4
+        operator.a().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'a', true).withTimeout(5)); //lvl1 preset
+        operator.b().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'b', false).withTimeout(5)); //lvl2 preset
+        operator.x().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'x', false).withTimeout(5)); //lvl3 preset
+        operator.y().debounce(0.3).whileTrue(new ElevatorPresetCommand(elevator, arm, 'y', false).withTimeout(5)); //lvl4 preset
         operator.pov(90).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', false).withTimeout(5)); //lvl4humancoralintake
         operator.pov(0).whileTrue(new ElevatorPresetCommand(elevator, arm, 'h', true).withTimeout(5)); //humanintakecoral
         operator.pov(270).whileTrue(new ElevatorPresetCommand(elevator, arm, 's', false).withTimeout(5)); //humanintakecoral
         operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 'g', true).withTimeout(5)); //groundpickcoral
         operator.leftBumper().whileTrue(new ElevatorPresetCommand(elevator, arm, 'q', true).withTimeout(5)); //groundpickaglae
-        operator.rightBumper().whileTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow));
+        // operator.rightBumper().whileTrue(caNdleSystem.ledAnimation(0, Color.Pink, AnimationTypes.ColorFlow)); //does some animation thing idk
 
         // operator.pov(180).whileTrue(new ElevatorPresetCommand(elevator, arm, 's',
         // false).withTimeout(5));
 
-        operator.button(9).onTrue(new FlipWristCommand(arm).withTimeout(1));
-        operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(1));
+        operator.button(9).onTrue(new FlipWristCommand(arm).withTimeout(1)); //flips wrist
+        operator.button(10).onTrue(new FlipWrist90Command(arm).withTimeout(1)); //flips wrist
 
         // climber stuff:
-        joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.letGoOfCage()));
-        joystick.leftTrigger(0.03).whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage(joystick)));
-        joystick.leftTrigger(0.1).onFalse(epicClimber.dontMoveClimberDown());
-        joystick.y().onFalse(epicClimber.dontMoveClimberDown());
+        joystick.y().whileTrue(epicClimber.engageServo().withTimeout(0.2).andThen(epicClimber.letGoOfCage())); //releases cage
+        joystick.leftTrigger(0.03).whileTrue(epicClimber.disengageServo().withTimeout(0.2).andThen(epicClimber.grabCage(joystick))); //grabs cage based on controller trigger
+
+        joystick.leftTrigger(0.1).onFalse(epicClimber.dontMoveClimberDown()); //stops the climber
+        joystick.y().onFalse(epicClimber.dontMoveClimberDown()); //stops the climber
 
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
@@ -183,15 +188,28 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
     }
+    /**
+     * Automatically makes the robot faces the april tag
+     * @return the command to do so
+     */
     public Command lockOnCommand() {
         return drivetrain
                 .applyRequest(() -> drive.withRotationalRate((limeLightFace.alignRobot(drivetrain.getState().Pose.getRotation().getDegrees()))*2));
     }
+    /**
+     * Automatically drives the robot forward
+     * @return the command to do so
+     */
     public Command Travel() {
         return drivetrain
                 .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional(true))
                 .withVelocityY(limeLightFace.limelight_aim_proportional()*0.01));
     }
+    /**
+     * Auto aligns robot to the right
+     * @param lvl4 if you want lvl4
+     * @return the command to do so
+     */
     public Command magicLimeRight(boolean lvl4){
         return drivetrain.applyRequest(()-> {
                 return forwardStraight
@@ -200,6 +218,11 @@ public class RobotContainer {
                         .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
         });
     }
+    /**
+     * Auto aligns robot to the left
+     * @param lvl4 if you want lvl4
+     * @return the command to do so
+     */
     public Command magicLimeLeft(boolean lvl4){
         return drivetrain.applyRequest(()-> {
                 return forwardStraight
@@ -228,7 +251,9 @@ public class RobotContainer {
         return drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0));
     }
     
-
+/**
+ * PathPlanner event markers and commands for auton
+ */
     private void autoCommands() {
         // new EventTrigger("autoRight").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
         // .alongWith());

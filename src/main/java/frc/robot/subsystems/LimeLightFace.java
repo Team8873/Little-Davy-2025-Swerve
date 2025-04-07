@@ -42,7 +42,7 @@ public class LimeLightFace extends SubsystemBase {
   private PIDController rotationPid = new PIDController(0.3, 0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
   private PIDController forwardPid = new PIDController(.1, 0, 0);
-  // private ComplexWidget pidwid = tab.add("speed pid",
+  // private ComplexWidget pidwid = tab.add("speed pid",  //tuning pids in shuffleboard
   // forwardPid).withWidget(BuiltInWidgets.kPIDController);
   // private ComplexWidget rpidwid = tab.add("rotation pid",
   // rotationPid).withWidget(BuiltInWidgets.kPIDController);
@@ -63,6 +63,10 @@ public class LimeLightFace extends SubsystemBase {
     rotationPid.enableContinuousInput(-180, 180);
   }
 
+  /**
+   * look at aprilTag
+   * @return speed to go so it looks at it
+   */
   public double limelight_aim_proportional() {
     double kP = 0.02;
     double targetingAngularVelocity = tx * kP;
@@ -70,6 +74,11 @@ public class LimeLightFace extends SubsystemBase {
     return targetingAngularVelocity;
   }
 
+  /**
+   * Calculates distance from the reef to go
+   * @param lvl4 lvl4 distance 
+   * @return the speed to go to the reef
+   */
   public double limelight_range_proportional(boolean lvl4) {
     double target = -3.8;
     if(!lvl4){
@@ -94,6 +103,10 @@ public class LimeLightFace extends SubsystemBase {
   //   return speed;
   // }
 
+  /**
+   * Calculates the speed to strafe the left
+   * @return the speed to go to the setpoint
+   */
   public double limelight_left_strafe_proportional() {
     if (!hasAprilTagTarget) {
       return 0;
@@ -112,6 +125,10 @@ public class LimeLightFace extends SubsystemBase {
     return speed;
   }
 
+  /**
+   * Calculates the speed to strafe the right
+   * @return the speed to go to the setpoint
+   */
   public double limelight_right_strafe_proportional() {
     if (!hasAprilTagTarget) {
       return 0;
@@ -131,67 +148,55 @@ public class LimeLightFace extends SubsystemBase {
     return speed;
   }
 
+  /**
+   * gets the degree to align the robot to the reef with
+   * @param currentPose the current pose of the robot
+   * @return target pose 
+   */
   public double alignRobot(double currentPose) {
+
     if (ty < -15) {
-      return -limelight_aim_proportional() / 2;
+      return -limelight_aim_proportional() / 2; // keeps target if too far away
     }
 
-    radwid.setInteger(m_id);
+    radwid.setInteger(m_id); //shuffleboard
     poswid.setDouble(currentPose);
-    double radianPose;
+    double degreePose;
     switch (m_id) {
       case 18, 7:
-        radianPose = 180;
+        degreePose = 180;
         // radianPose = 0;
         break;
       case 21, 10:
-        radianPose = 0;
+        degreePose = 0;
         // radianPose = Math.PI;
         break;
       case 20, 11:
-        radianPose = 60;
+        degreePose = 60;
         break;
       case 22, 9:
-        radianPose = -60;
+        degreePose = -60;
         break;
       case 19, 6:
-        radianPose = 120;
+        degreePose = 120;
         break;
       case 17, 8:
-        radianPose = -120;
+        degreePose = -120;
         break;
 
       default:
-        radianPose = currentPose;
+        degreePose = currentPose;
         break;
     }
-    double speed = rotationPid.calculate(currentPose, radianPose);
+    double speed = rotationPid.calculate(currentPose, degreePose);
     wid.setDouble(speed);
     return speed;
   }
 
-  public Command poseGuesser(double currentPose) {
-    return this.run(
-        () -> {
-          LimelightHelpers.SetRobotOrientation("limelight", currentPose, 0, 0, 0, 0, 0);
-
-        });
-  }
-
+  // A boolean that gets automatically updated
+  // Used in robot container
   public final Trigger hasTarget = new Trigger(() -> hasAprilTagTarget);
 
-  public double getTx() {
-    return tx;
-  }
-
-  public double getTy() {
-    return ty;
-  }
-
-  public double getOffset() {
-    double offset = Math.abs(tx) - 15 + Math.abs(ty + 6.1);
-    return Math.abs(offset);
-  }
   public void periodic() {
     fiducials = LimelightHelpers.getRawFiducials("limelight");
     if (fiducials.length < 1) {

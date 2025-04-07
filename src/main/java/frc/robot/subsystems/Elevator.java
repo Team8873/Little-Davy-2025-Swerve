@@ -79,7 +79,8 @@ public class Elevator extends SubsystemBase {
         tab.addDouble("Elevator real Speed", ()-> leadMotorRight.getAppliedOutput()).withWidget(BuiltInWidgets.kNumberBar).withPosition(2,3);
     }
 
-    // sets follower
+    /**
+     * sets follower */ 
     public void setFollower() {
         SparkMaxConfig globalConfig = new SparkMaxConfig();
         SparkMaxConfig FollowerConfig = new SparkMaxConfig();
@@ -126,7 +127,6 @@ public class Elevator extends SubsystemBase {
      * Calls targetposition and sets the target to be the y values of the left
      * joystick
      * sets elevator motor speed
-     * 
      * @param operator the joystick to read from
      */
     private void readFromController(CommandXboxController operator) {
@@ -164,7 +164,6 @@ public class Elevator extends SubsystemBase {
 
     /**
      * sets the setpoint for the Elevator PID controller
-     * 
      * @param target the target position
      */
     public void targetElevatorPosition(double target) {
@@ -172,22 +171,32 @@ public class Elevator extends SubsystemBase {
         elevatorPid.setGoal(new State(target, 0.0));
         elevatorTarget = target;
     }
+    /**
+     * useless code
+     * doesn't really stop elevator
+     */
     public void stopElevator(){
         leadMotorRight.set(0);
         motorLeft.set(0);
      }
 
+     /**
+      * Gets Elevator Pos
+      * @return Elevator Pos
+      */
     public double getElevatorPos() {
         return elevatorPosition;
     }
 
+    /**
+     * resets elevator PID error
+     */
     public void resetPidError() {
         elevatorPid.reset(elevatorPosition, elevatorVelocity);
     }
 
     /**
      * setting the targetPosition to the current set point
-     * 
      * @return the boolean value if whether the elevator is at the set point or not
      */
     public BooleanSupplier getElevatorSetpointStatus() {

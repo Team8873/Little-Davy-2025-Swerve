@@ -86,6 +86,7 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * control the arm with joystick
    * @param operator the joystick port
    * @return the action/method to run
    */
@@ -98,8 +99,8 @@ public class Arm extends SubsystemBase {
         });
   }
 /**
- * dunks arm for score
- * @return
+ * dunks arm to score auto
+ * @return action to run
  */
   public Command kcikArm() {
     return this.run(
@@ -109,6 +110,10 @@ public class Arm extends SubsystemBase {
         });
   }
 
+  /**
+   * moves arm up
+   * @return action to run
+   */
   public Command upArm() {
     return this.run(
         () -> {
@@ -117,6 +122,10 @@ public class Arm extends SubsystemBase {
         });
   }
 
+  /**
+   * moves the arm parallel to floor
+   * @return action to run
+   */
   public Command standArm() {
     return this.run(
         () -> {
@@ -127,8 +136,7 @@ public class Arm extends SubsystemBase {
 
   /**
    * Sets the target position of the arm and wrist then call set speed
-   * 
-   * @param operator the joystick port
+   * @param operator the joystick port to read from
    */
   private void readFromController(CommandXboxController operator) {
     armTargetPos += (-operator.getLeftY() / 120);
@@ -166,6 +174,10 @@ public class Arm extends SubsystemBase {
     setWristTarget(wristTarget);
   }
 
+  /**
+   * Sets the target positon for the arm
+   * @param target the position you want
+   */
   public void setArmTarget(double target) {
     double m_target = target;
     if (m_target < 0.1) {
@@ -175,6 +187,10 @@ public class Arm extends SubsystemBase {
     armTargetPos = m_target;
   }
 
+  /**
+   * Sets target Positon for the wrist
+   * @param target thhe position you want
+   */
   public void setWristTarget(double target) {
     double m_target = target;
     if (m_target < -8) {
@@ -187,14 +203,26 @@ public class Arm extends SubsystemBase {
     wristTargetPos = m_target;
   }
 
+  /**
+   * gets the arm pos
+   * @return Current Arm position
+   */
   public double getArmPos() {
     return armPosition;
   }
 
+  /**
+   * gets the target arm pos
+   * @return Target Arm Positon
+   */
   public double getArmTarget() {
     return armPid.getSetpoint();
   }
 
+  /**
+   * Gets wrist Pos
+   * @return Current Wrist Positon
+   */
   public double getwristPos() {
     return wristPosition;
   }
@@ -213,7 +241,6 @@ public class Arm extends SubsystemBase {
 
   /**
    * gets arm and wrist position status
-   * 
    * @return returns status of the whole arm Mech
    */
   public BooleanSupplier getArmMechSetpointStatus() {
@@ -223,6 +250,7 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Gets if arm is at its target position
    * @return returns the arm position status as a boolean
    */
   public BooleanSupplier getArmSetpointStatus() {
@@ -230,13 +258,14 @@ public class Arm extends SubsystemBase {
   }
 
   /**
+   * Gets if arm is at its target position
    * @return returns wrist position status as a boolean
    */
   public BooleanSupplier getWristSetpointStatus() {
     return wristAtSetpoint = () -> wristPid.atSetpoint();
   }
 
-  public double getWristPosition() {
+  public double getWristTarget() {
     return wristPid.getSetpoint();
   }
 

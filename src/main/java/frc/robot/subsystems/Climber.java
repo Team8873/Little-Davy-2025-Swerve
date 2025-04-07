@@ -42,6 +42,11 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
     // engaged 0.0 is disengaged
     // use 1.0 for positive direction and 0.0 for negative. It's location but this
     // how to use it. It might be flipped around, don't know until test
+
+    /**
+     * engages the servo for climber
+     * @return 
+     */
     public Command engageServo() {
         return this.run(
                 () -> {
@@ -50,6 +55,10 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                 });
     }
 
+    /**
+     * Disengages climber servo
+     * @return
+     */
     public Command disengageServo() {
         return this.run(
                 () -> {
@@ -58,29 +67,14 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                 });
     }
 
-    // PID STUFF:
-    private PIDController climberPid = new PIDController(ClimberConstants.ClimberkP, ClimberConstants.ClimberkI,
-            ClimberConstants.ClimberkD);
-
     public Climber() {
-        climberPid.setTolerance(0.001);
     }
 
-    // defines targetPosition as the target
-    public void targetPosition(double target) {
-        climberPid.setSetpoint(target);
-    } // setSetpoint sets the setpoint after you get it in getClimberSetpointStatus
-
-    // defines set speed as making the motor go to target (speed is how much motor
-    // has to move)
-   
-    // get the set point and put it as the target. Return if its at the setpoint or
-    // not.
-   
-
-    // Y will shoot to 90 deg
+    /**
+     * Releases cage
+     * @return
+     */
     public Command letGoOfCage() {
-        targetPosition(ClimberConstants.engagedPosition);
         return this.run(
                 () -> {
                     // speed = climberPid.calculate(climberMotorPosition);
@@ -93,7 +87,11 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                 });
     }
 
-    // Xbutton will move down to climbed
+    /**
+     * Engages the climber with the cage
+     * @param joystick controller to read inputs from 
+     * @return actions to run
+     */
     public Command grabCage(CommandXboxController joystick) {
         return this.run(
                 () -> {
@@ -104,6 +102,10 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                 });
     }
 
+    /**
+     * stops the climber motor 
+     * @return action to run
+     */
     public Command dontMoveClimberDown() {
         return this.runOnce(
                 () -> {
@@ -111,8 +113,4 @@ public class Climber extends SubsystemBase { // puts climber as a subsystem; ins
                 });
     }
 
-    @Override
-    public void periodic() {
-       
-    }
 }
