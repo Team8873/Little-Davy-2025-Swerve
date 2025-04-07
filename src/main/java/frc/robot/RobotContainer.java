@@ -88,7 +88,7 @@ public class RobotContainer {
 
     public RobotContainer(){
         autoChooser = AutoBuilder.buildAutoChooser("blue left wall to reef front");
-        tab.add("Auto Mode", autoChooser).withPosition(5,0).withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser); //puts the autons to shuffleboard
+        tab.add("Auto Mode", autoChooser).withPosition(4,0).withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser); //puts the autons to shuffleboard
         configureBindings(); //creates the triggers
         elevator.setFollower(); //sets follower motor for elevator
         CameraServer.startAutomaticCapture(); //gets video data from cameras
