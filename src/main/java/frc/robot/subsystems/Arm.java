@@ -97,7 +97,10 @@ public class Arm extends SubsystemBase {
           readFromController(operator);
         });
   }
-
+/**
+ * dunks arm for score
+ * @return
+ */
   public Command kcikArm() {
     return this.run(
         () -> {

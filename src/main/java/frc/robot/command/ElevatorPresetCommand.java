@@ -174,6 +174,10 @@ public class ElevatorPresetCommand extends Command {
                     elevatorPos = PresetConstants.startElevator;
                     armPos = PresetConstants.armStartPos;
                     break;
+                case 'a':
+                    elevatorPos = 3.75;
+                    armPos = 0.135;
+                    break;
             }
         }
     }

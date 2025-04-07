@@ -161,8 +161,14 @@ public class RobotContainer {
         joystick.leftStick().whileTrue(Travel());
         joystick.rightStick().whileTrue(lockOnCommand());
         
-        joystick.rightBumper().whileTrue(magicLimeRight());
-        joystick.leftBumper().whileTrue(magicLimeLeft());
+        // joystick.rightBumper().whileTrue(magicLimeRight());
+        joystick.rightBumper().and(joystick.x()).whileTrue(magicLimeRight(false)); //auto align lvl 2-3
+        joystick.leftBumper().and(joystick.x()).whileTrue(magicLimeLeft(false));
+
+        joystick.rightBumper().and(joystick.x().negate()).whileTrue(magicLimeRight(true)); // auto align lvl4
+        joystick.leftBumper().and(joystick.x().negate()).whileTrue(magicLimeLeft(true));
+
+        // joystick.leftBumper().whileTrue(magicLimeLeft());
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -183,31 +189,51 @@ public class RobotContainer {
     }
     public Command Travel() {
         return drivetrain
-                .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional())
+                .applyRequest(() -> forwardStraight.withVelocityX(limeLightFace.limelight_range_proportional(true))
                 .withVelocityY(limeLightFace.limelight_aim_proportional()*0.01));
     }
-    public Command magicLimeRight(){
+    public Command magicLimeRight(boolean lvl4){
         return drivetrain.applyRequest(()-> {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
-                        .withVelocityX(limeLightFace.limelight_range_proportional())
+                        .withVelocityX(limeLightFace.limelight_range_proportional(lvl4))
                         .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
         });
     }
-    public Command magicLimeLeft(){
+    public Command magicLimeLeft(boolean lvl4){
         return drivetrain.applyRequest(()-> {
                 return forwardStraight
                         .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
-                        .withVelocityX(limeLightFace.limelight_range_proportional())
+                        .withVelocityX(limeLightFace.limelight_range_proportional(lvl4))
                         .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
         });
     }
+    // public Command magicLimeLeftBack(){
+    //     return drivetrain.applyRequest(()-> {
+    //             return forwardStraight
+    //                     .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
+    //                     .withVelocityX(limeLightFace.limelight_backUp())
+    //                     .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
+    //     });
+    // }
+    // public Command magicLimeRightBack(){
+    //     return drivetrain.applyRequest(()-> {
+    //             return forwardStraight
+    //                     .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
+    //                     .withVelocityX(limeLightFace.limelight_backUp())
+    //                     .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
+    //     });
+    // }
+    public Command backUp(){
+        return drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0));
+    }
+    
 
     private void autoCommands() {
-        // new EventTrigger("null").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
+        // new EventTrigger("autoRight").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
         // .alongWith());
         
-        ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft()).withTimeout(2)
+        ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft(true)).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         ParallelCommandGroup getCoral = new ElevatorPresetCommand(elevator, arm, 'i', true).withTimeout(3)
@@ -216,15 +242,16 @@ public class RobotContainer {
         .until(tOF.coralInRange)
         );
         
-        ParallelCommandGroup scoreRight4 = new RepeatCommand(magicLimeRight()).withTimeout(2)
+        ParallelCommandGroup scoreRight4 = new RepeatCommand(magicLimeRight(true)).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
 
         NamedCommands.registerCommand("Hug", new ArmDockCommand(arm));
         NamedCommands.registerCommand("Elevator lvl4", new ElevatorPresetCommand(elevator, arm, 'y', true).withTimeout(3.5)//changed from 5 sec
         .andThen((arm.kcikArm().onlyIf(tOF.coralInRange)
         ).withTimeout(1)//changed from 1.5
-        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false)
-        )));
+        .andThen(new ElevatorPresetCommand(elevator, arm, 'a', false).withTimeout(1)//bring elevator down
+        .andThen(new ElevatorPresetCommand(elevator, arm, 't', false) // go back to travel position
+        ))));
 
         new EventTrigger("Elevator lvl4").onTrue(NamedCommands.getCommand("Elevator lvl4"));
 
@@ -242,7 +269,8 @@ public class RobotContainer {
 
         new EventTrigger("humanCoral").onTrue(getCoral
         .andThen(intake.stopIntake().onlyIf(tOF.coralInRange)
-        .andThen(getPathToFollow("humanRight scoreright"))));
+        // .andThen(getPathToFollow("humanRight scoreright"))
+        ));
 
 
         new EventTrigger("standCoral").onTrue(arm.standArm().withTimeout(1)
@@ -251,23 +279,28 @@ public class RobotContainer {
         .andThen(arm.upArm().withTimeout(.5)))));
 
         new EventTrigger("go").onTrue(new WaitCommand(2)
-        .andThen(getPathToFollow("score again")));
+        // .andThen(getPathToFollow("score again"))
+        );
 
-        new EventTrigger("autoRight").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeRight()).withTimeout(.25)// changed from 2
-        .andThen(new WaitCommand(5).until(()-> !tOF.coralInRange.getAsBoolean()) // changed from 2.5
-        .andThen(getPathToFollow("rightHuman"))
+        new EventTrigger("autoRight").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeRight(true)).withTimeout(2)// changed from 2
+        .andThen(//new RepeatCommand(magicLimeRightBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
+            //getPathToFollow("back up front").onlyIf(()-> !tOF.coralInRange.getAsBoolean()) // changed from 2.5
+        // .andThen()
         )));
 
-        new EventTrigger("autoRight noPick").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeRight()).withTimeout(.5)// changed from 2
-        .andThen(new WaitCommand(5).until(()-> !tOF.coralInRange.getAsBoolean()) // changed from 2.5
-        .andThen(getPathToFollow("back up back"))
+        new EventTrigger("autoRight noPick").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeRight(true)).withTimeout(2)// changed from 2
+        .andThen(//new RepeatCommand(magicLimeRightBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
+            //getPathToFollow("back up back").onlyIf(()-> !tOF.coralInRange.getAsBoolean()) // changed from 2.5
+        // .andThen(getPathToFollow("back up back"))
         )));
 
-        new EventTrigger("autoLeft").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeLeft()).withTimeout(.25)
-        .andThen(new WaitCommand(5).until(()-> !tOF.coralInRange.getAsBoolean())
-        .andThen(getPathToFollow("rightHuman")))));
+        new EventTrigger("autoLeft").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeLeft(true)).withTimeout(2)
+        .andThen(//new RepeatCommand(magicLimeLeftBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
+            //getPathToFollow("back up front").onlyIf(()-> !tOF.coralInRange.getAsBoolean())
+        // .andThen(getPathToFollow("rightHuman"))
+        )));
 
-        new EventTrigger("human").onTrue(new RepeatCommand(magicLimeLeft()).withTimeout(1)
+        new EventTrigger("human").onTrue(new RepeatCommand(magicLimeLeft(true)).withTimeout(1)
         .andThen(new ElevatorPresetCommand(elevator, arm, 'h', true)
         .andThen(intake.runIntake())));
 

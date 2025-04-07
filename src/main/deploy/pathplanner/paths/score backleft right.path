@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.3258133561643834,
-        "y": 4.168
+        "x": 1.4574914383561646,
+        "y": 7.157855308219178
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.696415759204774,
-        "y": 4.181058269204967
+        "x": 3.846575342465753,
+        "y": 6.962521404109589
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "left human end"
     },
     {
       "anchor": {
-        "x": 6.746532534246576,
-        "y": 4.167744006849315
+        "x": 5.514426369863014,
+        "y": 5.264619006849315
       },
       "prevControl": {
-        "x": 6.415360423693481,
-        "y": 4.153693174479053
+        "x": 6.29576198630137,
+        "y": 6.286365582191781
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,23 +29,22 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
     {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
+      "name": "Elevator lvl4",
+      "waypointRelativePos": 0.7238095238095238,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "autoRight",
+      "waypointRelativePos": 0.9404761904761905,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
-  "pointTowardsZones": [],
-  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.25,
     "maxAcceleration": 4.0,
@@ -56,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.16968451374203
+    "rotation": -120.65066795705296
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 126.0
   },
   "useDefaultConstraints": true
 }

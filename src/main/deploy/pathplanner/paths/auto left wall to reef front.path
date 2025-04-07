@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.6294948630096515,
-        "y": 4.017487157537186
+        "x": 2.914982876712329,
+        "y": 3.837
       },
       "prevControl": {
-        "x": -0.3155393835616449,
-        "y": 6.782213184931506
+        "x": -0.030051369858967725,
+        "y": 6.601726027394321
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,10 +48,10 @@
     {
       "fieldPosition": {
         "x": 4.0,
-        "y": 4.138
+        "y": 3.8
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.26904761904761904,
+      "minWaypointRelativePos": 0.5697278911564626,
       "maxWaypointRelativePos": 1.0,
       "name": "Point Towards Zone"
     }
@@ -65,20 +65,20 @@
     },
     {
       "name": "Elevator lvl4",
-      "waypointRelativePos": 0.9142857142857143,
+      "waypointRelativePos": 0.5547619047619048,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
-      "name": "autoLeft",
-      "waypointRelativePos": 0.919047619047619,
+      "name": "autoRight",
+      "waypointRelativePos": 0.9738095238095238,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.25,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

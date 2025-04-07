@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.899,
-        "y": 3.859
+        "x": 2.4387965425531912,
+        "y": 3.919980053191489
       },
       "prevControl": {
-        "x": 1.6220565068493145,
-        "y": 6.893880993150686
+        "x": 1.1618530494025057,
+        "y": 6.954861046342176
       },
       "nextControl": null,
       "isLocked": false,
@@ -73,11 +73,17 @@
           "name": "Elevator lvl4"
         }
       }
+    },
+    {
+      "name": "autoRight",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.25,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

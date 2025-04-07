@@ -76,6 +76,7 @@ public class Elevator extends SubsystemBase {
         tab.addBoolean("Elevator atSetpoint", ()-> elevatorAtSetpoint.getAsBoolean()).withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
         tab.addDouble("Elevator busVolt", ()-> leadMotorRight.getBusVoltage()).withWidget(BuiltInWidgets.kNumberBar).withPosition(2, 1);
         tab.addDouble("Elevator Target", ()-> elevatorPid.getGoal().position);
+        tab.addDouble("Elevator real Speed", ()-> leadMotorRight.getAppliedOutput()).withWidget(BuiltInWidgets.kNumberBar).withPosition(2,3);
     }
 
     // sets follower

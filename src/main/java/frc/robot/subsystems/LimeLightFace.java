@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.epilogue.Logged;
 
-
 @Logged
 public class LimeLightFace extends SubsystemBase {
 
@@ -40,11 +39,13 @@ public class LimeLightFace extends SubsystemBase {
       .withPosition(6, 4)
       .getEntry();
 
-  private PIDController rotationPid = new PIDController(0.25, 0, 0);
+  private PIDController rotationPid = new PIDController(0.3, 0, 0);
   private PIDController velocityPid = new PIDController(.04, 0, 0);
   private PIDController forwardPid = new PIDController(.1, 0, 0);
-  // private ComplexWidget pidwid = tab.add("speed pid", forwardPid).withWidget(BuiltInWidgets.kPIDController);
-  // private ComplexWidget rpidwid = tab.add("rotation pid", rotationPid).withWidget(BuiltInWidgets.kPIDController);
+  // private ComplexWidget pidwid = tab.add("speed pid",
+  // forwardPid).withWidget(BuiltInWidgets.kPIDController);
+  // private ComplexWidget rpidwid = tab.add("rotation pid",
+  // rotationPid).withWidget(BuiltInWidgets.kPIDController);
 
   private RawFiducial[] fiducials;
 
@@ -52,6 +53,8 @@ public class LimeLightFace extends SubsystemBase {
   private boolean hasAprilTagTarget = false;
   private double tx;
   private double ty;
+  private boolean aprilTagChange = false;
+  private int previousId = 0;
 
   public LimeLightFace() {
     rotationPid.setTolerance(0.01);
@@ -67,9 +70,12 @@ public class LimeLightFace extends SubsystemBase {
     return targetingAngularVelocity;
   }
 
-  public double limelight_range_proportional() {
-    double target = -.8;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight-april");
+  public double limelight_range_proportional(boolean lvl4) {
+    double target = -3.8;
+    if(!lvl4){
+      target = 3;
+    }
+    double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
     double speed = forwardPid.calculate(targetingForwardSpeed, target);
     posewid.setDouble(targetingForwardSpeed);
     if (!hasAprilTagTarget) {
@@ -77,13 +83,23 @@ public class LimeLightFace extends SubsystemBase {
     }
     return speed;
   }
+  // public double limelight_backUp() {
+  //   double target = -6.8;
+  //   double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
+  //   double speed = forwardPid.calculate(targetingForwardSpeed, target);
+  //   posewid.setDouble(targetingForwardSpeed);
+  //   if (!hasAprilTagTarget) {
+  //     return 0;
+  //   }
+  //   return speed;
+  // }
 
   public double limelight_left_strafe_proportional() {
     if (!hasAprilTagTarget) {
       return 0;
     }
     double lefttargetTx;
-    if (LimelightHelpers.getTY("limelight-april") < -15) {
+    if (LimelightHelpers.getTY("limelight") < -15) {
       lefttargetTx = 0;
     } else {
       lefttargetTx = 15.3;
@@ -102,10 +118,10 @@ public class LimeLightFace extends SubsystemBase {
     }
 
     double righttargetTx;
-    if (LimelightHelpers.getTY("limelight-april") < -15) {
+    if (LimelightHelpers.getTY("limelight") < -15) {
       righttargetTx = 0;
     } else {
-      righttargetTx = -16.7;
+      righttargetTx = -18.1;
     }
     double targetAngleStrafe = (tx);
     System.out.println(targetAngleStrafe);
@@ -124,7 +140,7 @@ public class LimeLightFace extends SubsystemBase {
     poswid.setDouble(currentPose);
     double radianPose;
     switch (m_id) {
-      case 18, 14, 15, 7, 5, 4:
+      case 18, 7:
         radianPose = 180;
         // radianPose = 0;
         break;
@@ -132,23 +148,13 @@ public class LimeLightFace extends SubsystemBase {
         radianPose = 0;
         // radianPose = Math.PI;
         break;
-      case 16, 3:
-        radianPose = 90;
-        break;
-      case 12, 2:
-        radianPose = 45;
-        break;
-      case 13, 1:
-        radianPose = -45;
-        break;
       case 20, 11:
         radianPose = 60;
         break;
       case 22, 9:
         radianPose = -60;
         break;
-
-      case 19,6:
+      case 19, 6:
         radianPose = 120;
         break;
       case 17, 8:
@@ -167,25 +173,27 @@ public class LimeLightFace extends SubsystemBase {
   public Command poseGuesser(double currentPose) {
     return this.run(
         () -> {
-          LimelightHelpers.SetRobotOrientation("limelight-april", currentPose, 0, 0, 0, 0, 0);
+          LimelightHelpers.SetRobotOrientation("limelight", currentPose, 0, 0, 0, 0, 0);
 
         });
   }
 
   public final Trigger hasTarget = new Trigger(() -> hasAprilTagTarget);
-  public double getTx(){
+
+  public double getTx() {
     return tx;
   }
 
-  public double getTy(){
+  public double getTy() {
     return ty;
   }
-  public double getOffset(){
+
+  public double getOffset() {
     double offset = Math.abs(tx) - 15 + Math.abs(ty + 6.1);
     return Math.abs(offset);
   }
   public void periodic() {
-    fiducials = LimelightHelpers.getRawFiducials("limelight-april");
+    fiducials = LimelightHelpers.getRawFiducials("limelight");
     if (fiducials.length < 1) {
       hasAprilTagTarget = false;
       ty = 0;
@@ -193,8 +201,8 @@ public class LimeLightFace extends SubsystemBase {
     } else {
       hasAprilTagTarget = true;
       m_id = fiducials[0].id;
-      ty = LimelightHelpers.getTY("limelight-april");
-      tx = LimelightHelpers.getTX("limelight-april");
+      ty = LimelightHelpers.getTY("limelight");
+      tx = LimelightHelpers.getTX("limelight");
     }
 
   }

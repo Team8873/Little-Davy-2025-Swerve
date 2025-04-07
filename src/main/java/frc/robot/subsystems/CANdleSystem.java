@@ -389,6 +389,20 @@ public class CANdleSystem extends SubsystemBase {
                             speed = 0.1;
                             m_toAnimate2 = setAnimation(ledOffset, maxLed, animationType, Direction.Forward);
                             break;
+                        // case 2:
+                        // m_candle.clearAnimation(1);
+                        // m_candle.clearAnimation(3);
+                        // maxLed = 80;
+                        // ledOffset = 8;
+                        // m_candle.setLEDs(red, green, blue, white, ledOffset, maxLed);
+                        // break;
+                        // case 3:
+                        // ledOffset = 8;
+                        //     maxLed = 40;
+                        //     m_toAnimate = setAnimation(ledOffset, maxLed, animationType, Direction.Forward);
+                        //     ledOffset += 40;
+                        //     m_toAnimate3 = setAnimation(ledOffset, maxLed, animationType, Direction.Backward);
+                        //     break;
                         default:
                             maxLed = 10;
                             ledOffset = 8;
