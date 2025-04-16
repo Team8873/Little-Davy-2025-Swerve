@@ -263,7 +263,7 @@ public class RobotContainer {
         intakeSideChooser.addOption("left side human", "leftHuman");
         tab.add("Where to go after auto align", intakeSideChooser).withPosition(6, 0) //create shuffleboard object after adding the options so they exists
         .withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser);
-        
+        //intakeSideChooser.getSelected() use to get the value from shuffleboard
 
 
         
