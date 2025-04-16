@@ -81,6 +81,8 @@ public class RobotContainer {
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<String> intakeSideChooser = new SendableChooser<>();
+
     // private final SendableChooser<String> alignmentChooser;
 
         private ShuffleboardTab tab = Shuffleboard.getTab("Subsystems");
@@ -231,22 +233,22 @@ public class RobotContainer {
                         .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
         });
     }
-    // public Command magicLimeLeftBack(){
-    //     return drivetrain.applyRequest(()-> {
-    //             return forwardStraight
-    //                     .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
-    //                     .withVelocityX(limeLightFace.limelight_backUp())
-    //                     .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
-    //     });
-    // }
-    // public Command magicLimeRightBack(){
-    //     return drivetrain.applyRequest(()-> {
-    //             return forwardStraight
-    //                     .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
-    //                     .withVelocityX(limeLightFace.limelight_backUp())
-    //                     .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
-    //     });
-    // }
+    public Command magicLimeLeftBack(){
+        return drivetrain.applyRequest(()-> {
+                return forwardStraight
+                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
+                        .withVelocityX(limeLightFace.limelight_backUp())
+                        .withVelocityY(limeLightFace.limelight_left_strafe_proportional());
+        });
+    }
+    public Command magicLimeRightBack(){
+        return drivetrain.applyRequest(()-> {
+                return forwardStraight
+                        .withRotationalRate(limeLightFace.alignRobot(drivetrain.getState().RawHeading.getDegrees()))
+                        .withVelocityX(limeLightFace.limelight_backUp())
+                        .withVelocityY(limeLightFace.limelight_right_strafe_proportional());
+        });
+    }
     public Command backUp(){
         return drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0));
     }
@@ -256,7 +258,14 @@ public class RobotContainer {
  */
     private void autoCommands() {
         // new EventTrigger("autoRight").onTrue(Commands.runOnce(()-> PPHolonomicDriveController.overrideXFeedback(() -> {return 0.0;}))
-        // .alongWith());
+        // .alongWith());   //the proper way to override robot driving or sojmething
+        intakeSideChooser.setDefaultOption("right side human", "rightHuman");
+        intakeSideChooser.addOption("left side human", "leftHuman");
+        tab.add("Where to go after auto align", intakeSideChooser).withPosition(6, 0) //create shuffleboard object after adding the options so they exists
+        .withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser);
+        
+
+
         
         ParallelCommandGroup scoreLeft4 = new RepeatCommand(magicLimeLeft(true)).withTimeout(2)
         .alongWith(NamedCommands.getCommand("Elevator lvl4"));
@@ -308,10 +317,11 @@ public class RobotContainer {
         );
 
         new EventTrigger("autoRight").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeRight(true)).withTimeout(2)// changed from 2
-        .andThen(//new RepeatCommand(magicLimeRightBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
-            //getPathToFollow("back up front").onlyIf(()-> !tOF.coralInRange.getAsBoolean()) // changed from 2.5
-        // .andThen()
-        )));
+        .andThen(
+            new RepeatCommand(magicLimeRightBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
+           // changed from 2.5
+        .andThen(getPathToFollow(intakeSideChooser.getSelected()).onlyIf(()-> !tOF.coralInRange.getAsBoolean()
+        )))));
 
         new EventTrigger("autoRight noPick").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeRight(true)).withTimeout(2)// changed from 2
         .andThen(//new RepeatCommand(magicLimeRightBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
@@ -320,9 +330,9 @@ public class RobotContainer {
         )));
 
         new EventTrigger("autoLeft").onTrue(new WaitCommand(.1).andThen(new RepeatCommand(magicLimeLeft(true)).withTimeout(2)
-        .andThen(//new RepeatCommand(magicLimeLeftBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
-            //getPathToFollow("back up front").onlyIf(()-> !tOF.coralInRange.getAsBoolean())
-        // .andThen(getPathToFollow("rightHuman"))
+        .andThen(
+            new RepeatCommand(magicLimeLeftBack().onlyIf(()-> !tOF.coralInRange.getAsBoolean())).withTimeout(2)
+        .andThen(getPathToFollow(intakeSideChooser.getSelected()).onlyIf(()-> !tOF.coralInRange.getAsBoolean()))
         )));
 
         new EventTrigger("human").onTrue(new RepeatCommand(magicLimeLeft(true)).withTimeout(1)

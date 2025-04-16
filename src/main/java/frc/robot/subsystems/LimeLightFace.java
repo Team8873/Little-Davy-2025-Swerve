@@ -92,16 +92,16 @@ public class LimeLightFace extends SubsystemBase {
     }
     return speed;
   }
-  // public double limelight_backUp() {
-  //   double target = -6.8;
-  //   double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
-  //   double speed = forwardPid.calculate(targetingForwardSpeed, target);
-  //   posewid.setDouble(targetingForwardSpeed);
-  //   if (!hasAprilTagTarget) {
-  //     return 0;
-  //   }
-  //   return speed;
-  // }
+  public double limelight_backUp() {
+    double target = -6.8;
+    double targetingForwardSpeed = LimelightHelpers.getTY("limelight");
+    double speed = forwardPid.calculate(targetingForwardSpeed, target);
+    posewid.setDouble(targetingForwardSpeed);
+    if (!hasAprilTagTarget) {
+      return 0;
+    }
+    return speed;
+  }
 
   /**
    * Calculates the speed to strafe the left
